@@ -15,3 +15,5 @@
 
 # Quellen
 * [Django documentation](https://docs.djangoproject.com/en/dev/)
+* [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
+* [Code Style](http://docs.python-guide.org/en/latest/writing/style/)
