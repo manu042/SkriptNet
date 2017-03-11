@@ -71,3 +71,4 @@ ENV/
 
 */migrations/*
 /.idea/*
+/db.sqlite3
