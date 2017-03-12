@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 
 # My Packages
@@ -51,7 +50,21 @@ def logout_view(request):
 
 def registration_view(request):
 
-    return render(request, 'skripten_shop/registrierung.html')
+
+    if request.method == 'POST':
+        # form =
+        #if form.is_valid:
+        pass
+    else:
+        # form =
+        pass
+
+    context = {
+        'form':0
+    }
+
+
+    return render(request, 'skripten_shop/registrierung.html', context)
 
 
 @method_decorator(login_required, name='dispatch')
