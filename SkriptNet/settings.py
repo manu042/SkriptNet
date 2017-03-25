@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party Apps
+    'captcha',
     'crispy_forms',
 
     # My Apps
@@ -137,3 +138,22 @@ LOGIN_URL = '/'
 # My Settings
 #############################################################
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Django Simple Captcha
+# http://django-simple-captcha.readthedocs.io/en/latest/usage.html
+SOUTH_MIGRATION_MODULES = {
+    'captcha': 'captcha.south_migrations',
+}
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+CAPTCHA_FONT_SIZE = 40
+
+
+# Mail Setting
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'w00739ef.kasserver.com'
+EMAIL_HOST_PORT = '587'
+EMAIL_PORT='587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'm03dd7e2'
+EMAIL_HOST_PASSWORD = 'mCN3DrsFXfwqrrhe'
+DEFAULT_FROM_EMAIL = 'skripten@verteiler.cc'

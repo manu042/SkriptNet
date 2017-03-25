@@ -1,4 +1,9 @@
 # https://pip.readthedocs.io/en/1.1/requirements.html
 # pip install -r requirements.txt
+
 Django==1.10.6
 django-crispy-forms==1.6.1
+
+# Django Simple Captcha
+# https://github.com/mbi/django-simple-captcha/blob/master/docs/usage.rst
+django-simple-captcha

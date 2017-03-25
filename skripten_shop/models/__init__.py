@@ -1,4 +1,4 @@
 from .models_users import *
 
 
-__all__ = ['NewUser']
+__all__ = ['NewUser', 'NewStudentRegistration']

@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 import datetime
+from captcha.fields import CaptchaField
 import re
-from django import forms
 
 User = get_user_model()
 
@@ -26,21 +26,34 @@ class UserLoginForm(forms.Form):
         password = self.cleaned_data.get("password")
 
         if username and password:
-            # authenticate prüft nur, ob der User existiert
+
+            user = None
+            # Prüft ob User aktiv ist
+            try:
+                user = User.objects.get(username=username)
+            except:
+                pass
+            if user:
+                if not user.is_active:
+                    raise forms.ValidationError('Das Benutzerkonto ist inaktiv.')
+
+            # Prüft, ob Username und Passwort korrekt sind
             user = authenticate(username=username, password=password)
-            print(user)
             if not user:
                 raise forms.ValidationError("Ungültige E-Mail-Adresse oder ungültiges Passwort")
 
 
-class UserRegisterForm(forms.ModelForm):
+class UserRegisterForm(forms.Form):
     """
-    Formen für User Registrierungsseite
-    - Regisrtrierung erfolgt mit HM-Email statt mit Username
+    Form zur Registrierung neuer Accounts für Studenten
+    - Regisrtrierung erfolgt mit HM-Email
+    - Die Email wird in das Userfeld Username eingetragen
+    """
+    # Erzeugt eine Jahresliste für das Geburtsdatums Feld für Personen zwischen 15 und 60 Jahren
+    current_year = datetime.datetime.now().year
+    BIRTH_YEAR_CHOICES = sorted(range(current_year - 60, current_year - 14), reverse=True)
 
-    Notwendig, um Bootstrap und CSS zu verwenden
-    """
-    username = forms.EmailField(label='HM-Email', widget=forms.TextInput(
+    mail_address = forms.EmailField(label='HM-Email', widget=forms.TextInput(
         attrs={'class': 'form-control', 'type': 'email', 'name': 'email', 'placeholder': 'muster@hm.edu'}))
 
     first_name = forms.CharField(label='Vorname', widget=forms.TextInput(
@@ -49,67 +62,45 @@ class UserRegisterForm(forms.ModelForm):
     last_name = forms.CharField(label='Nachname', widget=forms.TextInput(
         attrs={'class': 'form-control', 'name': 'last_name', 'placeholder': 'Nachname'}))
 
-    password = forms.CharField(widget=forms.PasswordInput(
+    password = forms.CharField(label='Passwort', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort'}))
 
-    password2 = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort wiederholen'}))
+    password_confirm = forms.CharField(label='Passwort bestätigen', widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'name': 'password confirm', 'placeholder': 'Passwort bestätigen'}))
 
-    # Erzeugt eine Jahresliste für das Geburtsdatums Feld für Personen zwischen 15 und 60 Jahren
-    current_year = datetime.datetime.now().year
-    BIRTH_YEAR_CHOICES = sorted(range(current_year - 60, current_year - 14), reverse=True)
     birth_date = forms.DateField(label="Geburtsdatum", widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES))
 
-    class Meta:
-        model = User
-        fields = [
-            "username",
-            "email",
-            "first_name",
-            "last_name",
-            "password",
-            "password2",
-            # "captcha",
-            # "terms",
-        ]
+    terms = forms.BooleanField(label="Allgemeines & Datenschutz gelesen",widget=forms.CheckboxInput())
 
-    def clean_username(self):
+    captcha = CaptchaField()
+
+    def clean_mail_address(self):
         """
-        Prüft, ob Email bereits registriert wurde und ob die Eingabe eine plausible HM Email ist
-        Email und Username sind identisch
+        Prüft, ob Email bereits registriert wurde und ob die Eingabe eine plausible HM Email ist.
+        Die Email Adresse wird in der Datenbank, für den Usernamen und die Email Adresse verwendet
         """
-        username = self.cleaned_data.get("username")
+        mail_address = self.cleaned_data.get("mail_address")
 
-        username_qs = User.objects.filter(username=username)
+        username_qs = User.objects.filter(username=mail_address)
 
-        if re.split(r'@', username)[-1] == 'hm.edu':
-            pass
-        else:
-            raise forms.ValidationError("Email ist keine gültige Hochschul Adresse")
+        # TODO Code umschreiben und aktivieren
+        # TODO siehe http://chimera.labs.oreilly.com/books/1230000000393/ch02.html#_problem_22
+        # if re.split(r'@', mail_address)[-1] == 'hm.edu':
+        #     pass
+        # else:
+        #     raise forms.ValidationError("Die Email-Adresse ist keine gültige Hochschul Adresse")
 
         if username_qs.exists():
             raise forms.ValidationError("Diese Email-Adresse wurde bereits registriert")
-        return username
+        return mail_address
 
-    def clean_password2(self):
+    def clean_password_confirm(self):
         """
         Prüft, ob Passwort und Passwort confirm übereinstimmen
-
-        !!! {{ UserLoginForm.errors }} für raise ValidationError!!!
         """
         password = self.cleaned_data.get("password")
-        password2 = self.cleaned_data.get("password2")
+        password_confirm = self.cleaned_data.get("password_confirm")
 
-        if password != password2:
+        if password != password_confirm:
             raise forms.ValidationError("Die Passwörter stimmen nicht überein.")
-
-            # def clean(self):
-            #     """
-            #     !!! Non_Field_Error für ValidationError!!!
-            #     Prüft, ob Passwort und Passwort confirm übereinstimmen
-            #     """
-            #     password = self.cleaned_data.get("password")
-            #     password2 = self.cleaned_data.get("password2")
-            #
-            #     if password != password2:
-            #         raise forms.ValidationError("Die Passwörter stimmen nicht überein. Erneut versuchen?")
+        return password_confirm

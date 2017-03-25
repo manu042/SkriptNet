@@ -1,0 +1,89 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <meta name="description" content="Fachschaft 04 Skriptenshop">
+    <link rel="icon" href="{% static 'favicon/favicon.png' %}">
+
+    <title>SkriptNet</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+{#TODO: skripten@fs04.ee.hm.edu aus Datenbank laden#}
+{% if success_message %}
+    <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
+        <div class="alert alert-success">
+            Wir haben dir eine E-Mail mit einem Link zur Verifizierung deines Kontos an {{ success_message }} geschickt.
+            <br>
+            Falls du keine E-Mail erhalten hast, schicke eine E-Mail von {{ success_message }} an "skripten@fs04.ee.hm.edu".
+        </div>
+    </div>
+
+{% else %}
+    <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
+        <div class="panel panel-default">
+            <div class="panel-heading">Login</div>
+            <div class="panel-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-primary" value="Anmelden">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-md-offset-3">
+        <h4>Allgemeines:</h4>
+        <ul style="margin-left: -20px">
+            <li>Mit der Anmeldung akzeptiere ich den Mitgliedsbeitrag in Höhe von 3 Euro pro Semester</li>
+            <li>Der Mitgliedsbeitrag ist bar in der Fachschaft zu zahlen</li>
+            <li>Die Mitgliedschaft im Verein wird durch erstmaliges Zahlen des Mitgliedsbeitrages erreicht</li>
+            <li>Es besteht keine Verpflichtung zur Zahlung! Nichtzahlen führt jedoch, nach einer gewissen Zeit,
+                zum automatischen Verlust der Mitgliedschaft
+            </li>
+            <li>Die <a target="_blank" class="privacylink"
+                       href="https://fs04.de/verein-fs04/vereinssatzung/">»Satzung«</a>
+                wird als
+                bekannt und akzeptiert angesehen
+            </li>
+        </ul>
+        <h4>Datenschutz:</h4>
+        <ul style="margin-left: -20px">
+            <li>Die Daten werden von uns nicht an Dritte weitergegeben</li>
+            <li>Die Daten werden auf unseren Servern gespeichert und von uns ausschließlich zur
+                Mitgliederverwaltung verwendet
+            </li>
+            <li>Dies umfasst auch das Versenden von wichtigen Informationen an die Vereinsmitglieder</li>
+        </ul>
+    </div>
+{% endif %}
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

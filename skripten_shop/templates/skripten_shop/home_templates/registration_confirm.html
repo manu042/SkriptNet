@@ -1,5 +1,4 @@
 {% load static %}
-{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,18 +25,22 @@
 </head>
 <body>
 
-<div class="col-md-6 col-md-offset-3" style="padding-top: 15%">
-    <div class="panel panel-default">
-        <div class="panel-heading">Login</div>
-        <div class="panel-body">
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="submit" class="btn btn-primary" value="Anmelden">
-            </form>
+{% if error_message %}
+    <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
+        <div class="alert alert-danger">
+            Das Konto wurde bereits Aktiviert.
         </div>
     </div>
-</div>
+
+{% else %}
+    <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
+        <div class="alert alert-success">
+            Dein Konto wurde erfolgreich aktiviert.
+        </div>
+    </div>
+{% endif %}
+
+
 
 
 <!-- Bootstrap core JavaScript
