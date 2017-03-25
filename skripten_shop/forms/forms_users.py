@@ -1,8 +1,13 @@
+# Django Packages
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.password_validation import validate_password
+
+# Third party packages
+import re
 import datetime
 from captcha.fields import CaptchaField
-import re
+
 
 User = get_user_model()
 
@@ -93,6 +98,16 @@ class UserRegisterForm(forms.Form):
         if username_qs.exists():
             raise forms.ValidationError("Diese Email-Adresse wurde bereits registriert")
         return mail_address
+
+    def clean_password(self):
+        '''
+        Prüft Passwort anforderungen
+        https://docs.djangoproject.com/en/dev/topics/auth/passwords/#password-validation
+        '''
+        password = self.cleaned_data.get("password")
+        validate_password(password)
+        return password
+
 
     def clean_password_confirm(self):
         """

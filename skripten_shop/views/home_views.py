@@ -68,6 +68,7 @@ def registration_view(request):
         if form.is_valid():
 
             user = User.objects.create_user(username=form.cleaned_data.get('mail_address'))
+            user.email = form.cleaned_data.get('mail_address')
             user.set_password(form.cleaned_data.get('password'))
             user.first_name = form.cleaned_data.get('first_name')
             user.last_name = form.cleaned_data.get('last_name')
