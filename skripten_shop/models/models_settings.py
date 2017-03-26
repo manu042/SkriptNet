@@ -5,7 +5,7 @@ class CurrentSemester(models.Model):
     """
     Dieses Model speichert das aktuelle Semester
     """
-    current_semester = models.CharField(max_length=20)
+    current_semester = models.CharField(max_length=20, verbose_name='Aktuelles Semester')
 
 
 class ShopSettings(models.Model):
