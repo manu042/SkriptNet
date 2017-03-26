@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if error_message %}
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {% if success_message %}
+        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:ausgabe' %}">
+        <div class="container">
+            <div class="alert alert-success">
+                <strong>{{ success_message }}</strong>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="container">
+
+            <div class="panel panel-warning">
+                <div class="panel-heading">Legic Aktualisierung</div>
+                <div class="panel-body">
+
+                    <p>Hier kann dem Studenten eine neue Legic-ID zugewiesen werden.</p>
+                    <br>
+
+                    <form action="" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+
+                        <input class="btn btn-primary" type="submit" name="search" value="Speichern">
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

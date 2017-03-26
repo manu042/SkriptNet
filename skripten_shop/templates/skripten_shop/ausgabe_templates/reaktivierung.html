@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+
+        {% if success_message %}
+            <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:ausgabe' %}">
+            <div class="container">
+                <div class="alert alert-success">
+                    <strong>{{ success_message }}</strong>
+                </div>
+            </div>
+        {% else %}
+
+            <div class="panel panel-danger">
+                <div class="panel-heading">Reaktivierung</div>
+                <div class="panel-body">
+
+                    <p>Bitte Mitgliedsbeitrag in höhe von 3€ kassieren.</p>
+                    <br>
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Name:</th>
+                            <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email Adresse:</th>
+                            <td>{{ student.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Mitglied seit:</th>
+                            <td>{{ student.begin_membership }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                    <form action="" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input class="btn btn-success" type="submit" value="Bezahlt">
+                    </form>
+
+                </div>
+            </div>
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="panel panel-success">
+            <div class="panel-heading">Skripten Ausgabe</div>
+            <div class="panel-body">
+
+                <form action="" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </form>
+
+                {{ articles }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

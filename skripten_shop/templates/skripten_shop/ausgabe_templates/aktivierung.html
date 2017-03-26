@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if error_message %}
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if success_message %}
+        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:ausgabe' %}">
+        <div class="container">
+            <div class="alert alert-success">
+                <strong>{{ success_message }}</strong>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="container">
+
+            <div class="panel panel-warning">
+                <div class="panel-heading">Aktivierung</div>
+                <div class="panel-body">
+
+                    <h4>Es wurde kein Student mit dieser Legic ID gefunden!</h4>
+
+                    <a class="btn btn-info" role="button" href="{% url 'skripten-shop:newlegic' %}">
+                        Neuer Studentenausweis?</a>
+                    <br>
+                    <br>
+                    <form action="" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+
+                        {% if search %}
+                            <input class="btn btn-primary" type="submit" name="search" value="Suchen">
+                        {% endif %}
+                    </form>
+
+
+                    {% if students %}
+                        <br>
+                        <p>Student Auswählen</p>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% for student in students %}
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optradio" value="{{ student.user.id }}">
+                                        {{ student.user.first_name }} {{ student.user.last_name }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            <input class="btn btn-primary" type="submit" name="save" value="Speichern">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}

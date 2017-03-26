@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container" id="error-message"></div>
+
+    <div class="container">
+        <table class="table table-striped add-to-cart">
+            <thead>
+            <tr>
+                <th>Skriptnummer</th>
+                <th>Skriptname</th>
+                <th>Professor</th>
+                <th>Verwender</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+                {% if article.skript %}
+
+                    <tr>
+                        <td>{{ article.skript.artikel_nummer }}</td>
+                        <td>{{ article.skript.name }}</td>
+                        <td>{{ article.skript.author }}</td>
+                        <td>
+                            {% for verwender in article.skript.users.all %}
+                                <li>{{ verwender }}</li>
+                            {% endfor %}
+                        </td>
+                        <td data-val="{{ article.id }}">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-primary btn-sm" type="submit">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <table class="table table-striped add-to-cart">
+            <thead>
+            <tr>
+                <th>Paketnummer</th>
+                <th>Paketname</th>
+                <th>Skripte</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+                {% if article.paket %}
+
+                    <tr>
+                        <td>{{ article.paket.artikel_nummer }}</td>
+                        <td>{{ article.paket.name }}</td>
+                        <td>
+                            {% for skript in article.paket.skripte.all %}
+                                <li>{{ skript }}</li>
+                            {% endfor %}
+                        </td>
+                        <td data-val="{{ article.id }}">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-primary btn-sm addtocart" type="submit"
+                                        title="In den Warenkorb">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'shop/js/ajax_shop.js' %}"></script>
+{% endblock %}

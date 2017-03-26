@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Akutelles Semester</div>
+            <div class="panel-body">
+
+                <h3><p>{{ current_semester.current_semester }}</p></h3>
+                <br>
+
+
+                <!-- Trigger the modal with a button -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                    Beginne neues Semsester
+                </button>
+
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Beginne neues Semester</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h4><span>Diese Funktion löst folgende Ereignisse aus</span></h4>
+
+                                <ul>
+                                    <li>Löscht ...</li>
+                                    <li>Löscht ...</li>
+                                </ul>
+
+                                <form action="" method="post">
+                                    <input class="btn btn-danger btn-sm" type="submit" name="start_new_semester"
+                                           value="Neues Semester Starten">
+                                </form>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Skriptenshop Einstellungen</div>
+            <div class="panel-body">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    {{ form| crispy }}
+
+                    <input class="btn btn-danger" type="submit" name="save_settings" value="Speichern">
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

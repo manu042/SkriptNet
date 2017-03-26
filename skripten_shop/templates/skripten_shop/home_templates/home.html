@@ -3,10 +3,20 @@
 
 {% block content %}
 
-<div class="container">
-    <p>
-    Hier entsteht die Hauptseite
-    </p>
-</div>
+    <div class="container">
+        <p>
+            Hier entsteht die Hauptseite
+        </p>
+
+        <a href="{% url 'skripten-shop:skripten-list' %}">Shop</a>
+        <br>
+        <a href="{% url 'skripten-shop:warenkorb' %}">Warenkorb</a>
+        <br>
+        <a href="{% url 'skripten-shop:bestellung' %}">Bestellung</a>
+        <br>
+        <a href="{% url 'skripten-shop:ausgabe' %}">Ausgabe</a>
+        <br>
+        <a href="{% url 'skripten-shop:shop-settings' %}">Settings</a>
+    </div>
 
 {% endblock %}

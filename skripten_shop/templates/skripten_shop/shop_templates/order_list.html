@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if articles == False %}
+
+        <div class="container">
+            <div class="panel panel-warning">
+                <div class="panel-heading">Bestellung</div>
+                <div class="panel-body">
+                    <span>Es wurden keine Artikel bestellt</span>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="container">
+            <div class="panel panel-success">
+                <div class="panel-heading">Bestellübersicht</div>
+                <div class="panel-body">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Artieklnummer</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Bestellt</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for articel in articles %}
+                            <tr>
+                                <td>{{ articel.artikel.artikel_nummer }}</td>
+                                <td>{{ articel.artikel.name }}</td>
+                                <td>{{ articel.get_status_display }}</td>
+                                <td>{{ articel.date_order_placed|date:"d M Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
