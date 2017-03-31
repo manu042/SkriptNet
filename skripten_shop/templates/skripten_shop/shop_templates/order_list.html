@@ -32,8 +32,8 @@
                         <tbody>
                         {% for articel in articles %}
                             <tr>
-                                <td>{{ articel.artikel.artikel_nummer }}</td>
-                                <td>{{ articel.artikel.name }}</td>
+                                <td>{{ articel.article.article_number }}</td>
+                                <td>{{ articel.article.name }}</td>
                                 <td>{{ articel.get_status_display }}</td>
                                 <td>{{ articel.date_order_placed|date:"d M Y" }}</td>
                             </tr>

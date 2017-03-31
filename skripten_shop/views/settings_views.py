@@ -12,6 +12,8 @@ def shop_settings(request):
 
     if request.method == 'GET':
         form = SettingsForm(instance=shop_settings)
+    else:
+        form = SettingsForm()
 
     context = {
         'current_semester': current_semester,

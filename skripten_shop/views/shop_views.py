@@ -34,18 +34,17 @@ def addtocart(request):
     article = get_object_or_404(Article, pk=artikle_id)
 
     if request.method == 'POST':
-        if ArticleInOrder.objects.filter(customer=customer, artikel=article):
+        if ArticleInOrder.objects.filter(customer=customer, article=article):
             context = {
                 "artikle_nr2": article.article_number
             }
-            print(article.article_number)
             return render(request, 'skripten_shop/shop_templates/error_message.html', context)
 
         else:
             try:
                 articleincart = ArticleInCart()
                 articleincart.customer = customer
-                articleincart.artikel = article
+                articleincart.article = article
                 articleincart.save()
             except IntegrityError:
                 # Falls sich der Artikel bereits im Warenkorb befindet wird eine Error Message mit der Artikel Nummer zurückgebeben
@@ -75,7 +74,7 @@ def cartView(request):
             for article_in_cart in articles_in_cart:
                 article_in_order = ArticleInOrder()
                 article_in_order.customer = article_in_cart.customer
-                article_in_order.artikel = article_in_cart.artikel
+                article_in_order.article = article_in_cart.article
                 article_in_order.status = "to_order"
                 article_in_order.save()
                 article_in_cart.delete()

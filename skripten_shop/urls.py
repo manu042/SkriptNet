@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^shop/$', views.skriptenshopview, name='skripten-list'),
     url(r'^warenkorb/$', views.cartView, name='warenkorb'),
     url(r'^bestellung/$', views.orderView, name='bestellung'),
-    url(r'ajax/addtocart/$', views.addtocart),
+    url(r'^ajax/addtocart/$', views.addtocart),
 
     # Ausgabe Urls
     url(r'^ausgabe/$', views.ausgabeview, name='ausgabe'),

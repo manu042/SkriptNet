@@ -21,7 +21,7 @@
                 {% if article.skript %}
 
                     <tr>
-                        <td>{{ article.skript.artikel_nummer }}</td>
+                        <td>{{ article.skript.article_number }}</td>
                         <td>{{ article.skript.name }}</td>
                         <td>{{ article.skript.author }}</td>
                         <td>
@@ -58,7 +58,7 @@
                 {% if article.paket %}
 
                     <tr>
-                        <td>{{ article.paket.artikel_nummer }}</td>
+                        <td>{{ article.paket.article_number }}</td>
                         <td>{{ article.paket.name }}</td>
                         <td>
                             {% for skript in article.paket.skripte.all %}
@@ -85,5 +85,5 @@
 
 
 {% block script %}
-    <script src="{% static 'shop/js/ajax_shop.js' %}"></script>
+    <script src="{% static 'skripten_shop/js/ajax_shop.js' %}"></script>
 {% endblock %}

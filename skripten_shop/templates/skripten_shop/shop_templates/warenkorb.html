@@ -48,8 +48,8 @@
                         <tbody>
                         {% for article in articles %}
                             <tr>
-                                <td>{{ article.artikel.artikel_nummer }}</td>
-                                <td>{{ article.artikel.name }}</td>
+                                <td>{{ article.article.article_number }}</td>
+                                <td>{{ article.article.name }}</td>
                                 <td>
                                     <form action="" method="post">
                                         {% csrf_token %}
