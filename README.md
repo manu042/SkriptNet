@@ -14,7 +14,7 @@
 5. Befehl "python manage.py migrate" ausführen
 
 # Projekt Struktur
-* [Google Drive]https://drive.google.com/drive/folders/0BwRnCXKlxFwISnRRLUVGQkRUQ2c)
+* [Google Drive](https://drive.google.com/drive/folders/0BwRnCXKlxFwISnRRLUVGQkRUQ2c)
 
 # Quellen
 * [Django documentation](https://docs.djangoproject.com/en/dev/)
