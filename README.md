@@ -13,6 +13,9 @@
 4. Befehl "python manage.py makemigrations" ausführen
 5. Befehl "python manage.py migrate" ausführen
 
+# Projekt Struktur
+* [Google Drive](https://docs.djangoproject.com/en/dev/)
+
 # Quellen
 * [Django documentation](https://docs.djangoproject.com/en/dev/)
 * [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
