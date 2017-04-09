@@ -2,8 +2,6 @@ from .models_users import *
 from .models_skripten import *
 from .models_settings import *
 from .models_warehouse import *
-from .models_shop import *
 
 __all__ = ['NewStudentRegistration', 'Student', 'BezahltStatus', 'Professor', 'CurrentSemester', 'ShopSettings',
-           'Article', 'Skript',
-           'Paket', 'ArticleInCart', 'ArticleInOrder']
+           'Article', 'Skript', 'Paket', ]

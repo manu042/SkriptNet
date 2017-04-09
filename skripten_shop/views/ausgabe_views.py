@@ -10,9 +10,6 @@ import hashlib
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
 from skripten_shop.models import Student, BezahltStatus
 from skripten_shop.models import CurrentSemester
-from skripten_shop.models import ArticleInOrder
-from skripten_shop.models import AritcleInStock
-from skripten_shop.models import ServedArticle
 
 
 @login_required
@@ -66,35 +63,14 @@ def ausgabe(request):
     # Hashwert der Legic-ID berechnen
     legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
     student = Student.objects.get(legic_id=legic_id_hash_value)
-    served_article = ServedArticle.objects.filter(student=student)
-
     if request.method == 'POST':
-
         selected_articels_id = request.POST.getlist('checks[]')
-
         for selected_articel_id in selected_articels_id:
-            article = AritcleInStock.objects.get(pk=selected_articel_id)
-            article.amount = article.amount - 1
-            article.save()
-
-            served_article = ServedArticle()
-            served_article.article = article.article
-            served_article.student = student
-            served_article.save()
-
-            if article.id == served_article.article.id:
-                pass
-
+            pass
         return redirect(reverse('skripten_shop:scan-legic'))
-
-    article_in_stock = AritcleInStock.objects.all()
-
     context = {
         'student': student,
-        'served_article': served_article,
-        'article_in_stock': article_in_stock,
     }
-
     return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
 
 
