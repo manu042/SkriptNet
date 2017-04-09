@@ -46,7 +46,7 @@ class NewStudentRegistration(models.Model):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    legic_id = models.CharField(max_length=50, blank=True)
+    legic_id = models.CharField(max_length=64, blank=True)
     birth_date = models.DateField(verbose_name='Geburtsdatum')
 
     class Meta:

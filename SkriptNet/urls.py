@@ -17,6 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
+from django.views.static import serve
+from django.contrib.auth.decorators import login_required
+
 urlpatterns = [
 
     url(r'^password_reset/$', auth_views.password_reset, name='password_reset'),
@@ -25,8 +28,15 @@ urlpatterns = [
         auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
-
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^captcha/', include('captcha.urls')),
     url(r'', include('skripten_shop.urls', namespace='skripten-shop')),
 ]
+from django.conf import settings
+from django.views.static import serve
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^docs/(?P<path>.*)$', serve, {'document_root': settings.DOCS_ROOT}),
+    ]

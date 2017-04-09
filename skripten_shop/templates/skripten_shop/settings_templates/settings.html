@@ -37,6 +37,7 @@
                                 </ul>
 
                                 <form action="" method="post">
+                                    {% csrf_token %}
                                     <input class="btn btn-danger btn-sm" type="submit" name="start_new_semester"
                                            value="Neues Semester Starten">
                                 </form>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+    <div class="container">
+        <table class="table table-striped add-to-cart">
+            <thead>
+            <tr>
+                <th>Skriptnummer</th>
+                <th>Skriptname</th>
+                <th>Professor</th>
+                <th>Menge im Lager</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in article_in_stock %}
+                <tr>
+                    <td>{{ article.article.article_number }}</td>
+                    <td>{{ article.article.name }}</td>
+                    <td>{{ article.article.skript.author }}</td>
+                    <td>{{ article.amount }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

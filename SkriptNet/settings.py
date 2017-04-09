@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # Django Apps
     'django.contrib.admin',
+    # https://docs.djangoproject.com/en/dev/ref/contrib/admin/admindocs/
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     # Third Party Apps
     'captcha',
     'crispy_forms',
+    # http://django-extensions.readthedocs.io/en/latest/graph_models.html
+    'django_extensions',
 
     # My Apps
     'skripten_shop'
@@ -132,6 +136,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, 'fixtures'),
+)
+
 LOGIN_URL = '/'
 
 
@@ -152,8 +160,10 @@ CAPTCHA_FONT_SIZE = 40
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'w00739ef.kasserver.com'
 EMAIL_HOST_PORT = '587'
-EMAIL_PORT='587'
+EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'm03dd7e2'
 EMAIL_HOST_PASSWORD = 'mCN3DrsFXfwqrrhe'
 DEFAULT_FROM_EMAIL = 'skripten@verteiler.cc'
+
+DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/html')

@@ -59,7 +59,8 @@ class UserRegisterForm(forms.Form):
     BIRTH_YEAR_CHOICES = sorted(range(current_year - 60, current_year - 14), reverse=True)
 
     mail_address = forms.EmailField(label='HM-Email', widget=forms.TextInput(
-        attrs={'class': 'form-control', 'type': 'email', 'name': 'email', 'placeholder': 'muster@hm.edu'}))
+        attrs={'class': 'form-control', 'type': 'email', 'name': 'email', 'placeholder': 'muster@hm.edu',
+               'autofocus': 'autofocus'}))
 
     first_name = forms.CharField(label='Vorname', widget=forms.TextInput(
         attrs={'class': 'form-control', 'name': 'first_name', 'placeholder': 'Vorname'}))

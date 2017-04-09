@@ -19,11 +19,16 @@ urlpatterns = [
     url(r'^ajax/addtocart/$', views.addtocart),
 
     # Ausgabe Urls
-    url(r'^ausgabe/$', views.ausgabeview, name='ausgabe'),
+    url(r'^scan_legic/$', views.scan_legic_view, name='scan-legic'),
+    url(r'^ausgabe/$', views.ausgabe, name='ausgabe'),
     url(r'^aktivierung/$', views.aktivierungsview, name='aktivierung'),
     url(r'^reaktivierung/$', views.reaktivierungsview, name='reaktivierung'),
     url(r'^newlegic/$', views.newlegicview, name='newlegic'),
 
     # Settings Urls
-    url(r'^settings/$', views.shop_settings, name='shop-settings'),
+    url(r'^settings/$', views.shop_settings_view, name='shop-settings'),
+
+    # Warehouse Urls
+    url(r'^lager/$', views.stock_overview, name='lager'),
+
 ]

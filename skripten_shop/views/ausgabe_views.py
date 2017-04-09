@@ -3,15 +3,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
+# Third party packages
+import hashlib
+
 # My Packages
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
 from skripten_shop.models import Student, BezahltStatus
 from skripten_shop.models import CurrentSemester
 from skripten_shop.models import ArticleInOrder
+from skripten_shop.models import AritcleInStock
+from skripten_shop.models import ServedArticle
 
 
 @login_required
-def ausgabeview(request):
+def scan_legic_view(request):
     """
     View für Skripten Ausgabe, zeigt beim Aufrufen eine Form zur Eingabe der Ledic ID
     """
@@ -25,8 +30,11 @@ def ausgabeview(request):
             request.session['current_legic'] = legic_id
 
             try:
+                # Hashwert der Legic-ID berechnen
+                legic_id_hash_value = hashlib.sha256(legic_id.encode('utf-8')).hexdigest()
+
                 # Liefert Student mit zugehöriger Legic ID zurück
-                student = Student.objects.get(legic_id=legic_id)
+                student = Student.objects.get(legic_id=legic_id_hash_value)
 
                 # Holt sich den letzeten BezahltStatus des Studenten und das aktuelle Semester
                 last_semester_paid = BezahltStatus.objects.filter(student=student).latest('date')
@@ -35,24 +43,9 @@ def ausgabeview(request):
                 # Prüft ob der Student in diesem Semester bereits bezahlt hat
                 # Falls nicht wird die Ausgabe weitergeleitet zur reaktivierungsview
                 if not last_semester_paid.semester == current_semester:
-                    return redirect(reverse('skripten_shop:aktivierung'))
+                    return redirect(reverse('skripten_shop:reaktivierung'))
                 else:
-                    try:
-                        # TODO Ausgabe überdenken
-
-                        articles = ArticleInOrder.objects.filter(customer=student.user)
-
-                        context = {
-                            'articles': articles,
-                        }
-
-                    except ArticleInOrder.DoesNotExist:
-
-                        context = {
-                            'error_message': 'Es existieren keine offenen Bestellungen',
-                        }
-
-                    return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+                    return redirect(reverse('skripten_shop:ausgabe'))
 
             # Falls kein Student mit dieser Legic-ID gefunden wurde
             except Student.DoesNotExist:
@@ -64,6 +57,42 @@ def ausgabeview(request):
 
     context = {
         'form': form
+    }
+
+    return render(request, 'skripten_shop/ausgabe_templates/scan_legic.html', context)
+
+
+def ausgabe(request):
+    # Hashwert der Legic-ID berechnen
+    legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    student = Student.objects.get(legic_id=legic_id_hash_value)
+    served_article = ServedArticle.objects.filter(student=student)
+
+    if request.method == 'POST':
+
+        selected_articels_id = request.POST.getlist('checks[]')
+
+        for selected_articel_id in selected_articels_id:
+            article = AritcleInStock.objects.get(pk=selected_articel_id)
+            article.amount = article.amount - 1
+            article.save()
+
+            served_article = ServedArticle()
+            served_article.article = article.article
+            served_article.student = student
+            served_article.save()
+
+            if article.id == served_article.article.id:
+                pass
+
+        return redirect(reverse('skripten_shop:scan-legic'))
+
+    article_in_stock = AritcleInStock.objects.all()
+
+    context = {
+        'student': student,
+        'served_article': served_article,
+        'article_in_stock': article_in_stock,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
@@ -78,7 +107,6 @@ def aktivierungsview(request):
 
     if request.method == 'POST':
         form = ActivateStudentForm(request.POST)
-        print(request.POST)
 
         # Wenn Button Suchen gedrückt wurde
         if 'search' in request.POST:
@@ -91,10 +119,10 @@ def aktivierungsview(request):
                 request.session['current_legic'] = legic_id
 
                 # Es werden all Studenten mit dem Geburtsdatum gefiltert und die Anzahl zurückgeliefert
-                quantity = Student.objects.filter(birth_date=birth_date).count()
+                quantity = Student.objects.filter(legic_id='').filter(birth_date=birth_date).count()
 
                 if quantity < 1:
-                    pass
+
                     context = {
                         'form': form,
                         'search': True,
@@ -103,7 +131,7 @@ def aktivierungsview(request):
                     return render(request, 'skripten_shop/ausgabe_templates/aktivierung.html', context)
                 else:
                     context = {
-                        'students': Student.objects.filter(birth_date=birth_date),
+                        'students': Student.objects.filter(legic_id='').filter(birth_date=birth_date),
                     }
                     return render(request, 'skripten_shop/ausgabe_templates/aktivierung.html', context)
 
@@ -112,8 +140,12 @@ def aktivierungsview(request):
             # User ID auslesen
             user_id = request.POST['optradio']
             student = Student.objects.get(user=user_id)
-            # Dem Studenten die Legic-ID aus dem Session Cookie zuordnen
-            student.legic_id = request.session['current_legic']
+
+            # Hashwert der Legic-ID berechnen
+            legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+
+            # Legic-ID als Hashwert speichern
+            student.legic_id = legic_id_hash_value
 
             # Das akutelle Semester aus der Datenbank auslesen
             current_semester = CurrentSemester.objects.get(pk=1)
@@ -151,7 +183,10 @@ def reaktivierungsview(request):
     # Auslesen der Legic-ID aus dem Session Cookie
     legic_id = request.session['current_legic']
 
-    student = Student.objects.get(legic_id=legic_id)
+    # Hashwert der Legic-ID berechnen
+    legic_id_hash_value = hashlib.sha256(legic_id.encode('utf-8')).hexdigest()
+
+    student = Student.objects.get(legic_id=legic_id_hash_value)
 
     if request.method == 'POST':
         paid = BezahltStatus()
@@ -189,7 +224,11 @@ def newlegicview(request):
 
             try:
                 student = Student.objects.get(user__email=email)
-                student.legic_id = new_legic_id
+
+                # Hashwert der Legic-ID berechnen
+                new_legic_id_hash_value = hashlib.sha256(new_legic_id.encode('utf-8')).hexdigest()
+
+                student.legic_id = new_legic_id_hash_value
                 student.save()
 
                 context = {
@@ -208,7 +247,7 @@ def newlegicview(request):
                 return render(request, 'skripten_shop/ausgabe_templates/newlegic.html', context)
 
     else:
-        form = NewLegicCardForm()
+        form = NewLegicCardForm({'email': '@hm.edu', 'new_legic_id': request.session['current_legic']})
 
     context = {
         'form': form,

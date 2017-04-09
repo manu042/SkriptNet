@@ -5,6 +5,7 @@ from django.contrib import admin
 from .models import Student, NewStudentRegistration, Paket, Article, ArticleInCart, ArticleInOrder, Professor, \
     BezahltStatus, Skript, CurrentSemester, ShopSettings
 from skripten_shop.forms import SkriptAdminForm
+from .models import ArticleToOrder, AritcleInStock, ServedArticle
 
 # Users
 # =======================================================================
@@ -47,3 +48,13 @@ admin.site.register(Paket)
 admin.site.register(Article)
 admin.site.register(ArticleInCart)
 admin.site.register(ArticleInOrder)
+
+# Lager
+# =======================================================================
+admin.site.register(AritcleInStock)
+admin.site.register(ArticleToOrder)
+
+# TODO: Löschen
+admin.site.register(CurrentSemester)
+admin.site.register(ShopSettings)
+admin.site.register(ServedArticle)
