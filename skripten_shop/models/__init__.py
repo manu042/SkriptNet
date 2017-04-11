@@ -6,4 +6,4 @@ from .models_shop import *
 
 __all__ = ['NewStudentRegistration', 'Student', 'BezahltStatus', 'Professor', 'CurrentSemester', 'ShopSettings',
            'Article', 'Skript',
-           'Paket', 'ArticleInCart', 'ArticleInOrder']
+           'Paket', 'ArticleInCart']

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="container">
+        <form action="" method="post" autocomplete="off">
+            <table class="table table-striped add-to-cart">
+                <thead>
+                <tr>
+                    <th>Skriptnummer</th>
+                    <th>Skriptname</th>
+                    <th>Menge</th>
+                    <th>Menge</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order_in_print in orders_in_print %}
+                    <tr>
+                        <td>{{ order_in_print.article.article_number }}</td>
+                        <td>{{ order_in_print.article }}</td>
+                        <td>{{ order_in_print.order_amount }}</td>
+                        <td>
+                            <label><input name="selected_articel[]" value="{{ order_in_print.article.id }}"
+                                          hidden></label>
+                            <label><input type="number" min="0" max="{{ order_in_print.order_amount }}"
+                                          name="selected_articel[]" value="0"></label>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="print_order" value="Bestellung einpflegen">
+        </form>
+    </div>
+
+{% endblock %}

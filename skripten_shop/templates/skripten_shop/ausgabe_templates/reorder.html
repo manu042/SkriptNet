@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+    <div class="container">
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>
+                        <div class="alert alert-danger">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <ul>
+            <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
+            <li>{{ student.user.email }}</li>
+            <li>{{ served_article.count }}</li>
+        </ul>
+
+        <ul>
+            {% for article in served_article %}
+                <li>{{ article.article.name }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if article_in_stock %}
+            <div class="container">
+                <form action="" method="post">
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th>Skriptnummer</th>
+                            <th>Skriptname</th>
+                            <th>Professor</th>
+                            <th>Verwender</th>
+                            <th>Lagerbestand</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in article_in_stock %}
+                            <tr>
+                                <td>{{ article.article.article_number }}</td>
+                                <td>{{ article.article.name }}</td>
+                                <td>{{ article.article.skript.author }}</td>
+                                <td>
+                                    {% for verwender in article.article.skript.users.all %}
+                                        <li>{{ verwender }}</li>
+                                    {% endfor %}
+                                </td>
+
+                                {% if article.amount < 1 %}
+                                    <td style="color: red; font-weight: bold">{{ article.amount }}</td>
+                                {% else %}
+                                    <td>{{ article.amount }}</td>
+                                {% endif %}
+
+                                <td>
+                                    <div class="checkbox">
+                                        {% if article.amount < 1 %}
+                                            <label><input type="checkbox" name="selected_articel[]"
+                                                          value="{{ article.id }}"
+                                                          disabled=""></label>
+                                        {% else %}
+                                            <label><input type="checkbox" name="selected_articel[]"
+                                                          value="{{ article.id }}"></label>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% csrf_token %}
+                    <input class="btn btn-success" type="submit" name="nachbestellen" value="Nachbestellen">
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

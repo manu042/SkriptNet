@@ -8,7 +8,6 @@ import re
 import datetime
 from captcha.fields import CaptchaField
 
-
 User = get_user_model()
 
 
@@ -19,11 +18,12 @@ class UserLoginForm(forms.Form):
     """
     username = forms.EmailField(label="HM-E-Mail-Adresse", max_length=30,
                                 widget=forms.TextInput(
-                                    attrs={'class': 'form-control', 'name': 'email', 'placeholder': 'HM-Email',
-                                           'autofocus': ''}))
+                                    attrs={'class': 'form-control', 'name': 'email', 'placeholder': 'HM-Email'}))
+    # TODO: 'autofocus': 'autofocus' zu username hinzufügen
     password = forms.CharField(label="Password", max_length=30,
                                widget=forms.PasswordInput(
-                                   attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort'}))
+                                   attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort',
+                                          'autofocus': 'autofocus'}))
 
     def clean(self, *args, **kwargs):
         clean_data = super(UserLoginForm, self).clean()
@@ -76,7 +76,7 @@ class UserRegisterForm(forms.Form):
 
     birth_date = forms.DateField(label="Geburtsdatum", widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES))
 
-    terms = forms.BooleanField(label="Allgemeines & Datenschutz gelesen",widget=forms.CheckboxInput())
+    terms = forms.BooleanField(label="Allgemeines & Datenschutz gelesen", widget=forms.CheckboxInput())
 
     captcha = CaptchaField()
 
@@ -108,7 +108,6 @@ class UserRegisterForm(forms.Form):
         password = self.cleaned_data.get("password")
         validate_password(password)
         return password
-
 
     def clean_password_confirm(self):
         """

@@ -2,6 +2,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib import messages
+from django.db import IntegrityError
 
 # Third party packages
 import hashlib
@@ -10,9 +12,8 @@ import hashlib
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
 from skripten_shop.models import Student, BezahltStatus
 from skripten_shop.models import CurrentSemester
-from skripten_shop.models import ArticleInOrder
 from skripten_shop.models import AritcleInStock
-from skripten_shop.models import ServedArticle
+from skripten_shop.models import Order, Article
 
 
 @login_required
@@ -62,40 +63,80 @@ def scan_legic_view(request):
     return render(request, 'skripten_shop/ausgabe_templates/scan_legic.html', context)
 
 
-def ausgabe(request):
+def ausgabeview(request):
     # Hashwert der Legic-ID berechnen
     legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
     student = Student.objects.get(legic_id=legic_id_hash_value)
-    served_article = ServedArticle.objects.filter(student=student)
+    student_order = Order.objects.filter(student=student)
+
+    articles = Article.objects.filter(active=True)
 
     if request.method == 'POST':
 
-        selected_articels_id = request.POST.getlist('checks[]')
+        selected_articels_id = request.POST.getlist('selected_articel[]')
 
         for selected_articel_id in selected_articels_id:
-            article = AritcleInStock.objects.get(pk=selected_articel_id)
-            article.amount = article.amount - 1
-            article.save()
+            try:
+                article_in_stock = AritcleInStock.objects.get(pk=selected_articel_id)
+                article_in_stock.amount = article_in_stock.amount - 1
 
-            served_article = ServedArticle()
-            served_article.article = article.article
-            served_article.student = student
-            served_article.save()
+                served_article = Order(student=student, status=Order.DELIVERD_STATUS)
+                served_article.article = article_in_stock.article
+                served_article.save()
+                article_in_stock.save()
 
-            if article.id == served_article.article.id:
-                pass
+            except IntegrityError:
+                messages.error(request, 'Das Skript %s kann nicht ausgegeben werden!' % Article.objects.get(
+                    pk=selected_articel_id).name)
+
+        if messages:
+            context = {
+                'student': student,
+                'student_order': student_order,
+                'articles': articles,
+            }
+
+            return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
 
         return redirect(reverse('skripten_shop:scan-legic'))
+
+    articles = Article.objects.filter(active=True)
+
+    context = {
+        'student': student,
+        'student_order': student_order,
+        'articles': articles,
+    }
+
+    return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+
+
+def reorderview(request):
+    # Hashwert der Legic-ID berechnen
+    legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    student = Student.objects.get(legic_id=legic_id_hash_value)
+
+    if request.method == 'POST':
+
+        selected_articels_id = request.POST.getlist('selected_articel[]')
+
+        for selected_articel_id in selected_articels_id:
+            try:
+                article = Article.objects.get(pk=selected_articel_id)
+                order = Order(article=article, student=student)
+                order.save()
+            except IntegrityError:
+                messages.error(request, 'Das Skript %s kann nicht bestellt werden!' % Article.objects.get(
+                    pk=selected_articel_id).name)
 
     article_in_stock = AritcleInStock.objects.all()
 
     context = {
         'student': student,
-        'served_article': served_article,
         'article_in_stock': article_in_stock,
     }
 
-    return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+    return render(request, 'skripten_shop/ausgabe_templates/reorder.html', context)
 
 
 @login_required

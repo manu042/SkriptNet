@@ -20,7 +20,8 @@ urlpatterns = [
 
     # Ausgabe Urls
     url(r'^scan_legic/$', views.scan_legic_view, name='scan-legic'),
-    url(r'^ausgabe/$', views.ausgabe, name='ausgabe'),
+    url(r'^ausgabe/$', views.ausgabeview, name='ausgabe'),
+    url(r'^reorder/$', views.reorderview, name='reorder'),
     url(r'^aktivierung/$', views.aktivierungsview, name='aktivierung'),
     url(r'^reaktivierung/$', views.reaktivierungsview, name='reaktivierung'),
     url(r'^newlegic/$', views.newlegicview, name='newlegic'),
@@ -30,5 +31,6 @@ urlpatterns = [
 
     # Warehouse Urls
     url(r'^lager/$', views.stock_overview, name='lager'),
-
+    url(r'^lager/reorder/$', views.show_reorder_view, name='reorder_overview'),
+    url(r'^lager/enter_reorder/$', views.enter_reorder_view, name='enter_reorder'),
 ]

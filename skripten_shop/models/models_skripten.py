@@ -78,6 +78,7 @@ class ArticleInCart(models.Model):
         unique_together = (("customer", "article"),)
 
 
+# TODO: löschen siehen class Order
 class ArticleInOrder(models.Model):
     """
     Das Model repräsentiert die Bestellung eines Skripts oder Pakets eines Studenten

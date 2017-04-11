@@ -21,20 +21,3 @@ class AritcleInStock(models.Model):
 
     def __str__(self):
         return self.article.name
-
-
-class ArticleToOrder(models.Model):
-    """
-    Das Model speichert die Menge eines Skripts, die Nachbestellt werden muss
-    """
-
-    artickel_in_stock = models.OneToOneField(AritcleInStock, unique=True, on_delete=models.CASCADE,
-                                             verbose_name='Artikel')
-    amount = models.SmallIntegerField()
-
-    class Meta:
-        verbose_name = 'Artikel zu Bestellen'
-        verbose_name_plural = 'Artikel zu Bestellen'
-
-    def __str__(self):
-        return self.artickel_in_stock.article.name
