@@ -1,6 +1,6 @@
 # Django Packages
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from django.contrib import messages
 from django.db import IntegrityError
@@ -10,13 +10,15 @@ import hashlib
 
 # My Packages
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
-from skripten_shop.models import Student, BezahltStatus
-from skripten_shop.models import CurrentSemester
-from skripten_shop.models import AritcleInStock
-from skripten_shop.models import Order, Article
+from skripten_shop.models import Article, Order, Student, BezahltStatus, CurrentSemester, AritcleInStock
+from skripten_shop.utilities import has_permisson_skriptenausgabe
+from skripten_shop.utilities import ShopSettingsObject
 
+
+# TODO: legic id aus session löschen (an geeigneter stelle)
 
 @login_required
+@user_passes_test(has_permisson_skriptenausgabe)
 def scan_legic_view(request):
     """
     View für Skripten Ausgabe, zeigt beim Aufrufen eine Form zur Eingabe der Ledic ID
@@ -63,13 +65,13 @@ def scan_legic_view(request):
     return render(request, 'skripten_shop/ausgabe_templates/scan_legic.html', context)
 
 
-def ausgabeview(request):
+@login_required
+@user_passes_test(has_permisson_skriptenausgabe)
+def ausgabe_view(request):
     # Hashwert der Legic-ID berechnen
     legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
     student = Student.objects.get(legic_id=legic_id_hash_value)
     student_order = Order.objects.filter(student=student)
-
-    articles = Article.objects.filter(active=True)
 
     if request.method == 'POST':
 
@@ -78,7 +80,7 @@ def ausgabeview(request):
         for selected_articel_id in selected_articels_id:
             try:
                 article_in_stock = AritcleInStock.objects.get(pk=selected_articel_id)
-                article_in_stock.amount = article_in_stock.amount - 1
+                article_in_stock.amount -= 1
 
                 served_article = Order(student=student, status=Order.DELIVERD_STATUS)
                 served_article.article = article_in_stock.article
@@ -87,31 +89,70 @@ def ausgabeview(request):
 
             except IntegrityError:
                 messages.error(request, 'Das Skript %s kann nicht ausgegeben werden!' % Article.objects.get(
-                    pk=selected_articel_id).name)
+                    pk=selected_articel_id).article_number)
 
         if messages:
-            context = {
-                'student': student,
-                'student_order': student_order,
-                'articles': articles,
-            }
-
-            return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+            return redirect(reverse('skripten_shop:ausgabe'))
 
         return redirect(reverse('skripten_shop:scan-legic'))
 
+    # Requst method Get
     articles = Article.objects.filter(active=True)
+
+    stock_infos = []
+    for article in articles:
+
+        try:
+            amount_available = AritcleInStock.objects.get(article=article).amount
+        except AritcleInStock.DoesNotExist:
+            amount_available = 0
+
+        amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=article).count()
+        stock_infos.append({
+            'article': article,
+            'amount_available': amount_available,
+            'amount_reserved': amount_reserved,
+        })
 
     context = {
         'student': student,
         'student_order': student_order,
-        'articles': articles,
+        'stock_infos': stock_infos,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
 
 
-def reorderview(request):
+@login_required
+@user_passes_test(has_permisson_skriptenausgabe)
+def individual_assistance_view(request):
+    # Hashwert der Legic-ID berechnen
+    legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    student = Student.objects.get(legic_id=legic_id_hash_value)
+    student_order = Order.objects.filter(student=student)
+
+    if request.method == 'POST':
+
+        selected_orders_id = request.POST.getlist('selected_reserved[]')
+
+        for selected_order_id in selected_orders_id:
+            order = Order.objects.get(pk=selected_order_id)
+            order.status = Order.DELIVERD_STATUS
+            order.save()
+
+    student_order = Order.objects.filter(student=student)
+
+    context = {
+        'student': student,
+        'student_order': student_order,
+    }
+
+    return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
+
+
+@login_required
+@user_passes_test(has_permisson_skriptenausgabe)
+def reorder_view(request):
     # Hashwert der Legic-ID berechnen
     legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
     student = Student.objects.get(legic_id=legic_id_hash_value)
@@ -127,24 +168,24 @@ def reorderview(request):
                 order.save()
             except IntegrityError:
                 messages.error(request, 'Das Skript %s kann nicht bestellt werden!' % Article.objects.get(
-                    pk=selected_articel_id).name)
+                    pk=selected_articel_id).article_number)
 
-    article_in_stock = AritcleInStock.objects.all()
+    articles = Article.objects.filter(active=True)
 
     context = {
         'student': student,
-        'article_in_stock': article_in_stock,
+        'articles': articles,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/reorder.html', context)
 
 
 @login_required
-def aktivierungsview(request):
+@user_passes_test(has_permisson_skriptenausgabe)
+def aktivierungs_view(request):
     """
     View zum Aktivieren eines Studenten, d.h. die Legic ID wird mit einem Account verknüpft
     """
-    current_semester = CurrentSemester.objects.get(pk=1)
 
     if request.method == 'POST':
         form = ActivateStudentForm(request.POST)
@@ -173,6 +214,7 @@ def aktivierungsview(request):
                 else:
                     context = {
                         'students': Student.objects.filter(legic_id='').filter(birth_date=birth_date),
+                        'birth_date': birth_date,
                     }
                     return render(request, 'skripten_shop/ausgabe_templates/aktivierung.html', context)
 
@@ -188,11 +230,9 @@ def aktivierungsview(request):
             # Legic-ID als Hashwert speichern
             student.legic_id = legic_id_hash_value
 
-            # Das akutelle Semester aus der Datenbank auslesen
-            current_semester = CurrentSemester.objects.get(pk=1)
             bezahlt_status = BezahltStatus()
             # Dem Studenten einen BezahltStatus für das aktuelle Semester zuordnen
-            bezahlt_status.semester = current_semester.current_semester
+            bezahlt_status.semester = ShopSettingsObject.current_semester_is()
             bezahlt_status.paid = True
             bezahlt_status.student = student
             # Objekete speichern
@@ -217,7 +257,8 @@ def aktivierungsview(request):
 
 
 @login_required
-def reaktivierungsview(request):
+@user_passes_test(has_permisson_skriptenausgabe)
+def reaktivierungs_view(request):
     """
     View zum kassieren des Mitgliedsbeitrags für das laufende Semester
     """
@@ -251,7 +292,8 @@ def reaktivierungsview(request):
 
 
 @login_required
-def newlegicview(request):
+@user_passes_test(has_permisson_skriptenausgabe)
+def newlegic_view(request):
     """
     View zum aktualisieren der Legic-ID
     """

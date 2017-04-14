@@ -1,12 +1,14 @@
 # Django packages
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 
 # My packages
-from skripten_shop.models import Skript, Article, ArticleInCart, ArticleInOrder
+from skripten_shop.models import Skript, Article, ArticleInCart, Order
 
 
+@login_required
 def skriptenshopview(request):
     """
     View zur Darstellung des Shops
@@ -20,12 +22,13 @@ def skriptenshopview(request):
     return render(request, 'skripten_shop/shop_templates/skripten_list.html', context)
 
 
+@login_required
 def addtocart(request):
     """
     Hilfsfunktion, wird mittels ajax geladen
     """
     # User der den Request angeforder hat
-    customer = request.user
+    student = request.user
 
     # Ajax übergibt die ID des Artikels
     artikle_id = request.POST.get('artikel_id')
@@ -34,7 +37,7 @@ def addtocart(request):
     article = get_object_or_404(Article, pk=artikle_id)
 
     if request.method == 'POST':
-        if ArticleInOrder.objects.filter(customer=customer, article=article):
+        if Order.objects.filter(student=student, article=article):
             context = {
                 "artikle_nr2": article.article_number
             }
@@ -43,7 +46,7 @@ def addtocart(request):
         else:
             try:
                 articleincart = ArticleInCart()
-                articleincart.customer = customer
+                articleincart.customer = student
                 articleincart.article = article
                 articleincart.save()
             except IntegrityError:
@@ -57,6 +60,7 @@ def addtocart(request):
     return HttpResponse()
 
 
+@login_required
 def cartView(request):
     """
     Diese View stellt den Warenkorb eines Studenten dar
@@ -72,8 +76,8 @@ def cartView(request):
         if 'bestellen' in request.POST:
             articles_in_cart = ArticleInCart.objects.filter(customer=customer)
             for article_in_cart in articles_in_cart:
-                article_in_order = ArticleInOrder()
-                article_in_order.customer = article_in_cart.customer
+                article_in_order = Order()
+                article_in_order.student = article_in_cart.customer
                 article_in_order.article = article_in_cart.article
                 article_in_order.status = "to_order"
                 article_in_order.save()
@@ -108,13 +112,14 @@ def cartView(request):
     return render(request, 'skripten_shop/shop_templates/warenkorb.html', context)
 
 
+@login_required
 def orderView(request):
     """
     Diese View stellt die Bestellung eines Studenten dar
     """
 
-    customer = request.user
-    articles = ArticleInOrder.objects.filter(customer=customer)
+    student = request.user
+    articles = Order.objects.filter(student=student)
 
     if not articles:
         articles = False

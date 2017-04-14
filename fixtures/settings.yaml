@@ -1,0 +1,7 @@
+- model: skripten_shop.currentsemester
+  pk: 1
+  fields: {current_semester: SS 2017}
+- model: skripten_shop.shopsettings
+  pk: 1
+  fields: {state: false, max_article: '10', days_reserved: '10', info_text: Hier entsteht
+      der Skriptenshop}

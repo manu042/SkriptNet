@@ -21,7 +21,6 @@
         <ul>
             <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
             <li>{{ student.user.email }}</li>
-            <li>{{ student_order.count }}</li>
         </ul>
 
         {% if student_order %}
@@ -47,50 +46,53 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    <a href="{% url 'skripten_shop:individualbetreuung' %}" class="btn btn-info" role="button">Individualbetreuung</a>
                 </div>
             </div>
         {% endif %}
 
-        {% if articles %}
+        {% if stock_infos %}
             <form action="" method="post">
                 <table class="table table-striped" id="article-table">
                     <thead>
                     <tr>
-                        <th>Skriptnummer</th>
+                        <th>Skript-Nr.</th>
                         <th>Skriptname</th>
-                        <th>Professor</th>
-                        <th>Verwender</th>
-                        <th>Lagerbestand</th>
+                        <th>Autor</th>
+                        <th>Studiengruppe</th>
+                        <th>Gesamtmenge</th>
+                        <th>Frei</th>
+                        <th>Fach-Nr.</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for article in articles %}
+                    {% for stock_info in stock_infos %}
                         <tr>
-                            <td>{{ article.article_number }}</td>
-                            <td>{{ article.name }}</td>
-                            <td>{{ article.skript.author }}</td>
+                            <td>{{ stock_info.article.article_number }}</td>
+                            <td>{{ stock_info.article.name }}</td>
+                            <td>{{ stock_info.article.skript.author }}</td>
                             <td>
-                                {% for verwender in article.skript.users.all %}
-                                    <li>{{ verwender }}</li>
+                                {% for studygroup in stock_info.article.skript.studygroup.all %}
+                                    <li>{{ studygroup }}</li>
                                 {% endfor %}
                             </td>
-
-                            {% if article.aritcleinstock.amount < 1 %}
-                                <td style="color: red; font-weight: bold">{{ article.amount }}</td>
-                                <label><input type="checkbox" name="selected_articel[]"
-                                              value="{{ article.id }}"
-                                              disabled=""></label>
+                            <td>{{ stock_info.amount_available|add:stock_info.amount_reserved }}</td>
+                            {% if stock_info.amount_available < 1 %}
+                                <td style="color: red; font-weight: bold">{{ stock_info.amount_available }}</td>
                             {% else %}
-                                <td>{{ article.aritcleinstock.amount }}</td>
+                                <td>{{ stock_info.amount_available }}</td>
                             {% endif %}
-
+                            <td>{{ stock_info.article.shelf_number }}</td>
                             <td>
                                 <div class="checkbox">
-                                    {% if article.amount < 1 %}
+                                    {% if stock_info.amount_available < 1 %}
+                                        <label><input type="checkbox" disabled></label>
                                     {% else %}
-                                        <label><input type="checkbox" name="selected_articel[]"
-                                                      value="{{ article.id }}"></label>
+                                        <label>
+                                            <input type="checkbox" name="selected_articel[]"
+                                                   value="{{ stock_info.article.id }}">
+                                        </label>
                                     {% endif %}
                                 </div>
                             </td>

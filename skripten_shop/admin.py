@@ -2,10 +2,10 @@
 from django.contrib import admin
 
 # My Packages
-from .models import Student, NewStudentRegistration, Paket, Article, ArticleInCart, ArticleInOrder, Professor, \
-    BezahltStatus, Skript, CurrentSemester, ShopSettings
+from .models import Student, NewStudentRegistration, Paket, Article, ArticleInCart, Professor, \
+    BezahltStatus, Skript, ShopSettings
 from skripten_shop.forms import SkriptAdminForm
-from .models import AritcleInStock, Order
+from .models import AritcleInStock, Order, StudyGroup
 
 # Users
 # =======================================================================
@@ -15,7 +15,7 @@ class SkriptAdmin(admin.ModelAdmin):
     """
     nifty unobtrusive JavaScript “filter” für MultiToManyField
     """
-    filter_horizontal = ('users',)
+    filter_horizontal = ('studygroup',)
     form = SkriptAdminForm
 
 class SkriptInline(admin.StackedInline):
@@ -41,19 +41,13 @@ admin.site.register(Skript, SkriptAdmin)
 admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(NewStudentRegistration)
-
-# Skripten
-# =======================================================================
 admin.site.register(Paket)
 admin.site.register(Article)
 admin.site.register(ArticleInCart)
-admin.site.register(ArticleInOrder)
-
-# Lager
-# =======================================================================
+admin.site.register(StudyGroup)
 admin.site.register(AritcleInStock)
 
 # TODO: Löschen
-admin.site.register(CurrentSemester)
 admin.site.register(ShopSettings)
 admin.site.register(Order)
+

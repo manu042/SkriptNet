@@ -8,6 +8,20 @@ from .models_skripten import Article
 from .models_users import Student
 
 
+class ArticleInCart(models.Model):
+    """
+    Das Model repräsentiert einen Artikel im Warenkorb eines Studenten
+    """
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_added_to_cart = models.DateTimeField(default=timezone.now, verbose_name='Hinzugefügt am')
+
+    class Meta:
+        verbose_name = 'Artikel in Warenkorb'
+        verbose_name_plural = 'Artikel in Warenkorb'
+        unique_together = (("article", "student"),)
+
+
 class Order(models.Model):
     """
     Auftrag

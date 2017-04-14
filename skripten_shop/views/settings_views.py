@@ -1,11 +1,15 @@
 # Django packages
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # My packages
 from skripten_shop.models import CurrentSemester, ShopSettings
 from skripten_shop.forms import SettingsForm
+from skripten_shop.utilities import has_permisson_skriptenadmin
 
 
+@login_required
+@user_passes_test(has_permisson_skriptenadmin)
 def shop_settings_view(request):
     current_semester = CurrentSemester.objects.get(pk=1)
     shop_settings = ShopSettings.objects.get(pk=1)
@@ -24,6 +28,7 @@ def shop_settings_view(request):
                 shop_settings.state = form.cleaned_data.get('state')
                 shop_settings.max_article = form.cleaned_data.get('max_article')
                 shop_settings.days_reserved = form.cleaned_data.get('days_reserved')
+                shop_settings.info_text = form.cleaned_data.get('info_text')
                 shop_settings.save()
 
     context = {

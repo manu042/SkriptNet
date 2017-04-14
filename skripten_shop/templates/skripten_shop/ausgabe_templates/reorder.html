@@ -6,7 +6,6 @@
 
 
     <div class="container">
-
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -22,7 +21,6 @@
         <ul>
             <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
             <li>{{ student.user.email }}</li>
-            <li>{{ served_article.count }}</li>
         </ul>
 
         <ul>
@@ -31,48 +29,35 @@
             {% endfor %}
         </ul>
 
-        {% if article_in_stock %}
+        {% if articles %}
             <div class="container">
                 <form action="" method="post">
                     <table class="table table-striped" id="article-table">
                         <thead>
                         <tr>
-                            <th>Skriptnummer</th>
+                            <th>Skript-Nr.</th>
                             <th>Skriptname</th>
-                            <th>Professor</th>
-                            <th>Verwender</th>
-                            <th>Lagerbestand</th>
+                            <th>Autor</th>
+                            <th>Studiengruppe</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for article in article_in_stock %}
+                        {% for article in articles %}
                             <tr>
-                                <td>{{ article.article.article_number }}</td>
-                                <td>{{ article.article.name }}</td>
-                                <td>{{ article.article.skript.author }}</td>
+                                <td>{{ article.article_number }}</td>
+                                <td>{{ article.name }}</td>
+                                <td>{{ article.skript.author }}</td>
                                 <td>
-                                    {% for verwender in article.article.skript.users.all %}
-                                        <li>{{ verwender }}</li>
+                                    {% for studygroup in article.skript.studygroup.all %}
+                                        <li>{{ studygroup }}</li>
                                     {% endfor %}
                                 </td>
-
-                                {% if article.amount < 1 %}
-                                    <td style="color: red; font-weight: bold">{{ article.amount }}</td>
-                                {% else %}
-                                    <td>{{ article.amount }}</td>
-                                {% endif %}
-
                                 <td>
                                     <div class="checkbox">
-                                        {% if article.amount < 1 %}
-                                            <label><input type="checkbox" name="selected_articel[]"
-                                                          value="{{ article.id }}"
-                                                          disabled=""></label>
-                                        {% else %}
-                                            <label><input type="checkbox" name="selected_articel[]"
-                                                          value="{{ article.id }}"></label>
-                                        {% endif %}
+                                        <label>
+                                            <input type="checkbox" name="selected_articel[]" value="{{ article.id }}">
+                                        </label>
                                     </div>
                                 </td>
                             </tr>

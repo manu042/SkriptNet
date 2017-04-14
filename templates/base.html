@@ -1,4 +1,5 @@
 {% load static %}
+{% load navbar_permission_tag %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,10 +29,41 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'skripten_shop:home' %}">Skripten Shop FS04</a>
+            <a class="navbar-brand" href="{% url 'skripten_shop:home' %}">SkriptNet</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="{% url 'skripten_shop:home' %}">Home</a></li>
+            {% if request.user|has_group:'Skriptenausgabe' %}
+                <li><a href="{% url 'skripten_shop:scan-legic' %}">Skripten Ausgabe</a></li>
+            {% endif %}
+            {% if request.user|has_group:'Skriptenausgabe' or 'Skriptenadmin' %}
+                <li><a href="{% url 'skripten-shop:lager' %}">Lager</a></li>
+            {% endif %}
+
+            {% if request.user|has_group:'Skriptenadmin' %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Skriptenadmin<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'skripten-shop:shop-settings' %}">Einstellungen</a></li>
+                        <li><a href="{% url 'skripten-shop:reorder_overview' %}">Nachbestellungen</a></li>
+                        <li><a href="{% url 'skripten-shop:enter_reorder' %}">Nachbestellungen einpflegen</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if request.user|has_group:'Vorstand Verein' %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Vorstand Verein<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'skripten-shop:association-members' %}">Mitglieder</a></li>
+                        <li><a href="{% url 'skripten-shop:association-members-active' %}">Aktive Mitglieder</a></li>
+                        <li><a href="{% url 'skripten-shop:association-mail' %}">Mailversand</a></li>
+                        <li><a href="{% url 'skripten-shop:association-settings' %}">Einstellungen</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'skripten_shop:logout' %}">Abmelden</a></li>

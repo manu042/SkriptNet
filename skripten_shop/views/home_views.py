@@ -14,7 +14,7 @@ import hashlib
 
 # My Packages
 from skripten_shop.forms import UserLoginForm, UserRegisterForm
-from skripten_shop.models import NewStudentRegistration, Student
+from skripten_shop.models import NewStudentRegistration, Student, ShopSettings
 
 
 def login_view(request):
@@ -146,4 +146,7 @@ class HomeView(TemplateView):
     """
     template_name = 'skripten_shop/home_templates/home.html'
 
-
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['info_text'] = ShopSettings.objects.get(pk=1).info_text
+        return context
