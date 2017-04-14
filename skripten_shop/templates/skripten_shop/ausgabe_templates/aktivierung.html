@@ -13,7 +13,7 @@
     {% endif %}
 
     {% if success_message %}
-        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:scan-legic' %}">
+        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:ausgabe' %}">
         <div class="container">
             <div class="alert alert-success">
                 <strong>{{ success_message }}</strong>
@@ -73,10 +73,7 @@
                     <form action="" method="post" autocomplete="off">
                         {% csrf_token %}
                         {{ form|crispy }}
-
-                        {% if search %}
-                            <input class="btn btn-primary" type="submit" name="search" value="Suchen">
-                        {% endif %}
+                        <input class="btn btn-primary" type="submit" name="search" value="Suchen">
                     </form>
                 </div>
             </div>

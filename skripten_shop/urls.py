@@ -24,8 +24,8 @@ urlpatterns = [
     url(r'^ausgabe/$', views.ausgabe_view, name='ausgabe'),
     url(r'^individualbetreuung/$', views.individual_assistance_view, name='individualbetreuung'),
     url(r'^reorder/$', views.reorder_view, name='reorder'),
-    url(r'^aktivierung/$', views.aktivierungs_view, name='aktivierung'),
-    url(r'^reaktivierung/$', views.reaktivierungs_view, name='reaktivierung'),
+    url(r'^aktivierung/$', views.activation_view, name='aktivierung'),
+    url(r'^reaktivierung/$', views.reactivation_view, name='reaktivierung'),
     url(r'^newlegic/$', views.newlegic_view, name='newlegic'),
 
     # Settings Urls

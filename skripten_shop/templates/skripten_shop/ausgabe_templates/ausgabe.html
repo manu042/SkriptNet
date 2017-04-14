@@ -4,6 +4,15 @@
 
 {% block content %}
 
+    {% if error_message %}
+        <meta http-equiv="refresh" content="3;url={% url 'skripten-shop:scan-legic' %}">
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="container">
 
         {% if messages %}
@@ -18,14 +27,12 @@
             </ul>
         {% endif %}
 
-        <ul>
-            <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
-            <li>{{ student.user.email }}</li>
-        </ul>
-
         {% if student_order %}
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <h4>Bestellungen von {{ student.user.first_name }} {{ student.user.last_name }}</h4>
+                    <h5 style="color: blue">Bestellung mit dem Status "auf Lager" können über die "Individualbetreuung"
+                        ausgegeben werden</h5>
                     <table class="table table-striped" id="article-table">
                         <thead>
                         <tr>
@@ -37,7 +44,8 @@
                         </thead>
                         <tbody>
                         {% for order in student_order %}
-                            <tr>
+                            <tr {% if order.status == order.RESERVED_STATUS %}
+                                style="background: greenyellow" {% endif %}>
                                 <td>{{ order.article.article_number }}</td>
                                 <td>{{ order.article.name }}</td>
                                 <td>{{ order.last_modified_date.date }}</td>
@@ -46,12 +54,20 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    <a href="{% url 'skripten_shop:individualbetreuung' %}" class="btn btn-info" role="button">Individualbetreuung</a>
+                    <a href="{% url 'skripten_shop:individualbetreuung' %}" class="btn btn-info btn-sm" role="button">Individualbetreuung</a>
                 </div>
             </div>
+            <br>
         {% endif %}
 
         {% if stock_infos %}
+            <h4>Liste frei verfügbarer Skripte</h4>
+            <h6>Diese können an <strong>jeden</strong> ausgegeben werden</h6>
+            <h6>Ist ein Skript nich mehr verfügbar, kann es unter "Nachbestellung" für den Studenten reserviert
+                werden</h6>
+
+            <br>
+            <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary btn-sm" role="button">Nachbestellung</a>
             <form action="" method="post">
                 <table class="table table-striped" id="article-table">
                     <thead>
@@ -103,7 +119,6 @@
 
                 {% csrf_token %}
                 <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
-                <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary" role="button">Nachbestellung</a>
             </form>
         {% endif %}
     </div>

@@ -7,6 +7,7 @@ from django.db import IntegrityError
 
 # Third party packages
 import hashlib
+import logging
 
 # My Packages
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
@@ -14,15 +15,21 @@ from skripten_shop.models import Article, Order, Student, BezahltStatus, Current
 from skripten_shop.utilities import has_permisson_skriptenausgabe
 from skripten_shop.utilities import ShopSettingsObject
 
+logger = logging.getLogger('skripten_shop.default')
 
-# TODO: legic id aus session löschen (an geeigneter stelle)
 
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def scan_legic_view(request):
     """
-    View für Skripten Ausgabe, zeigt beim Aufrufen eine Form zur Eingabe der Ledic ID
+    View zum scannen der Legic-ID eiens Studenten
     """
+    # Legic-ID aus Session Cookie löschen
+    try:
+        del request.session['current_legic']
+    except:
+        pass
+
     if request.method == 'POST':
         form = ScanLegicForm(request.POST)
 
@@ -39,13 +46,12 @@ def scan_legic_view(request):
                 # Liefert Student mit zugehöriger Legic ID zurück
                 student = Student.objects.get(legic_id=legic_id_hash_value)
 
-                # Holt sich den letzeten BezahltStatus des Studenten und das aktuelle Semester
+                # Letzen BezahltStatus des Studenten abrufen
                 last_semester_paid = BezahltStatus.objects.filter(student=student).latest('date')
-                current_semester = CurrentSemester.objects.get(pk=1).current_semester
 
                 # Prüft ob der Student in diesem Semester bereits bezahlt hat
                 # Falls nicht wird die Ausgabe weitergeleitet zur reaktivierungsview
-                if not last_semester_paid.semester == current_semester:
+                if not last_semester_paid.semester == ShopSettingsObject.current_semester_is():
                     return redirect(reverse('skripten_shop:reaktivierung'))
                 else:
                     return redirect(reverse('skripten_shop:ausgabe'))
@@ -68,8 +74,19 @@ def scan_legic_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def ausgabe_view(request):
-    # Hashwert der Legic-ID berechnen
-    legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    try:
+        # Legic-ID aus Session Cookie auslesen
+        legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    except Exception:
+        logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
+
+        context = {
+            'error_message': 'Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.'
+                             ' Bitte an den Administrator wenden.'
+        }
+
+        return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+
     student = Student.objects.get(legic_id=legic_id_hash_value)
     student_order = Order.objects.filter(student=student)
 
@@ -77,6 +94,7 @@ def ausgabe_view(request):
 
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
+        error_message = False
         for selected_articel_id in selected_articels_id:
             try:
                 article_in_stock = AritcleInStock.objects.get(pk=selected_articel_id)
@@ -88,11 +106,16 @@ def ausgabe_view(request):
                 article_in_stock.save()
 
             except IntegrityError:
-                messages.error(request, 'Das Skript %s kann nicht ausgegeben werden!' % Article.objects.get(
-                    pk=selected_articel_id).article_number)
+                error_message = True
+                messages.error(request,
+                               'Das Skript %s kann nicht ausgegeben werden! Der Student hat dieses Skript bereits bestellt.' % Article.objects.get(
+                                   pk=selected_articel_id).article_number)
 
-        if messages:
+        if error_message:
             return redirect(reverse('skripten_shop:ausgabe'))
+
+        # Legic-ID aus Session Cookie löschen
+        del request.session['current_legic']
 
         return redirect(reverse('skripten_shop:scan-legic'))
 
@@ -126,8 +149,19 @@ def ausgabe_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def individual_assistance_view(request):
-    # Hashwert der Legic-ID berechnen
-    legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    try:
+        # Legic-ID aus Session Cookie auslesen
+        legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    except Exception:
+        logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
+
+        context = {
+            'error_message': 'Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.'
+                             ' Bitte an den Administrator wenden.'
+        }
+
+        return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
+
     student = Student.objects.get(legic_id=legic_id_hash_value)
     student_order = Order.objects.filter(student=student)
 
@@ -139,6 +173,11 @@ def individual_assistance_view(request):
             order = Order.objects.get(pk=selected_order_id)
             order.status = Order.DELIVERD_STATUS
             order.save()
+
+        # Legic-ID aus Session Cookie löschen
+        del request.session['current_legic']
+
+        return redirect(reverse('skripten_shop:scan-legic'))
 
     student_order = Order.objects.filter(student=student)
 
@@ -153,22 +192,44 @@ def individual_assistance_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def reorder_view(request):
-    # Hashwert der Legic-ID berechnen
-    legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    try:
+        # Legic-ID aus Session Cookie auslesen
+        legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    except Exception:
+        logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
+
+        context = {
+            'error_message': 'Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.'
+                             ' Bitte an den Administrator wenden.'
+        }
+
+        return render(request, 'skripten_shop/ausgabe_templates/reorder.html', context)
+
     student = Student.objects.get(legic_id=legic_id_hash_value)
 
     if request.method == 'POST':
 
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
+        error_message = False
         for selected_articel_id in selected_articels_id:
             try:
                 article = Article.objects.get(pk=selected_articel_id)
                 order = Order(article=article, student=student)
                 order.save()
             except IntegrityError:
-                messages.error(request, 'Das Skript %s kann nicht bestellt werden!' % Article.objects.get(
-                    pk=selected_articel_id).article_number)
+                error_message = True
+                messages.error(request,
+                               'Das Skript %s kann nicht bestellt werden!  Der Student hat dieses Skript bereits bestellt.' % Article.objects.get(
+                                   pk=selected_articel_id).article_number)
+
+        if error_message:
+            return redirect(reverse('skripten_shop:reorder'))
+
+        # Legic-ID aus Session Cookie löschen
+        del request.session['current_legic']
+
+        return redirect(reverse('skripten_shop:scan-legic'))
 
     articles = Article.objects.filter(active=True)
 
@@ -182,9 +243,10 @@ def reorder_view(request):
 
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
-def aktivierungs_view(request):
+def activation_view(request):
     """
-    View zum Aktivieren eines Studenten, d.h. die Legic ID wird mit einem Account verknüpft
+    View zur verknüpfung des Studenten und seiner Legic-ID
+    - Wird aufgerufen, falls die Legic-ID unbekannt ist
     """
 
     if request.method == 'POST':
@@ -200,14 +262,14 @@ def aktivierungs_view(request):
                 # Die Legic ID wird im Session Cookie gespeichert
                 request.session['current_legic'] = legic_id
 
-                # Es werden all Studenten mit dem Geburtsdatum gefiltert und die Anzahl zurückgeliefert
+                # Es werden alle Neuregistrierungen (Studenten) mit dem selben Geburtsdatum gefiltert und die Anzahl berechnet
                 quantity = Student.objects.filter(legic_id='').filter(birth_date=birth_date).count()
 
+                # Falls keine Neuregistrierungen (Studenten) gefunden wurden
                 if quantity < 1:
 
                     context = {
                         'form': form,
-                        'search': True,
                         'error_message': 'Es wurde kein Student mit diesem Geburtsdatum gefunden.'
                     }
                     return render(request, 'skripten_shop/ausgabe_templates/aktivierung.html', context)
@@ -233,7 +295,6 @@ def aktivierungs_view(request):
             bezahlt_status = BezahltStatus()
             # Dem Studenten einen BezahltStatus für das aktuelle Semester zuordnen
             bezahlt_status.semester = ShopSettingsObject.current_semester_is()
-            bezahlt_status.paid = True
             bezahlt_status.student = student
             # Objekete speichern
             bezahlt_status.save()
@@ -250,7 +311,6 @@ def aktivierungs_view(request):
 
     context = {
         'form': form,
-        'search': True,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/aktivierung.html', context)
@@ -258,7 +318,7 @@ def aktivierungs_view(request):
 
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
-def reaktivierungs_view(request):
+def reactivation_view(request):
     """
     View zum kassieren des Mitgliedsbeitrags für das laufende Semester
     """
@@ -273,8 +333,7 @@ def reaktivierungs_view(request):
     if request.method == 'POST':
         paid = BezahltStatus()
         # Setze Semester des BezahltStatus auf den Wert des aktuellen Semesters (Wert aus Datenbank)
-        paid.semester = CurrentSemester.objects.get(pk=1).current_semester
-        paid.paid = True
+        paid.semester = ShopSettingsObject.current_semester_is()
         paid.student = student
         paid.save()
 
@@ -313,6 +372,9 @@ def newlegic_view(request):
 
                 student.legic_id = new_legic_id_hash_value
                 student.save()
+
+                # Legic-ID aus Session Cookie löschen
+                del request.session['current_legic']
 
                 context = {
                     'success_message': 'Legic-ID wurde aktualisiert',

@@ -4,6 +4,15 @@
 
 {% block content %}
 
+    {% if error_message %}
+        <meta http-equiv="refresh" content="2;url={% url 'skripten-shop:scan-legic' %}">
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
 
     <div class="container">
         {% if messages %}
@@ -18,10 +27,13 @@
             </ul>
         {% endif %}
 
-        <ul>
-            <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
-            <li>{{ student.user.email }}</li>
-        </ul>
+        {% if student %}
+            <ul>
+                <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
+                <li>{{ student.user.email }}</li>
+            </ul>
+
+        {% endif %}
 
         <ul>
             {% for article in served_article %}
