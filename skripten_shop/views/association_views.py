@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib import messages
 from django.db import IntegrityError
@@ -32,24 +33,26 @@ def association_settings_view(request):
 def association_members_view(request):
     current_semester = ShopSettings.objects.get(pk=1)
     paid_objects = BezahltStatus.objects.filter(semester=current_semester)
+    students = Student.objects.all()
 
     context = {
-
+        'students': students,
     }
 
-    return render(request, 'skripten_shop/association_templates/', context)
+    return render(request, 'skripten_shop/association_templates/association_members.html', context)
 
 
 @login_required
 @user_passes_test(has_permisson_vorstand_verein)
 def active_association_members_view(request):
-    active_members = Group.objects.filter(name='aktive Vereinsmitglieder')
+    active_members = User.objects.filter(groups__name='aktive Vereinsmitglieder')
 
     context = {
+        'active_members': active_members,
 
     }
 
-    return render(request, 'skripten_shop/association_templates/', context)
+    return render(request, 'skripten_shop/association_templates/active_association_members.html', context)
 
 
 @login_required
