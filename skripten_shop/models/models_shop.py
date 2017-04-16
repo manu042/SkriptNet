@@ -39,7 +39,7 @@ class Order(models.Model):
         (RESERVED_STATUS, 'auf Lager'),
         (DELIVERD_STATUS, 'ausgegeben'),
         (CANCELD_STATUS, 'storniert'),
-        (EXPIRED_STATUS, 'ausgelaufen'),
+        (EXPIRED_STATUS, 'Reservierung abgelaufen'),
     )
 
     # https://docs.djangoproject.com/en/dev/ref/models/fields/#choices

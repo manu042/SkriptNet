@@ -28,6 +28,10 @@
         {% endif %}
 
         {% if student %}
+            <h4>Nachbestellung</h4>
+            <h6>Falls ein Skript im Lager nicht mehr verfügbar ist, kann es hier für den Studenten bestellt werden.</h6>
+            <h6>Zum Bestellen: Skripte in der Liste auswählen und "Bestellen" Button drücken.</h6>
+
             <ul>
                 <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
                 <li>{{ student.user.email }}</li>
@@ -78,7 +82,7 @@
                     </table>
 
                     {% csrf_token %}
-                    <input class="btn btn-success" type="submit" name="nachbestellen" value="Nachbestellen">
+                    <input class="btn btn-success" type="submit" name="nachbestellen" value="Bestellen">
                 </form>
             </div>
         {% endif %}

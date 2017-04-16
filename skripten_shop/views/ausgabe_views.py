@@ -13,7 +13,7 @@ import logging
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
 from skripten_shop.models import Article, Order, Student, BezahltStatus, CurrentSemester, AritcleInStock
 from skripten_shop.utilities import has_permisson_skriptenausgabe
-from skripten_shop.utilities import ShopSettingsObject
+from skripten_shop.utilities import current_semester_is, max_article_is
 
 logger = logging.getLogger('skripten_shop.default')
 
@@ -51,7 +51,7 @@ def scan_legic_view(request):
 
                 # Prüft ob der Student in diesem Semester bereits bezahlt hat
                 # Falls nicht wird die Ausgabe weitergeleitet zur reaktivierungsview
-                if not last_semester_paid.semester == ShopSettingsObject.current_semester_is():
+                if not last_semester_paid.semester == current_semester_is():
                     return redirect(reverse('skripten_shop:reaktivierung'))
                 else:
                     return redirect(reverse('skripten_shop:ausgabe'))
@@ -137,10 +137,12 @@ def ausgabe_view(request):
             'amount_reserved': amount_reserved,
         })
 
+
     context = {
         'student': student,
         'student_order': student_order,
         'stock_infos': stock_infos,
+        'max_article': int(max_article_is()),
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
@@ -294,7 +296,7 @@ def activation_view(request):
 
             bezahlt_status = BezahltStatus()
             # Dem Studenten einen BezahltStatus für das aktuelle Semester zuordnen
-            bezahlt_status.semester = ShopSettingsObject.current_semester_is()
+            bezahlt_status.semester = current_semester_is()
             bezahlt_status.student = student
             # Objekete speichern
             bezahlt_status.save()
@@ -333,7 +335,7 @@ def reactivation_view(request):
     if request.method == 'POST':
         paid = BezahltStatus()
         # Setze Semester des BezahltStatus auf den Wert des aktuellen Semesters (Wert aus Datenbank)
-        paid.semester = ShopSettingsObject.current_semester_is()
+        paid.semester = current_semester_is()
         paid.student = student
         paid.save()
 

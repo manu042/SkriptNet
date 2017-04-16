@@ -1,13 +1,13 @@
 from skripten_shop.models import ShopSettings
 
 
-class ShopSettingsObject():
-    shop_settings = ShopSettings.objects.get(pk=1)
+def current_semester_is():
+    return ShopSettings.objects.get(pk=1).current_semester
 
-    @classmethod
-    def current_semester_is(self):
-        return self.shop_settings.current_semester
 
-    @classmethod
-    def membership_fee_is(cls):
-        return cls.shop_settings.membership_fee
+def membership_fee_is():
+    return ShopSettings.objects.get(pk=1).membership_fee
+
+
+def max_article_is():
+    return ShopSettings.objects.get(pk=1).max_article

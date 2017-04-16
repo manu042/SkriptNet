@@ -60,67 +60,81 @@
             <br>
         {% endif %}
 
-        {% if stock_infos %}
-            <h4>Liste frei verfügbarer Skripte</h4>
-            <h6>Diese können an <strong>jeden</strong> ausgegeben werden</h6>
-            <h6>Ist ein Skript nich mehr verfügbar, kann es unter "Nachbestellung" für den Studenten reserviert
-                werden</h6>
 
-            <br>
-            <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary btn-sm" role="button">Nachbestellung</a>
-            <form action="" method="post">
-                <table class="table table-striped" id="article-table">
-                    <thead>
-                    <tr>
-                        <th>Skript-Nr.</th>
-                        <th>Skriptname</th>
-                        <th>Autor</th>
-                        <th>Studiengruppe</th>
-                        <th>Gesamtmenge</th>
-                        <th>Frei</th>
-                        <th>Fach-Nr.</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for stock_info in stock_infos %}
+        {% if student_order.count >= max_article %}
+
+            <div class="alert alert-danger">
+                Der Student hat die maximale Anzahl an Skripten bestellt.
+            </div>
+
+        {% else %}
+
+            {% if stock_infos %}
+                <h4>Liste frei verfügbarer Skripte</h4>
+                <h6>Diese können an <strong>jeden</strong> ausgegeben werden</h6>
+                <h6>Ist ein Skript nich mehr verfügbar, kann es unter "Nachbestellung" für den Studenten reserviert
+                    werden</h6>
+
+                <br>
+                <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary btn-sm"
+                   role="button">Nachbestellung</a>
+                <form action="" method="post">
+                    <table class="table table-striped" id="article-table">
+                        <thead>
                         <tr>
-                            <td>{{ stock_info.article.article_number }}</td>
-                            <td>{{ stock_info.article.name }}</td>
-                            <td>{{ stock_info.article.skript.author }}</td>
-                            <td>
-                                {% for studygroup in stock_info.article.skript.studygroup.all %}
-                                    <li>{{ studygroup }}</li>
-                                {% endfor %}
-                            </td>
-                            <td>{{ stock_info.amount_available|add:stock_info.amount_reserved }}</td>
-                            {% if stock_info.amount_available < 1 %}
-                                <td style="color: red; font-weight: bold">{{ stock_info.amount_available }}</td>
-                            {% else %}
-                                <td>{{ stock_info.amount_available }}</td>
-                            {% endif %}
-                            <td>{{ stock_info.article.shelf_number }}</td>
-                            <td>
-                                <div class="checkbox">
-                                    {% if stock_info.amount_available < 1 %}
-                                        <label><input type="checkbox" disabled></label>
-                                    {% else %}
-                                        <label>
-                                            <input type="checkbox" name="selected_articel[]"
-                                                   value="{{ stock_info.article.id }}">
-                                        </label>
-                                    {% endif %}
-                                </div>
-                            </td>
+                            <th>Skript-Nr.</th>
+                            <th>Skriptname</th>
+                            <th>Autor</th>
+                            <th>Studiengruppe</th>
+                            <th>Gesamtmenge</th>
+                            <th>Frei</th>
+                            <th>Fach-Nr.</th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for stock_info in stock_infos %}
+                            <tr>
+                                <td>{{ stock_info.article.article_number }}</td>
+                                <td>{{ stock_info.article.name }}</td>
+                                <td>{{ stock_info.article.skript.author }}</td>
+                                <td>
+                                    <ul>
+                                        {% for studygroup in stock_info.article.skript.studygroup.all %}
+                                            <li>{{ studygroup }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td>{{ stock_info.amount_available|add:stock_info.amount_reserved }}</td>
+                                {% if stock_info.amount_available < 1 %}
+                                    <td style="color: red; font-weight: bold">{{ stock_info.amount_available }}</td>
+                                {% else %}
+                                    <td>{{ stock_info.amount_available }}</td>
+                                {% endif %}
+                                <td>{{ stock_info.article.shelf_number }}</td>
+                                <td>
+                                    <div class="checkbox">
+                                        {% if stock_info.amount_available < 1 %}
+                                            <label><input type="checkbox" disabled></label>
+                                        {% else %}
+                                            <label>
+                                                <input type="checkbox" name="selected_articel[]"
+                                                       value="{{ stock_info.article.id }}">
+                                            </label>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-                {% csrf_token %}
-                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
-            </form>
+                    {% csrf_token %}
+                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
+                </form>
+            {% endif %}
         {% endif %}
+
     </div>
 
 {% endblock %}
