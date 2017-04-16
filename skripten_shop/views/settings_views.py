@@ -3,15 +3,14 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 # My packages
-from skripten_shop.models import CurrentSemester, ShopSettings
+from skripten_shop.models import ShopSettings
 from skripten_shop.forms import SettingsForm
-from skripten_shop.utilities import has_permisson_skriptenadmin
+from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
 
 
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def shop_settings_view(request):
-    current_semester = CurrentSemester.objects.get(pk=1)
     shop_settings = ShopSettings.objects.get(pk=1)
 
     form = SettingsForm(instance=shop_settings)
@@ -32,7 +31,7 @@ def shop_settings_view(request):
                 shop_settings.save()
 
     context = {
-        'current_semester': current_semester,
+        'current_semester': current_semester_is,
         'form': form,
     }
 

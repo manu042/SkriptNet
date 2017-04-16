@@ -1,7 +1,10 @@
-- model: skripten_shop.currentsemester
-  pk: 1
-  fields: {current_semester: SS 2017}
 - model: skripten_shop.shopsettings
   pk: 1
-  fields: {state: false, max_article: '10', days_reserved: '10', info_text: Hier entsteht
-      der Skriptenshop}
+  fields: {current_semester: SS 2017, state: false, max_article: '10', days_reserved: '2',
+    membership_fee: 3, info_text: "<p style=\"text-align: center;\">&nbsp;</p>\r\n\
+      <p style=\"text-align: center;\">&nbsp;</p>\r\n<p style=\"text-align: center;\"\
+      >&nbsp;</p>\r\n<p style=\"text-align: center;\">&nbsp;</p>\r\n<p style=\"text-align:\
+      \ center;\">Hier entsteht der <strong>Skriptenshop</strong></p>\r\n<p style=\"\
+      text-align: center;\">&nbsp;</p>\r\n<p style=\"text-align: center;\">&nbsp;</p>\r\
+      \n<p style=\"text-align: center;\">&nbsp;</p>\r\n<p style=\"text-align: center;\"\
+      >&nbsp;</p>\r\n<p style=\"text-align: center;\">&nbsp;</p>"}
