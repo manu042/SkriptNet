@@ -69,6 +69,6 @@ celerybeat-schedule
 venv/
 ENV/
 
-*/migrations/*
+*/migrations/0*
 /.idea/*
 /db.sqlite3
