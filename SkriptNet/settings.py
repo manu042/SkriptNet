@@ -11,20 +11,25 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# SECRET_KEY und Passwörter laden
+with open(BASE_DIR + "/SkriptNet/skriptnet_credentials.yaml", 'r') as f:
+    skriptnet_credentials = yaml.load(f)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6o)=a+!-ra^6(^s4!ett(8^lib&8xz_rtw)91h(*2m3jr(&*p2'
+SECRET_KEY = skriptnet_credentials['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '129.187.206.200', 'skripten.fs04.ee.hm.edu', 'skripten.fs04.de']
 
 # Application definition
 
@@ -87,6 +92,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'skriptnetdb',
+        # 'USER': 'skriptnet',
+        # 'PASSWORD': skriptnet_credentials['DATABASE_PW'],
+        # 'HOST': 'localhost',
+        # 'PORT': '',
     }
 }
 
@@ -125,6 +137,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static_root/static'
+DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/html')
+
+LOGIN_URL = '/'
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -134,9 +151,9 @@ FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),
 )
 
-LOGIN_URL = '/'
-
+# LOGGING Settings
 # https://docs.djangoproject.com/en/dev/topics/logging/#topic-logging-parts-filters
+#############################################################
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -175,12 +192,13 @@ LOGGING = {
     },
 }
 
-# My Settings
+# Crispy Forms Settings
 #############################################################
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Django Simple Captcha
+# Django Simple Captcha Settings
 # http://django-simple-captcha.readthedocs.io/en/latest/usage.html
+#############################################################
 SOUTH_MIGRATION_MODULES = {
     'captcha': 'captcha.south_migrations',
 }
@@ -188,13 +206,26 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 CAPTCHA_FONT_SIZE = 40
 
 # Mail Setting
+#############################################################
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'w00739ef.kasserver.com'
 EMAIL_HOST_PORT = '587'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'm03dd7e2'
-EMAIL_HOST_PASSWORD = 'mCN3DrsFXfwqrrhe'
+EMAIL_HOST_PASSWORD = skriptnet_credentials['EMAIL_HOST_PASSWORD']
 DEFAULT_FROM_EMAIL = 'skripten@verteiler.cc'
 
-DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/html')
+# Deployment Settings
+#############################################################
+SECURE_HSTS_SECONDS = 31536000  # indicates browsers that future requests for the next year should use only HTTPS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+# https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-SESSION_COOKIE_AGE
+SESSION_COOKIE_AGE = 604800  # The age of session cookies, in seconds. (Hier eine Woche)
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
+X_FRAME_OPTIONS = 'DENY'
