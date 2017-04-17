@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 
 from . import views
 
@@ -30,6 +30,7 @@ urlpatterns = [
 
     # Settings Urls
     url(r'^settings/$', views.shop_settings_view, name='shop-settings'),
+    url(r'^settings/info_text/$', views.edit_info_text_view, name='info-text'),
 
     # Warehouse Urls
     url(r'^lager/$', views.stock_overview, name='lager'),
@@ -42,5 +43,4 @@ urlpatterns = [
     url(r'^verein/mitglieder/$', views.association_members_view, name='association-members'),
     url(r'^verein/mitglieder_aktiv/$', views.active_association_members_view, name='association-members-active'),
     url(r'^verein/sendmail/$', views.association_members_view, name='association-mail'),
-
 ]

@@ -1,0 +1,76 @@
+# python manage.py dumpdata auth.User --format=yaml > fixtures/user.yaml
+- model: auth.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$30000$K1tJl0jnbFcx$GI9MA5Awtyh+lFA4513hQxSpJbWfzO+Lb4YTCD52xqY=
+    last_login: 2017-04-17 00:20:38+00:00
+    is_superuser: true
+    username: admin@hm.edu
+    first_name: Admin
+    last_name: Istrator
+    email: trator@test.edu
+    is_staff: true
+    is_active: true
+    date_joined: 2017-04-12 21:50:39+00:00
+    groups: [1, 2, 3, 4, 5]
+    user_permissions: []
+- model: auth.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$30000$qYroedVPsqKp$BcOeKKGbM5Vq3xi9xsp33e+qWGZi1cQCzvuJV2fvV94=
+    last_login: null
+    is_superuser: false
+    username: "m\xFCller"
+    first_name: Hans
+    last_name: "M\xFCller"
+    email: mueller@hmm.edu
+    is_staff: false
+    is_active: true
+    date_joined: 2017-04-13 14:07:23+00:00
+    groups: []
+    user_permissions: []
+- model: auth.user
+  pk: 4
+  fields:
+    password: pbkdf2_sha256$30000$GeReEDoOo45N$fw48/64tqs8kpHLnEqUjBSRZyZrjiWpkndBjV5CcW9Q=
+    last_login: null
+    is_superuser: false
+    username: vbayer
+    first_name: Vaness
+    last_name: Bayer
+    email: vbayer@ddd.de
+    is_staff: false
+    is_active: true
+    date_joined: 2017-04-13 15:08:53+00:00
+    groups: []
+    user_permissions: []
+- model: auth.user
+  pk: 5
+  fields:
+    password: pbkdf2_sha256$30000$EMLE7CmAJkmi$K8Ej+GjAJPp5RpSP3G4XLq9tvQzp1yg9WI5EXRNTxsw=
+    last_login: null
+    is_superuser: false
+    username: dmay
+    first_name: Daniel
+    last_name: May
+    email: dmay@asdf.de
+    is_staff: false
+    is_active: true
+    date_joined: 2017-04-13 21:20:13+00:00
+    groups: []
+    user_permissions: []
+- model: auth.user
+  pk: 7
+  fields:
+    password: pbkdf2_sha256$30000$X71a8hbKEfO3$Uy0ssf7EJP899tj5u3d/1yHPb4W1DA4ZG5WuWz/JVPw=
+    last_login: null
+    is_superuser: false
+    username: lewins@hm-professor.com
+    first_name: Walter
+    last_name: Lewins
+    email: lewins@hm-professor.com
+    is_staff: false
+    is_active: true
+    date_joined: 2017-04-17 00:56:10+00:00
+    groups: []
+    user_permissions: []

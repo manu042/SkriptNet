@@ -2,18 +2,6 @@
 from django.db import models
 
 
-# TODO: löschen und in ShopSettings integrieren
-class CurrentSemester(models.Model):
-    """
-    Dieses Model speichert das aktuelle Semester
-    """
-    current_semester = models.CharField(max_length=20, verbose_name='Aktuelles Semester')
-
-    def __str__(self):
-        text = 'Aktuelles Semester %s' % self.current_semester
-        return text
-
-
 class ShopSettings(models.Model):
     """
     Model zum Speichern globaler Einstellungen des Skripten Shops

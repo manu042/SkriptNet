@@ -12,7 +12,7 @@ import hashlib
 
 # My Packages
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
-from skripten_shop.models import BezahltStatus, Order, Student, BezahltStatus, CurrentSemester, ShopSettings
+from skripten_shop.models import BezahltStatus, Order, Student, BezahltStatus, ShopSettings
 from skripten_shop.utilities import has_permisson_vorstand_verein
 
 

@@ -1,0 +1,33 @@
+# python manage.py dumpdata skripten_shop.Paket --format=yaml > fixtures/pakete.yaml
+- model: skripten_shop.paket
+  pk: 12
+  fields:
+    cover_sheet_color: Orange
+    page_numbers: 500
+    amount: 3
+    semester: 1
+    skripte: [3, 4, 5]
+- model: skripten_shop.paket
+  pk: 13
+  fields:
+    cover_sheet_color: Gelb
+    page_numbers: 600
+    amount: 3
+    semester: 2
+    skripte: [6, 7, 8]
+- model: skripten_shop.paket
+  pk: 14
+  fields:
+    cover_sheet_color: "Gr\xFCn"
+    page_numbers: 300
+    amount: 2
+    semester: 3
+    skripte: [9, 10]
+- model: skripten_shop.paket
+  pk: 19
+  fields:
+    cover_sheet_color: Gelb
+    page_numbers: 600
+    amount: 5
+    semester: 4
+    skripte: [11, 15, 16, 17, 18]

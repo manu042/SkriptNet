@@ -1,6 +1,6 @@
 # https://docs.djangoproject.com/en/1.10/howto/initial-data/
 # Diese Datei wurde mit dem folgendem Befehl erstellt
-# python manage.py dumpdata auth.Group --format=yaml > groups.yaml
+# python manage.py dumpdata auth.Group --format=yaml > fixtures/groups.yaml
 # !!! Vorher über Django Admin Objekte in der Datenbank erstellen
 # Mit dem Befehl
 # python manage.py loaddata groups.yaml

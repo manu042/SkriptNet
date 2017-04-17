@@ -11,7 +11,7 @@ import logging
 
 # My Packages
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
-from skripten_shop.models import Article, Order, Student, BezahltStatus, CurrentSemester, AritcleInStock
+from skripten_shop.models import Article, Order, Student, BezahltStatus, AritcleInStock
 from skripten_shop.utilities import has_permisson_skriptenausgabe
 from skripten_shop.utilities import current_semester_is, max_article_is
 
