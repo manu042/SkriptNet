@@ -1,5 +1,7 @@
+# Django Packages
 from django import forms
 
+# Third party packages
 from skripten_shop.models import ShopSettings
 
 

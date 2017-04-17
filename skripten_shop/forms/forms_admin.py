@@ -2,7 +2,7 @@
 from django import forms
 
 # My packages
-from skripten_shop.models import Skript
+from skripten_shop.models import Skript, Paket
 
 
 class StudygroupHorizontalAdminForm(forms.ModelForm):
@@ -11,7 +11,7 @@ class StudygroupHorizontalAdminForm(forms.ModelForm):
     """
 
     class Meta:
-        model = Skript
+        model = Paket
         fields = '__all__'
 
 

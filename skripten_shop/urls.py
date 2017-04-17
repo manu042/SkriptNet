@@ -39,8 +39,8 @@ urlpatterns = [
 
     # TODO: anpassen
     # Association Urls
-    url(r'^verein/einstellungen/$', views.association_members_view, name='association-settings'),
+    url(r'^verein/einstellungen/$', views.association_settings_view, name='association-settings'),
     url(r'^verein/mitglieder/$', views.association_members_view, name='association-members'),
     url(r'^verein/mitglieder_aktiv/$', views.active_association_members_view, name='association-members-active'),
-    url(r'^verein/sendmail/$', views.association_members_view, name='association-mail'),
+    url(r'^verein/sendmail/$', views.mail_association_members_view, name='association-mail'),
 ]

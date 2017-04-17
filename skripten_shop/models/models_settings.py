@@ -19,7 +19,7 @@ class ShopSettings(models.Model):
     # Dauer der Reservierung eines Skripts für einen Studenten
     days_reserved = models.CharField(max_length=2, verbose_name='Skripten Reservierungsfrist',
                                      help_text='Anzahl Tage, die ein Skript reserviert ist')
-    membership_fee = models.SmallIntegerField(verbose_name='Mitgliedsbeitrag')
+    membership_fee = models.PositiveIntegerField(verbose_name='Mitgliedsbeitrag')
     info_text = models.TextField(verbose_name='Info Text', blank=True)
 
     def __str__(self):
