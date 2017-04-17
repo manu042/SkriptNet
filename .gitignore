@@ -72,3 +72,4 @@ ENV/
 */migrations/0*
 /.idea/*
 /db.sqlite3
+!/static/js/Trumbowyg-master/dist/
