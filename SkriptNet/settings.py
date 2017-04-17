@@ -32,7 +32,6 @@ DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', '129.187.206.200', 'skripten.fs04.ee.hm.edu', 'skripten.fs04.de']
 
 # Application definition
-
 INSTALLED_APPS = [
     # Django Apps
     'django.contrib.admin',
@@ -87,7 +86,6 @@ WSGI_APPLICATION = 'SkriptNet.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -104,7 +102,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
