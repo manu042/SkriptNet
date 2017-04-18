@@ -18,12 +18,12 @@ class UserLoginForm(forms.Form):
     """
     username = forms.EmailField(label="HM-E-Mail-Adresse", max_length=30,
                                 widget=forms.TextInput(
-                                    attrs={'class': 'form-control', 'name': 'email', 'placeholder': 'HM-Email'}))
-    # TODO: 'autofocus': 'autofocus' zu username hinzufügen
+                                    attrs={'class': 'form-control', 'name': 'email', 'placeholder': 'HM-Email',
+                                           'autofocus': 'autofocus'}))
+
     password = forms.CharField(label="Password", max_length=30,
                                widget=forms.PasswordInput(
-                                   attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort',
-                                          'autofocus': 'autofocus'}))
+                                   attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort'}))
 
     def clean(self, *args, **kwargs):
         clean_data = super(UserLoginForm, self).clean()
@@ -89,12 +89,10 @@ class UserRegisterForm(forms.Form):
 
         username_qs = User.objects.filter(username=mail_address)
 
-        # TODO Code umschreiben und aktivieren
-        # TODO siehe http://chimera.labs.oreilly.com/books/1230000000393/ch02.html#_problem_22
-        # if re.split(r'@', mail_address)[-1] == 'hm.edu':
-        #     pass
-        # else:
-        #     raise forms.ValidationError("Die Email-Adresse ist keine gültige Hochschul Adresse")
+        if re.split(r'@', mail_address)[-1] == 'hm.edu':
+            pass
+        else:
+            raise forms.ValidationError("Die Email-Adresse ist keine gültige Hochschul Adresse")
 
         if username_qs.exists():
             raise forms.ValidationError("Diese Email-Adresse wurde bereits registriert")

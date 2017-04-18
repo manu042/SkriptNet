@@ -40,8 +40,7 @@ def login_view(request):
             login(request, user)
             return redirect('/home')
     else:
-        # TODO: initial entfernen
-        form = UserLoginForm(initial={'username': 'admin@hm.edu'})
+        form = UserLoginForm()
 
     context = {
         'form': form,
