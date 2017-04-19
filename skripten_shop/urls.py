@@ -5,7 +5,7 @@ from . import views
 app_name = 'skripten_shop'
 urlpatterns = [
 
-    # Home Urls
+    # Home URLs
     url(r'^$', views.login_view, name='login'),
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^home/$', views.HomeView.as_view(), name='home'),
@@ -21,19 +21,23 @@ urlpatterns = [
     url(r'^reaktivierung/$', views.reactivation_view, name='reaktivierung'),
     url(r'^newlegic/$', views.newlegic_view, name='newlegic'),
 
-    # Settings Urls
+    # Settings URLs
     url(r'^settings/$', views.shop_settings_view, name='shop-settings'),
     url(r'^settings/info_text/$', views.edit_info_text_view, name='info-text'),
 
-    # Warehouse Urls
+    # Warehouse URLs
     url(r'^lager/$', views.stock_overview, name='lager'),
     url(r'^lager/reorder/$', views.show_reorder_view, name='reorder_overview'),
     url(r'^lager/enter_reorder/$', views.enter_reorder_view, name='enter_reorder'),
 
     # TODO: anpassen
-    # Association Urls
+    # Association URLs
     url(r'^verein/einstellungen/$', views.association_settings_view, name='association-settings'),
     url(r'^verein/mitglieder/$', views.association_members_view, name='association-members'),
     url(r'^verein/mitglieder_aktiv/$', views.active_association_members_view, name='association-members-active'),
     url(r'^verein/sendmail/$', views.mail_association_members_view, name='association-mail'),
+
+    # Admin URLs
+    url(r'^admin/logfile/$', views.show_logfile_view, name='admin-logfiles'),
+
 ]

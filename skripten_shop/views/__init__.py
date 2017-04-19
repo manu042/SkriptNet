@@ -1,3 +1,4 @@
+from .admin_views import *
 from .ausgabe_views import scan_legic_view, ausgabe_view, individual_assistance_view, reorder_view, activation_view, \
     reactivation_view, newlegic_view
 from .home_views import login_view, logout_view, registration_view, confirm_mail_view, HomeView

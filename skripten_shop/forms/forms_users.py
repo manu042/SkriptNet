@@ -89,10 +89,11 @@ class UserRegisterForm(forms.Form):
 
         username_qs = User.objects.filter(username=mail_address)
 
-        if re.split(r'@', mail_address)[-1] == 'hm.edu':
-            pass
-        else:
-            raise forms.ValidationError("Die Email-Adresse ist keine gültige Hochschul Adresse")
+        # TODO Code aktivieren und umschreiben (siehe http://chimera.labs.oreilly.com/books/1230000000393/ch02.html#_problem_22)
+        # if re.split(r'@', mail_address)[-1] == 'hm.edu':
+        #     pass
+        # else:
+        #     raise forms.ValidationError("Die Email-Adresse ist keine gültige Hochschul Adresse")
 
         if username_qs.exists():
             raise forms.ValidationError("Diese Email-Adresse wurde bereits registriert")

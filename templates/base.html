@@ -65,6 +65,16 @@
                 </li>
             {% endif %}
 
+            {% if request.user|has_group:'Admin' %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'skripten-shop:admin-logfiles' %}">Logfile</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'skripten_shop:logout' %}">Abmelden</a></li>
