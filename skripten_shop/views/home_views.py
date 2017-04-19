@@ -11,10 +11,13 @@ from django.core.mail import send_mail
 
 # Third party packages
 import hashlib
+import logging
 
 # My Packages
 from skripten_shop.forms import UserLoginForm, UserRegisterForm
 from skripten_shop.models import NewStudentRegistration, Student, ShopSettings
+
+logger = logging.getLogger('skripten_shop.default')
 
 
 def login_view(request):
@@ -67,8 +70,9 @@ def registration_view(request):
         form = UserRegisterForm(request.POST)
 
         if form.is_valid():
+            mail_address = form.cleaned_data.get('mail_address')
 
-            user = User.objects.create_user(username=form.cleaned_data.get('mail_address'))
+            user = User.objects.create_user(username=mail_address)
             user.email = form.cleaned_data.get('mail_address')
             user.set_password(form.cleaned_data.get('password'))
             user.first_name = form.cleaned_data.get('first_name')
@@ -85,13 +89,15 @@ def registration_view(request):
             new_student.activation_key = activation_key
             new_student.save()
 
-            subject = 'Verifiziere deine Email-Adresse'
+            subject = 'Skripten FS04: E-Mail-Adresse verifizieren'
             confirm_url = request.build_absolute_uri() + "confirm/" + new_student.activation_key
-            message = "Um den Verifizierungsprozess zu beenden, klicke einfach auf den Link unten. \n" + confirm_url
-            # TODO: recipient_list anpassen
+            message = "URL anklicken, um Verifizierungsprozess abzuschließen. \n" + confirm_url
             send_mail(subject=subject, from_email=None, message=message,
-                      recipient_list=["inbox9k@gmail.com"])
-            success_message = form.cleaned_data.get('mail_address')
+                      recipient_list=[mail_address])
+            success_message = mail_address
+
+            # TODO: Loger löschen
+            logger.info('ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse %s erstellt.' % mail_address)
 
             context = {
                 'success_message': success_message,
