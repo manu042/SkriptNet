@@ -97,7 +97,7 @@ def ausgabe_view(request):
         error_message = False
         for selected_articel_id in selected_articels_id:
             try:
-                article_in_stock = AritcleInStock.objects.get(pk=selected_articel_id)
+                article_in_stock = AritcleInStock.objects.get(article=selected_articel_id)
                 article_in_stock.amount -= 1
 
                 served_article = Order(student=student, status=Order.DELIVERD_STATUS)
