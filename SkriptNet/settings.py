@@ -137,6 +137,7 @@ FIXTURE_DIRS = (
 LOGIN_URL = '/'
 
 # https://docs.djangoproject.com/en/dev/topics/logging/#topic-logging-parts-filters
+# TODO: Logger für verschiedene Level erstellen
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
