@@ -6,12 +6,48 @@
 * Folgt noch
 
 # Entwicklungsumgebung einrichten
-1. [Virtual Environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) mit Pyton 3.6 einrichten
-2. Python Pakete installieren 
-    * siehe requirements.txt
-3. Dieses Git Repository clonen
-4. Befehl "python manage.py makemigrations" ausführen
-5. Befehl "python manage.py migrate" ausführen
+1. Aktuelle Projekt Dateien downloaden
+```shell
+$ git clone https://git.fs04.de/root/SkriptNet.git
+```
+
+2. Branch wechseln (z.B. Develop oder fcome_fserved ) oder neu anlegen
+
+    Wichtig!!! In der Branch **Master** wird nicht entwickelt
+    ```shell
+    $ git checkout develop
+    ```
+3. Python Pakete installieren
+
+    Die benötigten Python Pakete findet man in der Datei requirements.txt
+    ```shell
+    $ pip install -r requirements.txt
+    ```
+    Für Python Projekte ist es sinnvoll, eine Virutal Envivroment einzurichten. Eine Anleitung dazu findet man
+    [hier](http://docs.python-guide.org/en/latest/dev/virtualenvs/). (Zum Entwickeln wurde Pyton 3.6)
+
+4. SQLite Datenbank anlegen
+```shell
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+
+5. Admin User erstellen
+
+    ```shell
+    $ python manage.py createsuperuser
+    ```
+    Damit sich der User auf der Startseite von SkriptNet anmelden kann, sollte der Username wie eine Email-Adresse aufgebaut sein
+
+6. Development Server starten
+    
+    Um änderungen im Browser testen zu können, kann Lokal ein Development Server gestartet werden
+    ```shell
+    $ python manage.py createsuperuser
+    ```
+    Die Webseite kann dann über die URL **http://127.0.0.1:8000/** aufgerufen werden
+
+
 
 # Projekt Struktur
 * [Google Drive](https://drive.google.com/drive/folders/0BwRnCXKlxFwISnRRLUVGQkRUQ2c)
