@@ -43,7 +43,7 @@ $ python manage.py migrate
     
     Um änderungen im Browser testen zu können, kann Lokal ein Development Server gestartet werden
     ```shell
-    $ python manage.py createsuperuser
+    $ python manage.py runserver
     ```
     Die Webseite kann dann über die URL **http://127.0.0.1:8000/** aufgerufen werden
 
