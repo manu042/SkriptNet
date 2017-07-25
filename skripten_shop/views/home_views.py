@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.mail import send_mail
 
-# Third party packages
+# Third Party packages
 import hashlib
 import logging
 
