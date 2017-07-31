@@ -1,9 +1,8 @@
-# python manage.py dumpdata auth.User --format=yaml > fixtures/user.yaml
 - model: auth.user
   pk: 1
   fields:
-    password: pbkdf2_sha256$30000$K1tJl0jnbFcx$GI9MA5Awtyh+lFA4513hQxSpJbWfzO+Lb4YTCD52xqY=
-    last_login: 2017-04-17 00:20:38+00:00
+    password: pbkdf2_sha256$36000$Nl9PVO4tY3n1$2FywQoPnZUY4jrd7ofWuoK1XMTXy76PLECEyLh4J/os=
+    last_login: 2017-07-31 19:48:37.013343+00:00
     is_superuser: true
     username: admin@hm.edu
     first_name: Admin
@@ -11,66 +10,66 @@
     email: trator@test.edu
     is_staff: true
     is_active: true
-    date_joined: 2017-04-12 21:50:39+00:00
+    date_joined: 2017-04-12 17:50:39+00:00
     groups: [1, 2, 3, 4, 5]
     user_permissions: []
 - model: auth.user
-  pk: 2
+  pk: 8
   fields:
-    password: pbkdf2_sha256$30000$qYroedVPsqKp$BcOeKKGbM5Vq3xi9xsp33e+qWGZi1cQCzvuJV2fvV94=
+    password: pbkdf2_sha256$36000$oR0EWAloQsyh$7nZO7lfIME3tHl4c84TyQV/e1hDIVwTVUykO9hOEoHI=
     last_login: null
     is_superuser: false
-    username: "m\xFCller"
-    first_name: Hans
-    last_name: "M\xFCller"
-    email: mueller@hmm.edu
+    username: jschramm@test.de
+    first_name: Joachim
+    last_name: Schramm
+    email: jschramm@test.de
     is_staff: false
     is_active: true
-    date_joined: 2017-04-13 14:07:23+00:00
+    date_joined: 2017-07-31 19:50:40+00:00
     groups: []
     user_permissions: []
 - model: auth.user
-  pk: 4
+  pk: 9
   fields:
-    password: pbkdf2_sha256$30000$GeReEDoOo45N$fw48/64tqs8kpHLnEqUjBSRZyZrjiWpkndBjV5CcW9Q=
+    password: pbkdf2_sha256$36000$e8mL9qVsHYJ1$kO2JoRlSAIeOTaCZ2tGM1mdpqEZn4e/QIlQMLHOMGJI=
     last_login: null
     is_superuser: false
-    username: vbayer
-    first_name: Vaness
-    last_name: Bayer
-    email: vbayer@ddd.de
+    username: ngeng@test.de
+    first_name: Norbert
+    last_name: Geng
+    email: ngeng@test.de
     is_staff: false
     is_active: true
-    date_joined: 2017-04-13 15:08:53+00:00
+    date_joined: 2017-07-31 19:51:28+00:00
     groups: []
     user_permissions: []
 - model: auth.user
-  pk: 5
+  pk: 10
   fields:
-    password: pbkdf2_sha256$30000$EMLE7CmAJkmi$K8Ej+GjAJPp5RpSP3G4XLq9tvQzp1yg9WI5EXRNTxsw=
+    password: pbkdf2_sha256$36000$0z6JFL0P8nP6$C8nJ8PZNnNcgMh4V1VWA+0reWxWf5wqrMDItH3Ua8DA=
     last_login: null
     is_superuser: false
-    username: dmay
-    first_name: Daniel
-    last_name: May
-    email: dmay@asdf.de
+    username: nrosehr@test.de
+    first_name: Nils
+    last_name: Rosehr
+    email: nrosehr@test.de
     is_staff: false
     is_active: true
-    date_joined: 2017-04-13 21:20:13+00:00
+    date_joined: 2017-07-31 19:54:22+00:00
     groups: []
     user_permissions: []
 - model: auth.user
-  pk: 7
+  pk: 11
   fields:
-    password: pbkdf2_sha256$30000$X71a8hbKEfO3$Uy0ssf7EJP899tj5u3d/1yHPb4W1DA4ZG5WuWz/JVPw=
+    password: pbkdf2_sha256$36000$o2cXAhq1L14r$6P0Dg83vzaXU5q31oLTSMwuYOc3h4Ky7l1SgbHCcPFU=
     last_login: null
     is_superuser: false
-    username: lewins@hm-professor.com
-    first_name: Walter
-    last_name: Lewins
-    email: lewins@hm-professor.com
+    username: mhiebel@test.de
+    first_name: Michael
+    last_name: Hiebel
+    email: mhiebel@test.de
     is_staff: false
     is_active: true
-    date_joined: 2017-04-17 00:56:10+00:00
+    date_joined: 2017-07-31 19:55:23+00:00
     groups: []
     user_permissions: []

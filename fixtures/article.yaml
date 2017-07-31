@@ -1,0 +1,44 @@
+- model: skripten_shop.article
+  pk: 1
+  fields: {article_number: 01-001, name: Mathematik1, description: null, shelf_number: 11,
+    active: true}
+- model: skripten_shop.article
+  pk: 2
+  fields: {article_number: 02-001, name: Mathematik2, description: null, shelf_number: 12,
+    active: true}
+- model: skripten_shop.article
+  pk: 3
+  fields: {article_number: 03-001, name: Signale und Systeme, description: null, shelf_number: 21,
+    active: true}
+- model: skripten_shop.article
+  pk: 4
+  fields: {article_number: 03-002, name: Messtechnik, description: null, shelf_number: 22,
+    active: true}
+- model: skripten_shop.article
+  pk: 5
+  fields: {article_number: 01-002, name: Werkstofftechnik, description: null, shelf_number: 33,
+    active: true}
+- model: skripten_shop.article
+  pk: 6
+  fields: {article_number: 02-002, name: Nachhaltige Produktentwicklung, description: null,
+    shelf_number: 14, active: true}
+- model: skripten_shop.article
+  pk: 7
+  fields: {article_number: 04-001, name: Numerik, description: null, shelf_number: 33,
+    active: true}
+- model: skripten_shop.article
+  pk: 8
+  fields: {article_number: 04-002, name: Programmieren, description: null, shelf_number: 34,
+    active: true}
+- model: skripten_shop.article
+  pk: 9
+  fields: {article_number: 02-003, name: Elektronische Bauelemente, description: null,
+    shelf_number: 55, active: true}
+- model: skripten_shop.article
+  pk: 10
+  fields: {article_number: 04-003, name: Mikrocomputer, description: null, shelf_number: 55,
+    active: true}
+- model: skripten_shop.article
+  pk: 11
+  fields: {article_number: 04-004, name: Mikrocomputer, description: null, shelf_number: 56,
+    active: true}
