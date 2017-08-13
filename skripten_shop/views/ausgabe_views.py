@@ -71,6 +71,7 @@ def scan_legic_view(request):
     return render(request, 'skripten_shop/ausgabe_templates/scan_legic.html', context)
 
 
+# Der User ist eingeloggt und hat die Berechtigung auf den Bereich "Skriptenausgabe" zuzugreifen
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def ausgabe_view(request):
@@ -78,6 +79,7 @@ def ausgabe_view(request):
         # Legic-ID aus Session Cookie auslesen
         legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
     except Exception:
+        # Fehler ins Log schreiben
         logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
 
         context = {
@@ -87,21 +89,26 @@ def ausgabe_view(request):
 
         return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
 
+    # Objekt Student anhand der Legic_ID aus der Datenbank laden
     student = Student.objects.get(legic_id=legic_id_hash_value)
+    # Die Bestellungen des Studenten aus der Datenbank laden
     student_order = Order.objects.filter(student=student)
 
     if request.method == 'POST':
-
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
         error_message = False
         for selected_articel_id in selected_articels_id:
             try:
+                # Ausgewählte Artikel (Skripte) aus Datenbank laden und deren Menge um 1 reduzieren
                 article_in_stock = AritcleInStock.objects.get(article=selected_articel_id)
                 article_in_stock.amount -= 1
 
+                # Dem Studenten die Bestellung bzw. Skripte zuordnen
                 served_article = Order(student=student, status=Order.DELIVERD_STATUS)
                 served_article.article = article_in_stock.article
+
+                # Änderungen in der Datenbank speichern
                 served_article.save()
                 article_in_stock.save()
 
@@ -120,7 +127,8 @@ def ausgabe_view(request):
         return redirect(reverse('skripten_shop:scan-legic'))
 
     # Requst method Get
-    articles = Article.objects.filter(active=True)
+    # Alle bestellbaren Artikel (Skripte) aus der Datenbank laden und nach Artikelnummer sortieren
+    articles = Article.objects.filter(active=True).order_by("article_number")
 
     stock_infos = []
     for article in articles:

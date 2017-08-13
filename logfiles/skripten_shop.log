@@ -1,2 +1,7 @@
 INFO|20/Jul/2017 15:52:27|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
 INFO|20/Jul/2017 16:06:14|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
+ERROR|12/Aug/2017 15:04:29|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|12/Aug/2017 15:04:31|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|12/Aug/2017 18:41:10|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|12/Aug/2017 18:41:15|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|12/Aug/2017 18:41:24|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.

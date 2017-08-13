@@ -1,3 +1,4 @@
+# python3 manage.py dumpdata skripten_shop.Article --format=yaml > fixtures/article.yaml
 - model: skripten_shop.article
   pk: 1
   fields: {article_number: 01-001, name: Mathematik1, description: null, shelf_number: 11,
@@ -24,7 +25,7 @@
     shelf_number: 14, active: true}
 - model: skripten_shop.article
   pk: 7
-  fields: {article_number: 04-001, name: Numerik, description: null, shelf_number: 33,
+  fields: {article_number: 04-005, name: Numerik, description: null, shelf_number: 33,
     active: true}
 - model: skripten_shop.article
   pk: 8
@@ -40,5 +41,25 @@
     active: true}
 - model: skripten_shop.article
   pk: 11
-  fields: {article_number: 04-004, name: Mikrocomputer, description: null, shelf_number: 56,
+  fields: {article_number: 04-001, name: Mikrocomputer, description: null, shelf_number: 56,
     active: true}
+- model: skripten_shop.article
+  pk: 12
+  fields: {article_number: 01-003, name: Gleichstromnetze, description: null, shelf_number: 12,
+    active: true}
+- model: skripten_shop.article
+  pk: 13
+  fields: {article_number: 01-004, name: Physik, description: null, shelf_number: 13,
+    active: true}
+- model: skripten_shop.article
+  pk: 14
+  fields: {article_number: 02-004, name: Wechselstromnetze, description: null, shelf_number: 14,
+    active: true}
+- model: skripten_shop.article
+  pk: 15
+  fields: {article_number: 02-005, name: Digitaltechnik, description: null, shelf_number: 15,
+    active: true}
+- model: skripten_shop.article
+  pk: 16
+  fields: {article_number: 03-003, name: Algorithmen und Datenstrukturen, description: null,
+    shelf_number: 16, active: true}

@@ -10,3 +10,6 @@
 - model: skripten_shop.professor
   pk: 4
   fields: {user: 10}
+- model: skripten_shop.professor
+  pk: 5
+  fields: {user: 13}

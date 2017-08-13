@@ -30,7 +30,12 @@
         {% if student_order %}
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h4>Bestellungen von {{ student.user.first_name }} {{ student.user.last_name }}</h4>
+                    <h4>
+                        Bestellungen von
+                        <u style="font-weight: bold">
+                            {{ student.user.first_name }} {{ student.user.last_name }}
+                        </u>
+                    </h4>
                     <h5 style="color: blue">Bestellung mit dem Status "auf Lager" können über die "Individualbetreuung"
                         ausgegeben werden</h5>
                     <table class="table table-striped" id="article-table">
@@ -58,6 +63,22 @@
                 </div>
             </div>
             <br>
+        {% else %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>
+                        Bestellungen von
+                        <u style="font-weight: bold">
+                            {{ student.user.first_name }} {{ student.user.last_name }}
+                        </u>
+                    </h4>
+                    <h5 style="color: red">Der Student hat noch keine Skripten bestellt.</h5>
+
+                </div>
+            </div>
+            <br>
+
+
         {% endif %}
 
 
@@ -72,7 +93,8 @@
             {% if stock_infos %}
                 <h4>Liste frei verfügbarer Skripte</h4>
                 <h6>Diese können an <strong>jeden</strong> ausgegeben werden</h6>
-                <h6>Ist ein Skript nich mehr verfügbar, kann es unter "Nachbestellung" für den Studenten reserviert
+                <h6>Ist ein Skript nich mehr verfügbar, kann es unter <span style="color: blue;">"Nachbestellung"</span>
+                    für den Studenten reserviert
                     werden</h6>
 
                 <br>
@@ -111,7 +133,7 @@
                                 {% else %}
                                     <td>{{ stock_info.amount_available }}</td>
                                 {% endif %}
-                                <td>{{ stock_info.article.shelf_number }}</td>
+                                <td style="color: grey">{{ stock_info.article.shelf_number }}</td>
                                 <td>
                                     <div class="checkbox">
                                         {% if stock_info.amount_available < 1 %}
@@ -130,17 +152,10 @@
                     </table>
 
                     {% csrf_token %}
-                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
+                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" style="margin-bottom: 20px">
                 </form>
             {% endif %}
         {% endif %}
-
     </div>
 
-{% endblock %}
-
-{% block script %}
-    <script type="text/javascript" src="{% static "js/tablesorter-master/js/jquery.tablesorter.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/tablesorter-master/js/jquery.tablesorter.widgets.js" %}"></script>
-    <script type="text/javascript" src="{% static "skripten_shop/js/ausgabe_tablesorter.js" %}"></script>
 {% endblock %}
