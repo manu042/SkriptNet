@@ -24,7 +24,7 @@ $ git clone https://github.com/manu042/SkriptNet.git
     $ pip install -r requirements.txt
     ```
     Für Python Projekte ist es sinnvoll, eine Virutal Envivroment einzurichten. Eine Anleitung dazu findet man
-    [hier](http://docs.python-guide.org/en/latest/dev/virtualenvs/). (Zum Entwickeln wurde Pyton 3.6)
+    [hier](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
 
 4. SQLite Datenbank anlegen
 ```shell
