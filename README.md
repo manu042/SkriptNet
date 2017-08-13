@@ -8,7 +8,7 @@
 # Entwicklungsumgebung einrichten
 1. Aktuelle Projekt Dateien downloaden
 ```shell
-$ git clone https://git.fs04.de/root/SkriptNet.git
+$ git clone https://github.com/manu042/SkriptNet.git
 ```
 
 2. Branch wechseln (z.B. Develop oder fcome_fserved ) oder neu anlegen
