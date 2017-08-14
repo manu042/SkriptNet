@@ -75,6 +75,10 @@ def scan_legic_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def ausgabe_view(request):
+    """
+    Diese View dient zur Skriptenausgabe
+    """
+
     try:
         # Legic-ID aus Session Cookie auslesen
         legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
@@ -95,9 +99,11 @@ def ausgabe_view(request):
     student_order = Order.objects.filter(student=student)
 
     if request.method == 'POST':
+        # Liste der ausgewählten Skripte abrufen
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
-        error_message = False
+        # TODO: Fehlerfall Ausgabe Skripte > max. Skripte betrachten
+
         for selected_articel_id in selected_articels_id:
             try:
                 # Ausgewählte Artikel (Skripte) aus Datenbank laden und deren Menge um 1 reduzieren
@@ -112,27 +118,31 @@ def ausgabe_view(request):
                 served_article.save()
                 article_in_stock.save()
 
-            except IntegrityError:
-                error_message = True
-                messages.error(request,
-                               'Das Skript %s kann nicht ausgegeben werden! Der Student hat dieses Skript bereits bestellt.' % Article.objects.get(
-                                   pk=selected_articel_id).article_number)
+                # Bei erfolgreicher Ausgabe, Erfolgsmeldung in Messages speichern
+                messages.success(request,
+                                 'Das Skript %s wurde ausgegeben.'
+                                 % Article.objects.get(pk=selected_articel_id).article_number)
 
-        if error_message:
-            return redirect(reverse('skripten_shop:ausgabe'))
+            except IntegrityError:
+                # Bei einem Fehler während er Ausgabe Fehlermeldung in Messages speichern
+                # Ein Fehler tritt z.B. auf, wenn das Objekt "served_article" nicht gespeichert werden kann.
+                # - In diesem Fall hat der Student bereits den jeweiligen Artikel (Skript) erhalten.
+                messages.error(request,
+                               'Das Skript %s kann nicht ausgegeben werden! Der Student hat dieses Skript bereits bestellt.'
+                               % Article.objects.get(pk=selected_articel_id).article_number)
 
         # Legic-ID aus Session Cookie löschen
         del request.session['current_legic']
 
-        return redirect(reverse('skripten_shop:scan-legic'))
+        # Nach der Ausgabe, erfolgt eine Weiterleitung zur anzeige der Success/Error Messages
+        return redirect(reverse('skripten_shop:ausgabe-info'))
 
-    # Requst method Get
     # Alle bestellbaren Artikel (Skripte) aus der Datenbank laden und nach Artikelnummer sortieren
     articles = Article.objects.filter(active=True).order_by("article_number")
 
+    # Menge der Verfügbaren Skripten ermitteln
     stock_infos = []
     for article in articles:
-
         try:
             amount_available = AritcleInStock.objects.get(article=article).amount
         except AritcleInStock.DoesNotExist:
@@ -145,16 +155,22 @@ def ausgabe_view(request):
             'amount_reserved': amount_reserved,
         })
 
-
     context = {
         'student': student,
         'student_order': student_order,
         'stock_infos': stock_infos,
         'max_article': int(max_article_is()),
     }
-
     return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
 
+
+@login_required
+@user_passes_test(has_permisson_skriptenausgabe)
+def ausgabe_messages_view(request):
+    """
+    In dieser View werden die Success/Error Messages, die während er Ausgabe erzeugz wurden angezeigt.
+    """
+    return render(request, "skripten_shop/ausgabe_templates/ausgabe_info.html")
 
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)

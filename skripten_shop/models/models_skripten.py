@@ -62,4 +62,3 @@ class Paket(Article):
     class Meta:
         verbose_name = 'Paket'
         verbose_name_plural = 'Pakete'
-

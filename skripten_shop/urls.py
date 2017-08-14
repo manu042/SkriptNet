@@ -22,6 +22,7 @@ urlpatterns = [
     # Ausgabe URLs
     url(r'^scan_legic/$', views.scan_legic_view, name='scan-legic'),
     url(r'^ausgabe/$', views.ausgabe_view, name='ausgabe'),
+    url(r'^ausgabe/info/$', views.ausgabe_messages_view, name='ausgabe-info'),
     url(r'^individualbetreuung/$', views.individual_assistance_view, name='individualbetreuung'),
     url(r'^reorder/$', views.reorder_view, name='reorder'),
     url(r'^aktivierung/$', views.activation_view, name='aktivierung'),

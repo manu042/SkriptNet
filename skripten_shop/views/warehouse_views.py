@@ -13,7 +13,7 @@ from skripten_shop.utilities import has_permisson_skriptenadmin
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def stock_overview(request):
-    articles = Article.objects.filter(active=True)
+    articles = Article.objects.filter(active=True).order_by("article_number")
 
     stock_infos = []
     for article in articles:
@@ -41,7 +41,7 @@ def show_reorder_view(request):
     # Following relationships “backward”
     # https://docs.djangoproject.com/en/1.11/topics/db/queries/#following-relationships-backward
 
-    articles = Article.objects.filter(active=True)
+    articles = Article.objects.filter(active=True).order_by("article_number")
 
     if request.method == 'POST':
         if 'print_order' in request.POST:
@@ -71,7 +71,7 @@ def show_reorder_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def enter_reorder_view(request):
-    articles = Article.objects.filter(active=True)
+    articles = Article.objects.filter(active=True).order_by("article_number")
 
     if request.method == 'POST':
 

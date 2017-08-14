@@ -14,19 +14,6 @@
     {% endif %}
 
     <div class="container">
-
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>
-                        <div class="alert alert-danger">
-                            <strong>{{ message }}</strong>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
         {% if student_order %}
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -77,10 +64,7 @@
                 </div>
             </div>
             <br>
-
-
         {% endif %}
-
 
         {% if student_order.count >= max_article %}
 
@@ -91,11 +75,11 @@
         {% else %}
 
             {% if stock_infos %}
-                <h4>Liste frei verfügbarer Skripte</h4>
-                <h6>Diese können an <strong>jeden</strong> ausgegeben werden</h6>
-                <h6>Ist ein Skript nich mehr verfügbar, kann es unter <span style="color: blue;">"Nachbestellung"</span>
+                <u><h4>Liste frei verfügbarer Skripte:</h4></u>
+                <h5>Diese können an <strong>jeden</strong> ausgegeben werden</h5>
+                <h5>Ist ein Skript nich mehr verfügbar, kann es unter <span style="color: blue;">"Nachbestellung"</span>
                     für den Studenten reserviert
-                    werden</h6>
+                    werden</h5>
 
                 <br>
                 <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary btn-sm"
