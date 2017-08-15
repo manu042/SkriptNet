@@ -102,7 +102,12 @@ def ausgabe_view(request):
         # Liste der ausgewählten Skripte abrufen
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
-        # TODO: Fehlerfall Ausgabe Skripte > max. Skripte betrachten
+        # Prüfen, ob mehr Skripte ausgegeben werden sollen, als der Student noch erhalten kann
+        if len(selected_articels_id) + student_order.count() > int(max_article_is()):
+            print('Bestellung > max. Skripte')
+            residue = int(max_article_is()) - student_order.count()
+            messages.error(request, "Der Student kann nur noch " + str(residue) + " Skripte erhalten!")
+            return redirect(reverse("skripten-shop:ausgabe"))
 
         for selected_articel_id in selected_articels_id:
             try:
@@ -144,10 +149,13 @@ def ausgabe_view(request):
     stock_infos = []
     for article in articles:
         try:
+            # Die Menge der nicht reservierten Skripten im Lager ermitteln
             amount_available = AritcleInStock.objects.get(article=article).amount
         except AritcleInStock.DoesNotExist:
+            # Wenn das Objekt nicht existiert, wird die Menge auf 0 gesetzt
             amount_available = 0
 
+        # Menge der reservierten Skripte im Lager ermitteln
         amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=article).count()
         stock_infos.append({
             'article': article,

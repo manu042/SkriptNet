@@ -4,6 +4,16 @@
 
 {% block content %}
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container">
+                <div class="alert alert-danger">
+                    <strong>{{ message }}</strong>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% if error_message %}
         <meta http-equiv="refresh" content="3;url={% url 'skripten-shop:scan-legic' %}">
         <div class="container">
@@ -59,7 +69,7 @@
                             {{ student.user.first_name }} {{ student.user.last_name }}
                         </u>
                     </h4>
-                    <h5 style="color: red">Der Student hat noch keine Skripten bestellt.</h5>
+                    <h5 style="color: red">Der Student hat noch keine Skripte bestellt.</h5>
 
                 </div>
             </div>
@@ -75,7 +85,7 @@
         {% else %}
 
             {% if stock_infos %}
-                <u><h4>Liste frei verfügbarer Skripte:</h4></u>
+                <h4><u>Liste frei verfügbarer Skripte:</u></h4>
                 <h5>Diese können an <strong>jeden</strong> ausgegeben werden</h5>
                 <h5>Ist ein Skript nich mehr verfügbar, kann es unter <span style="color: blue;">"Nachbestellung"</span>
                     für den Studenten reserviert
@@ -136,7 +146,8 @@
                     </table>
 
                     {% csrf_token %}
-                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" style="margin-bottom: 20px">
+                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben"
+                           style="margin-bottom: 20px">
                 </form>
             {% endif %}
         {% endif %}
