@@ -31,15 +31,31 @@ $ git clone https://github.com/manu042/SkriptNet.git
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
+5. Fixtures laden
 
-5. Admin User erstellen
+    ```shell
+    python manage.py loaddata groups.yaml
+    python manage.py loaddata settings.yaml
+    python manage.py loaddata study_groups.yaml
+    python manage.py loaddata user.yaml
+    python manage.py loaddata professor.yaml
+    python manage.py loaddata article.yaml
+    python manage.py loaddata skripte.yaml
+    ```
+
+weitere Infos dazu in der fixtures_help.md
+
+
+6. Admin User erstellen
 
     ```shell
     $ python manage.py createsuperuser
     ```
     Damit sich der User auf der Startseite von SkriptNet anmelden kann, sollte der Username wie eine Email-Adresse aufgebaut sein
+    
+    [DAS STANDARD PASSWORT FÜR DEN ADMIN WÄHRE MAL INTERESSANT AN DIESER STELLE]
 
-6. Development Server starten
+7. Development Server starten
     
     Um änderungen im Browser testen zu können, kann Lokal ein Development Server gestartet werden
     ```shell
