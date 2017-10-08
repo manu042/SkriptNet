@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 # My Packages
-
+from skripten_shop.models import Article
 
 class AritcleInStock(models.Model):
     """
