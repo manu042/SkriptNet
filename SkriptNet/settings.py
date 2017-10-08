@@ -180,14 +180,11 @@ LOGGING = {
 #############################################################
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Django Simple Captcha
-# http://django-simple-captcha.readthedocs.io/en/latest/usage.html
-SOUTH_MIGRATION_MODULES = {
-    'captcha': 'captcha.south_migrations',
-}
-
-CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
-CAPTCHA_FONT_SIZE = 40
+# Django reCAPTCHA
+# https://github.com/praekelt/django-recaptcha
+RECAPTCHA_PUBLIC_KEY = '6Ldp7TAUAAAAAM28HL5IHV-vWnvMOPF1Gm6uSnG3'
+RECAPTCHA_PRIVATE_KEY = '6Ldp7TAUAAAAAJeiA0Zy1JGF00Zh4-qjxuVTsZGK'
+NOCAPTCHA = True
 
 # Mail Setting
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -28,7 +28,6 @@ urlpatterns = [
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^captcha/', include('captcha.urls')),
     url(r'', include('skripten_shop.urls', namespace='skripten-shop')),
 
 ]
