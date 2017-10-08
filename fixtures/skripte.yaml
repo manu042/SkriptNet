@@ -1,0 +1,160 @@
+- model: skripten_shop.skript
+  pk: 1
+  fields:
+    author: 4
+    cover_sheet_color: Blau
+    page_numbers: 100
+    semester: 1
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [1]
+- model: skripten_shop.skript
+  pk: 2
+  fields:
+    author: 4
+    cover_sheet_color: Gelb
+    page_numbers: 150
+    semester: 2
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [2, 3, 5]
+- model: skripten_shop.skript
+  pk: 3
+  fields:
+    author: 3
+    cover_sheet_color: Rot
+    page_numbers: 600
+    semester: 3
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [6]
+- model: skripten_shop.skript
+  pk: 4
+  fields:
+    author: 1
+    cover_sheet_color: Gelb
+    page_numbers: 150
+    semester: 3
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [6]
+- model: skripten_shop.skript
+  pk: 5
+  fields:
+    author: 2
+    cover_sheet_color: Blau
+    page_numbers: 150
+    semester: 1
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [1]
+- model: skripten_shop.skript
+  pk: 6
+  fields:
+    author: 2
+    cover_sheet_color: Rot
+    page_numbers: 90
+    semester: 2
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [2, 3, 4, 5]
+- model: skripten_shop.skript
+  pk: 7
+  fields:
+    author: 4
+    cover_sheet_color: Blau
+    page_numbers: 160
+    semester: 4
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [7, 8]
+- model: skripten_shop.skript
+  pk: 8
+  fields:
+    author: 5
+    cover_sheet_color: Rot
+    page_numbers: 0
+    semester: 4
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [7, 8]
+- model: skripten_shop.skript
+  pk: 9
+  fields:
+    author: 1
+    cover_sheet_color: Rot
+    page_numbers: 160
+    semester: 2
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [2, 3, 4, 5]
+- model: skripten_shop.skript
+  pk: 10
+  fields:
+    author: 3
+    cover_sheet_color: Rot
+    page_numbers: 200
+    semester: 4
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [7, 8]
+- model: skripten_shop.skript
+  pk: 11
+  fields:
+    author: 3
+    cover_sheet_color: Blau
+    page_numbers: 200
+    semester: 4
+    revision_date: 2017-07-31
+    file: ''
+    studygroup: [7, 8]
+- model: skripten_shop.skript
+  pk: 12
+  fields:
+    author: 3
+    cover_sheet_color: Blau
+    page_numbers: 100
+    semester: 1
+    revision_date: 2017-08-12
+    file: ''
+    studygroup: [1]
+- model: skripten_shop.skript
+  pk: 13
+  fields:
+    author: 2
+    cover_sheet_color: Rot
+    page_numbers: 140
+    semester: 1
+    revision_date: 2017-08-12
+    file: ''
+    studygroup: [1]
+- model: skripten_shop.skript
+  pk: 14
+  fields:
+    author: 3
+    cover_sheet_color: Gelb
+    page_numbers: 160
+    semester: 2
+    revision_date: 2017-08-12
+    file: ''
+    studygroup: [2, 3, 4, 5]
+- model: skripten_shop.skript
+  pk: 15
+  fields:
+    author: 2
+    cover_sheet_color: Orange
+    page_numbers: 150
+    semester: 2
+    revision_date: 2017-08-12
+    file: ''
+    studygroup: [2, 3, 4, 5]
+- model: skripten_shop.skript
+  pk: 16
+  fields:
+    author: 5
+    cover_sheet_color: Gelb
+    page_numbers: 170
+    semester: 3
+    revision_date: 2017-08-12
+    file: ''
+    studygroup: [6]

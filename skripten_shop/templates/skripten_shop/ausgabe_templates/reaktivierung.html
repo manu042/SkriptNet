@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load membership_fee_tag %}
 
 {% block content %}
 
@@ -18,7 +19,7 @@
                 <div class="panel-heading">Reaktivierung</div>
                 <div class="panel-body">
 
-                    <p>Bitte Mitgliedsbeitrag in höhe von 3€ kassieren.</p>
+                    <p><strong style="color: red">Mitgliedsbeitrag in Höhe von {% membership_fee %}€ kassieren</strong>
                     <br>
 
                     <table class="table">
@@ -33,7 +34,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Mitglied seit:</th>
-                            <td>{{ student.begin_membership }}</td>
+                            <td>{{ student.user.date_joined.date }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -42,7 +43,7 @@
                     <form action="" method="post" autocomplete="off">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <input class="btn btn-success" type="submit" value="Bezahlt">
+                        <input class="btn btn-success" type="submit" value="Speichern">
                     </form>
 
                 </div>

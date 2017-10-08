@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '6o)=a+!-ra^6(^s4!ett(8^lib&8xz_rtw)91h(*2m3jr(&*p2'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -82,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SkriptNet.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -92,7 +89,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -112,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -125,7 +120,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -142,6 +136,45 @@ FIXTURE_DIRS = (
 
 LOGIN_URL = '/'
 
+# https://docs.djangoproject.com/en/dev/topics/logging/#topic-logging-parts-filters
+# TODO: Logger für verschiedene Level erstellen
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'handlers': {
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logfiles/skripten_shop.log'),
+            'maxBytes': 1024 * 1024 * 1,  # 1MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s|%(message)s'
+        },
+
+        'verbose': {
+            'format': '%(levelname)s|%(asctime)s|%(module)s|%(funcName)s|%(message)s',
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+    },
+
+    'loggers': {
+        'skripten_shop': {
+            'level': 'DEBUG',
+            'handlers': ['default', ],
+        }
+    },
+}
 
 # My Settings
 #############################################################
@@ -152,18 +185,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 SOUTH_MIGRATION_MODULES = {
     'captcha': 'captcha.south_migrations',
 }
+
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 CAPTCHA_FONT_SIZE = 40
 
-
 # Mail Setting
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'w00739ef.kasserver.com'
+EMAIL_HOST = 'ldap.fs04.ee.hm.edu'
 EMAIL_HOST_PORT = '587'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'm03dd7e2'
-EMAIL_HOST_PASSWORD = 'mCN3DrsFXfwqrrhe'
-DEFAULT_FROM_EMAIL = 'skripten@verteiler.cc'
-
-DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/html')
+EMAIL_HOST_USER = 'skripten-info@fs04.ee.hm.edu'
+EMAIL_HOST_PASSWORD = 'd34k9oYZQUeKNtZUaR'
+DEFAULT_FROM_EMAIL = 'skripten-info@fs04.ee.hm.edu'

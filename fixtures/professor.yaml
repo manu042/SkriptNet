@@ -1,0 +1,15 @@
+- model: skripten_shop.professor
+  pk: 1
+  fields: {user: 8}
+- model: skripten_shop.professor
+  pk: 2
+  fields: {user: 11}
+- model: skripten_shop.professor
+  pk: 3
+  fields: {user: 9}
+- model: skripten_shop.professor
+  pk: 4
+  fields: {user: 10}
+- model: skripten_shop.professor
+  pk: 5
+  fields: {user: 13}

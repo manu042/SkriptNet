@@ -60,7 +60,7 @@ class Student(models.Model):
 
 class BezahltStatus(models.Model):
     semester = models.CharField(max_length=30)
-    paid = models.BooleanField(default=False, verbose_name='Bezahlt')
+    paid = models.BooleanField(default=True, verbose_name='Bezahlt')
     student = models.ForeignKey('Student', null=True)
     date = models.DateTimeField(default=timezone.now, verbose_name='Bezahlt am')
 

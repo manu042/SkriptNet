@@ -1,33 +1,38 @@
 # https://docs.djangoproject.com/en/1.10/howto/initial-data/
 # Diese Datei wurde mit dem folgendem Befehl erstellt
-# python manage.py dumpdata auth.Group --format=yaml > groups.yaml
+# python manage.py dumpdata auth.Group --format=yaml > fixtures/groups.yaml
 # !!! Vorher über Django Admin Objekte in der Datenbank erstellen
 # Mit dem Befehl
 # python manage.py loaddata groups.yaml
 # werden die Daten in die Datenbank geladen
 # TODO: Besser über migration
 - model: auth.group
-  pk: 2
+  pk: 1
   fields:
     name: Admin
-    permissions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 19, 20, 21, 13, 14, 15, 16,
-      17, 18, 34, 35, 36, 37, 38, 39, 40, 41, 42, 46, 47, 48, 43, 44, 45, 31, 32,
-      33, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    permissions: [1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12, 19, 20, 21, 13, 14, 15, 16,
+      17, 18, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+      39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+- model: auth.group
+  pk: 2
+  fields:
+    name: Skriptenadmin
+    permissions: [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+      47, 48]
 - model: auth.group
   pk: 3
   fields:
-    name: Fachschaftler
+    name: Skriptenausgabe
     permissions: []
 - model: auth.group
   pk: 4
   fields:
-    name: Skriptenadmin
-    permissions: [34, 35, 36, 37, 38, 39, 40, 41, 42, 46, 47, 48, 43, 44, 45, 31,
-      32, 33]
+    name: Vorstand Verein
+    permissions: [1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12, 19, 20, 21, 13, 14, 15, 16,
+      17, 18, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+      39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
 - model: auth.group
   pk: 5
   fields:
-    name: Vorstand Verein
-    permissions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 19, 20, 21, 13, 14, 15, 16,
-      17, 18, 34, 35, 36, 37, 38, 39, 40, 41, 42, 46, 47, 48, 43, 44, 45, 31, 32,
-      33, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    name: aktive Vereinsmitglieder
+    permissions: []

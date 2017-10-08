@@ -17,8 +17,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
-from django.views.static import serve
-from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
 
@@ -32,11 +30,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^captcha/', include('captcha.urls')),
     url(r'', include('skripten_shop.urls', namespace='skripten-shop')),
-]
-from django.conf import settings
-from django.views.static import serve
 
-if settings.DEBUG:
-    urlpatterns += [
-        url(r'^docs/(?P<path>.*)$', serve, {'document_root': settings.DOCS_ROOT}),
-    ]
+]

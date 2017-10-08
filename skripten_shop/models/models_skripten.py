@@ -5,6 +5,7 @@ from django.utils import timezone
 
 # My Packages
 from .models_users import Professor
+from .models_settings import StudyGroup
 
 
 class Article(models.Model):
@@ -15,7 +16,7 @@ class Article(models.Model):
     article_number = models.CharField(verbose_name='Artikel Nummer', max_length=20, unique=True)
     name = models.CharField(verbose_name='Artikel Name', max_length=50)
     description = models.CharField(verbose_name='Beschreibung', max_length=100, null=True, blank=True)
-    shelf = models.IntegerField(verbose_name='Fach')
+    shelf_number = models.IntegerField(verbose_name='Fach Nummer')
     active = models.BooleanField(default=True)
 
     class Meta:
@@ -31,8 +32,7 @@ class Skript(Article):
     Model für Skripten, Vererbung von Artikel
     """
     author = models.ForeignKey(Professor, on_delete=models.CASCADE)
-    # Professoren, die das Skript Verwenden
-    users = models.ManyToManyField(Professor, related_name='user_profile', verbose_name="Verwender")
+    studygroup = models.ManyToManyField(StudyGroup, verbose_name='Studiengruppe')
     # Farbe des Deckblatts Info für Druckdienstleister
     cover_sheet_color = models.CharField(max_length=20, verbose_name='Deckblattfarbe')
     page_numbers = models.IntegerField(default=0, verbose_name='Seitenzahl')
@@ -62,48 +62,3 @@ class Paket(Article):
     class Meta:
         verbose_name = 'Paket'
         verbose_name_plural = 'Pakete'
-
-
-class ArticleInCart(models.Model):
-    """
-    Das Model repräsentiert einen Artikel im Warenkorb eines Studenten
-    """
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Besteller')
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Artikel')
-    date_added_to_cart = models.DateTimeField(default=timezone.now, verbose_name='Hinzugefügt am')
-
-    class Meta:
-        verbose_name = 'Artikel in Warenkorb'
-        verbose_name_plural = 'Artikel in Warenkorb'
-        unique_together = (("customer", "article"),)
-
-
-class ArticleInOrder(models.Model):
-    """
-    Das Model repräsentiert die Bestellung eines Skripts oder Pakets eines Studenten
-    """
-    TOORDER = 'to_order'
-    INPRINT = 'in_print'
-    RESERVED = 'reserved'
-    DELIVERD = 'deliverd'
-    CANCELD = 'canceled'
-    EXPIRED = 'expired'
-    status_choices = (
-        (TOORDER, 'in Bearbeitung'),
-        (INPRINT, 'im Druck'),
-        (RESERVED, 'auf Lager'),
-        (DELIVERD, 'ausgegeben'),
-        (CANCELD, 'storniert'),
-        (EXPIRED, 'ausgelaufen'),
-    )
-
-    # IF blank, dann nicht reserviert
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, verbose_name='Besteller')
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Artikel')
-    date_order_placed = models.DateTimeField(default=timezone.now, verbose_name='Bestellt am')
-    status = models.CharField(max_length=20, choices=status_choices, default='to_order')
-
-    class Meta:
-        verbose_name = 'Bestellter Artikel'
-        verbose_name_plural = 'Bestellte Artikel'
-        unique_together = (("customer", "article"),)

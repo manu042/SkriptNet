@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if error_message %}
+        <meta http-equiv="refresh" content="2;url={% url 'skripten-shop:scan-legic' %}">
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>
+                        <div class="alert alert-danger">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if student %}
+            <h4>Nachbestellung</h4>
+            <h6>Falls ein Skript im Lager nicht mehr verfügbar ist, kann es hier für den Studenten bestellt werden.</h6>
+            <h6>Zum Bestellen: Skripte in der Liste auswählen und "Bestellen" Button drücken.</h6>
+
+            <ul>
+                <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
+                <li>{{ student.user.email }}</li>
+            </ul>
+
+        {% endif %}
+
+        <ul>
+            {% for article in served_article %}
+                <li>{{ article.article.name }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if articles %}
+            <div class="container">
+                <form action="" method="post">
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th>Skript-Nr.</th>
+                            <th>Skriptname</th>
+                            <th>Autor</th>
+                            <th>Studiengruppe</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in articles %}
+                            <tr>
+                                <td>{{ article.article_number }}</td>
+                                <td>{{ article.name }}</td>
+                                <td>{{ article.skript.author }}</td>
+                                <td>
+                                    {% for studygroup in article.skript.studygroup.all %}
+                                        <li>{{ studygroup }}</li>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="selected_articel[]" value="{{ article.id }}">
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% csrf_token %}
+                    <input class="btn btn-success" type="submit" name="nachbestellen" value="Bestellen">
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

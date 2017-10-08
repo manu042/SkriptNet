@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Mail</div>
+            <div class="panel-body">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    {{ form| crispy }}
+
+                    <input class="btn btn-danger" type="submit" name="save_settings" value="Senden">
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/Trumbowyg-master/dist/trumbowyg.min.js' %}"></script>
+
+    <script>
+        $('#id_mail_text').trumbowyg();
+    </script>
+    <link rel="stylesheet" href="{% static 'js/Trumbowyg-master/dist/ui/trumbowyg.min.css' %}">
+
+{% endblock %}

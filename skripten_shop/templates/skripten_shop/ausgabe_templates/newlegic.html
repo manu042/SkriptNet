@@ -13,7 +13,7 @@
 
 
     {% if success_message %}
-        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:ausgabe' %}">
+        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:scan-legic' %}">
         <div class="container">
             <div class="alert alert-success">
                 <strong>{{ success_message }}</strong>
@@ -28,8 +28,14 @@
                 <div class="panel-heading">Legic Aktualisierung</div>
                 <div class="panel-body">
 
-                    <p>Hier kann dem Studenten eine neue Legic-ID zugewiesen werden.</p>
-                    <br>
+                    <p>
+                        Mit diesem Modul kann dem Studenten eine neue Legic-ID zugewiesen werden (z.B. wg. einer neuen
+                        Karte).
+                        Hierfür muss die bei der Registrierung angegebene E-Mail Adresse eingegeben werden. Sollte diese
+                        nicht mehr bekannt sein, bitte an den Vorstand wenden.
+                    </p>
+                    <p><strong style="color: red">Achtung: Dieses Modul dient nicht zur Aktivierung!</strong>
+                        <br>
 
                     <form action="" method="post" autocomplete="off">
                         {% csrf_token %}

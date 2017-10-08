@@ -18,6 +18,39 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <!-- Customized Bootstrap CSS -->
+    <style type="text/css">
+        .panel panel-default{
+            background-image: url("fs_logo_resized.png");
+        }
+        .panel-default > .panel-heading{
+            background-color: #00AAB5;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .panel-default {
+            border-left: 1px solid #00AAB5;
+            border-right: 1px solid #00AAB5;
+            border-bottom: 1px solid #00AAB5;
+        }
+        .btn-primary{
+            background-color: #00AAB5;
+            border-color: #0198A0;
+        }
+        .btn-primary:hover{
+            background-color: #00858C;
+            border-color: #00686D;
+        }
+        .btn-primary.focus,.btn-primary:focus{
+            background-color: #00858C;
+            border-color: #003C3F;
+        }
+        .btn-primary.active.focus,.btn-primary.active:focus,.btn-primary.active:hover,.btn-primary:active.focus,.btn-primary:active:focus,.btn-primary:active:hover,.open>.dropdown-toggle.btn-primary.focus,.open>.dropdown-toggle.btn-primary:focus,.open>.dropdown-toggle.btn-primary:hover{
+            background-color: #00686D;
+            border-color: #003C3F;
+        }
+    </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -26,7 +59,18 @@
 </head>
 <body>
 
-<div class="col-md-6 col-md-offset-3" style="padding-top: 15%">
+<div class="col-md-6 col-md-offset-3" style="padding-top: 30px">
+      <div class="row">
+        <div class="col-xs-3 col-sm-4"></div>
+        <div class="col-xs-6 col-sm-5"><img src="../../../../static/images/fs_logo_resized.png" alt=""
+             class="img-responsive center-block" >
+        </div>
+        <div class="col-xs-3 col-sm-4"></div>
+      </div>
+
+    <div style="text-align: left; padding-bottom: 15px; font-weight: bold">
+        SkriptNET
+    </div>
     <div class="panel panel-default">
         <div class="panel-heading">Login</div>
         <div class="panel-body">
@@ -37,9 +81,10 @@
             </form>
         </div>
     </div>
-    <span><a href="{% url 'skripten_shop:register' %}">Konto erstellen</a></span>
-    <br>
+    <div style="text-align: center">
+    <span><a href="{% url 'skripten_shop:register' %}">Konto erstellen</a></span> |
     <span><a href="{% url 'password_reset' %}">Passwort vergessen</a></span>
+    </div>
 </div>
 
 

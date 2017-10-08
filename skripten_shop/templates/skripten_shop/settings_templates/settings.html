@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 
 {% block content %}
@@ -9,9 +10,8 @@
             <div class="panel-heading">Akutelles Semester</div>
             <div class="panel-body">
 
-                <h3><p>{{ current_semester.current_semester }}</p></h3>
+                <h3><p>{{ current_semester }}</p></h3>
                 <br>
-
 
                 <!-- Trigger the modal with a button -->
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
@@ -42,7 +42,6 @@
                                            value="Neues Semester Starten">
                                 </form>
 
-
                             </div>
 
                             <div class="modal-footer">
@@ -69,11 +68,18 @@
                     <input class="btn btn-danger" type="submit" name="save_settings" value="Speichern">
                 </form>
 
-
             </div>
         </div>
     </div>
 
-
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Vorschau: Info Text</div>
+            <div class="panel-body">
+                {{ info_text|safe }}
+                <a href="{% url 'skripten_shop:info-text' %}" class="btn btn-info" role="button">Bearbeiten</a>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

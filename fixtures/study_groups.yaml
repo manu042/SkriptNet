@@ -1,0 +1,48 @@
+- model: skripten_shop.studygroup
+  pk: 1
+  fields: {title: BAC1A}
+- model: skripten_shop.studygroup
+  pk: 2
+  fields: {title: BAC2A}
+- model: skripten_shop.studygroup
+  pk: 3
+  fields: {title: BAC2B}
+- model: skripten_shop.studygroup
+  pk: 4
+  fields: {title: BAC2C}
+- model: skripten_shop.studygroup
+  pk: 5
+  fields: {title: BAC2D}
+- model: skripten_shop.studygroup
+  pk: 6
+  fields: {title: EIB3A}
+- model: skripten_shop.studygroup
+  pk: 7
+  fields: {title: EIB4A}
+- model: skripten_shop.studygroup
+  pk: 8
+  fields: {title: EIB4B}
+- model: skripten_shop.studygroup
+  pk: 9
+  fields: {title: B5P}
+- model: skripten_shop.studygroup
+  pk: 10
+  fields: {title: EIB6/7}
+- model: skripten_shop.studygroup
+  pk: 11
+  fields: {title: EMB3A}
+- model: skripten_shop.studygroup
+  pk: 12
+  fields: {title: EMB4A}
+- model: skripten_shop.studygroup
+  pk: 13
+  fields: {title: EMB6/7}
+- model: skripten_shop.studygroup
+  pk: 14
+  fields: {title: ELM1/2}
+- model: skripten_shop.studygroup
+  pk: 15
+  fields: {title: SMM1}
+- model: skripten_shop.studygroup
+  pk: 16
+  fields: {title: SMM2}

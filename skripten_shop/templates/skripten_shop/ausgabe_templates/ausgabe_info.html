@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+                <div class="alert alert-success">
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-danger">
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+     {% else %}
+        <div class="alert alert-warning">
+                    <strong>Es wurden keine Skripte ausgegeben</strong>
+                </div>
+    {% endif %}
+        <a class="btn btn-success" href="{% url "skripten-shop:scan-legic" %}">Ausgabe beenden</a>
+    </div>
+
+{% endblock %}

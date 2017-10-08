@@ -2,20 +2,31 @@
 from django.contrib import admin
 
 # My Packages
-from .models import Student, NewStudentRegistration, Paket, Article, ArticleInCart, ArticleInOrder, Professor, \
-    BezahltStatus, Skript, CurrentSemester, ShopSettings
-from skripten_shop.forms import SkriptAdminForm
+from .models import Student, NewStudentRegistration, Paket, ArticleInCart, Professor, \
+    BezahltStatus, Skript, ShopSettings
+from skripten_shop.forms import StudygroupHorizontalAdminForm, SkriptenHorizontalAdminForm
+from .models import AritcleInStock, Order, StudyGroup
+
 
 # Users
 # =======================================================================
 
 
-class SkriptAdmin(admin.ModelAdmin):
+class StudygroupHorizontal(admin.ModelAdmin):
     """
     nifty unobtrusive JavaScript “filter” für MultiToManyField
     """
-    filter_horizontal = ('users',)
-    form = SkriptAdminForm
+    filter_horizontal = ('studygroup',)
+    form = StudygroupHorizontalAdminForm
+
+
+class SkriptenpHorizontal(admin.ModelAdmin):
+    """
+    nifty unobtrusive JavaScript “filter” für MultiToManyField
+    """
+    filter_horizontal = ('skripte',)
+    form = SkriptenHorizontalAdminForm
+
 
 class SkriptInline(admin.StackedInline):
     model = Skript
@@ -36,21 +47,17 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'birth_date']
 
 
-admin.site.register(Skript, SkriptAdmin)
+admin.site.register(Skript, StudygroupHorizontal)
 admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(Student, StudentAdmin)
+admin.site.register(Paket, SkriptenpHorizontal)
 admin.site.register(NewStudentRegistration)
-
-# Skripten
-# =======================================================================
-admin.site.register(Paket)
-admin.site.register(Article)
 admin.site.register(ArticleInCart)
-admin.site.register(ArticleInOrder)
+admin.site.register(StudyGroup)
+admin.site.register(AritcleInStock)
 
-# Lager
-# =======================================================================
 
 # TODO: Löschen
-admin.site.register(CurrentSemester)
 admin.site.register(ShopSettings)
+admin.site.register(Order)
+

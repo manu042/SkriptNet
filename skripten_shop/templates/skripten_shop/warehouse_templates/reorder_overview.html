@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h3>Nachbestellungen</h3>
+        <h5>Hier werden alle Nachbestellungen der Studenten aufgelistet</h5>
+        <br>
+        <table class="table table-striped add-to-cart">
+            <thead>
+            <tr>
+                <th>Skript-Nr.</th>
+                <th>Skriptname</th>
+                <th>Menge</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.article.article_number }}</td>
+                    <td>{{ order.article }}</td>
+                    <td>{{ order.order_amount }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="print_order" value="Bestellung aufgeben">
+        </form>
+
+    </div>
+
+{% endblock %}
