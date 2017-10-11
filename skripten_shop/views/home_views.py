@@ -15,7 +15,7 @@ import logging
 # My Packages
 from skripten_shop.forms import UserLoginForm, UserRegisterForm
 from skripten_shop.models import NewStudentRegistration, Student, ShopSettings
-from skripten_shop.utilities import send_registration_mail
+from skripten_shop.utilities import send_mail
 
 logger = logging.getLogger('skripten_shop.default')
 
