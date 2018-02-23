@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import json
+
+# Config Datei lesen
+with open('SkriptNet/config.json', 'r') as f:
+    config = json.load(f)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,7 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6o)=a+!-ra^6(^s4!ett(8^lib&8xz_rtw)91h(*2m3jr(&*p2'
+SECRET_KEY = config["SECRET_KEY"]
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -178,8 +184,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Django reCAPTCHA
 # https://github.com/praekelt/django-recaptcha
-RECAPTCHA_PUBLIC_KEY = '6Ldp7TAUAAAAAM28HL5IHV-vWnvMOPF1Gm6uSnG3'
-RECAPTCHA_PRIVATE_KEY = '6Ldp7TAUAAAAAJeiA0Zy1JGF00Zh4-qjxuVTsZGK'
+RECAPTCHA_PUBLIC_KEY = config["RECAPTCHA_PUBLIC_KEY"]
+RECAPTCHA_PRIVATE_KEY = config["RECAPTCHA_PRIVATE_KEY"]
 NOCAPTCHA = True
 
 # Mail Setting
@@ -188,6 +194,6 @@ EMAIL_HOST = 'ldap.fs04.ee.hm.edu'
 EMAIL_HOST_PORT = '587'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'skriptnet@fs04.ee.hm.edu'
-EMAIL_HOST_PASSWORD = 'd34k9oYZQUeKNtZUaR'
+EMAIL_HOST_USER = config["EMAIL_USER"]  # 'skriptnet@fs04.ee.hm.edu'
+EMAIL_HOST_PASSWORD = config["EMAIL_PW"]
 DEFAULT_FROM_EMAIL = 'skriptnet@fs04.ee.hm.edu'

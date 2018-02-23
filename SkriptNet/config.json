@@ -1,0 +1,10 @@
+{
+  "SECRET_KEY": "6o)=a+!-ra^6(^s4!ett(8^lib&8xz_rtw)91h(*2m3jr(&*p2",
+  "DB_NAME": "SkriptnetDB",
+  "DB_USER": "Skriptnetadmin",
+  "DB_PW": "R7E.kwqm69Qrd",
+  "RECAPTCHA_PUBLIC_KEY": "6Ldp7TAUAAAAAM28HL5IHV-vWnvMOPF1Gm6uSnG3",
+  "RECAPTCHA_PRIVATE_KEY": "6Ldp7TAUAAAAAJeiA0Zy1JGF00Zh4-qjxuVTsZGK",
+  "EMAIL_USER": "skriptnet@fs04.ee.hm.edu",
+  "EMAIL_PW": "d34k9oYZQUeKNtZUaR"
+}
