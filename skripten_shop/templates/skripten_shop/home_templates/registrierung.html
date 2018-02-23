@@ -26,14 +26,15 @@
 </head>
 <body>
 
-{#TODO: skripten@fs04.ee.hm.edu aus Datenbank laden#}
+{# TODO: skripten@fs04.ee.hm.edu aus Datenbank laden #}
 {% if success_message %}
     <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
         <div class="alert alert-success">
             Wir haben dir eine E-Mail mit einem Link zur Verifizierung deines Kontos an {{ success_message }} geschickt.
             <br>
             <br>
-            Falls du keine E-Mail erhalten hast, wende dich bitte von deiner HM-Mail "{{ success_message }}" an "skripten@fs04.ee.hm.edu".
+            Falls du keine E-Mail erhalten hast, wende dich bitte von deiner HM-Mail "{{ success_message }}" an
+            "skripten@fs04.ee.hm.edu".
         </div>
     </div>
 
@@ -51,6 +52,7 @@
         </div>
     </div>
 
+    {# TODO: Höhe des Mitgliedsbeitrags aus der Datenbank laden #}
     <div class="col-md-6 col-md-offset-3">
         <h4>Allgemeines:</h4>
         <ul style="margin-left: -20px">

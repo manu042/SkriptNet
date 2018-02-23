@@ -1,3 +1,6 @@
+"""
+In diesem Modul befinden sich alle Views, die für den Verein relevant sind.
+"""
 # Django Packages
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -12,7 +15,10 @@ from skripten_shop.forms import SendAssociationMailForm, AssociationSettingsForm
 @login_required
 @user_passes_test(has_permisson_vorstand_verein)
 def association_settings_view(request):
-    shop_settings = ShopSettings.objects.get(pk=1)
+    try:
+        shop_settings = ShopSettings.objects.get(pk=1)
+    except:
+        shop_settings = None
 
     if request.method == 'POST':
 
@@ -34,7 +40,10 @@ def association_settings_view(request):
 @login_required
 @user_passes_test(has_permisson_vorstand_verein)
 def association_members_view(request):
-    current_semester = ShopSettings.objects.get(pk=1)
+    try:
+        current_semester = ShopSettings.objects.get(pk=1)
+    except:
+        current_semester = None
     paid_objects = BezahltStatus.objects.filter(semester=current_semester)
     students = Student.objects.all()
 

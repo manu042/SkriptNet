@@ -1,11 +1,35 @@
 # Django packages
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from django.utils import timezone
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.utils import IntegrityError
 
+
 # My packages
-from skripten_shop.models import Skript, Article, ArticleInCart, Order
+from skripten_shop.models import Article, ArticleInCart, Order, AritcleInStock
+
+
+@login_required
+def stock_overview(request):
+    articles = Article.objects.filter(active=True).order_by("article_number")
+
+    stock_infos = []
+    for article in articles:
+        try:
+            amount_available = AritcleInStock.objects.get(article=article).amount
+        except AritcleInStock.DoesNotExist:
+            amount_available = 0
+        amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=article).count()
+        stock_infos.append({
+            'article': article,
+            'amount_available': amount_available,
+            'amount_reserved': amount_reserved,
+        })
+
+    context = {
+        'stock_infos': stock_infos,
+    }
+
+    return render(request, 'skripten_shop/warehouse_templates/stock_overview.html', context)
 
 
 @login_required

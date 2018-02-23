@@ -13,7 +13,7 @@
     {% endif %}
 
     {% if success_message %}
-        <meta http-equiv="refresh" content="1;url={% url 'skripten-shop:ausgabe' %}">
+        <meta http-equiv="refresh" content="1;url={% url 'skripten_shop:ausgabe' %}">
         <div class="container">
             <div class="alert alert-success">
                 <strong>{{ success_message }}</strong>
@@ -66,7 +66,7 @@
                         </li>
                     </ul>
 
-                    <a class="btn btn-danger" role="button" href="{% url 'skripten-shop:newlegic' %}">
+                    <a class="btn btn-danger" role="button" href="{% url 'skripten_shop:newlegic' %}">
                         Legic Aktualisierung</a>
                     <br>
                     <br>

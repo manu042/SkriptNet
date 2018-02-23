@@ -2,30 +2,21 @@
 from django.contrib import admin
 
 # My Packages
-from .models import Student, NewStudentRegistration, Paket, ArticleInCart, Professor, \
-    BezahltStatus, Skript, ShopSettings
-from skripten_shop.forms import StudygroupHorizontalAdminForm, SkriptenHorizontalAdminForm
-from .models import AritcleInStock, Order, StudyGroup
+from .models import Student, NewStudentRegistration, Professor, BezahltStatus, Skript
+from .models import AritcleInStock, StudyGroup
 
 
-# Users
-# =======================================================================
+class StudentSemesterInline(admin.TabularInline):
+    # Objekt Bezahltsatus für das Objekt Student editierbar machen
+    model = BezahltStatus
+    extra = 0
 
 
-class StudygroupHorizontal(admin.ModelAdmin):
-    """
-    nifty unobtrusive JavaScript “filter” für MultiToManyField
-    """
-    filter_horizontal = ('studygroup',)
-    form = StudygroupHorizontalAdminForm
-
-
-class SkriptenpHorizontal(admin.ModelAdmin):
-    """
-    nifty unobtrusive JavaScript “filter” für MultiToManyField
-    """
-    filter_horizontal = ('skripte',)
-    form = SkriptenHorizontalAdminForm
+class StudentAdmin(admin.ModelAdmin):
+    # Für jedes Objekt Student, dessen Bezahltstatus anzeigen
+    inlines = [StudentSemesterInline, ]
+    # Geburtsdatum in der Gesamtliste anzeigen
+    list_display = ['__str__', 'birth_date']
 
 
 class SkriptInline(admin.StackedInline):
@@ -37,27 +28,16 @@ class ProfessorAdmin(admin.ModelAdmin):
     inlines = [SkriptInline, ]
 
 
-class StudentSemesterInline(admin.TabularInline):
-    model = BezahltStatus
-    extra = 0
+class SkriptAdmin(admin.ModelAdmin):
+    list_display = ["article_number", "__str__", "active", ]
+    filter_horizontal = ('studygroup',)
+    ordering = ["article_number", "name",]
 
 
-class StudentAdmin(admin.ModelAdmin):
-    inlines = [StudentSemesterInline, ]
-    list_display = ['__str__', 'birth_date']
-
-
-admin.site.register(Skript, StudygroupHorizontal)
-admin.site.register(Professor, ProfessorAdmin)
+# Models in der Django Admin Oberfläche anzeigen
 admin.site.register(Student, StudentAdmin)
-admin.site.register(Paket, SkriptenpHorizontal)
-admin.site.register(NewStudentRegistration)
-admin.site.register(ArticleInCart)
+admin.site.register(Professor, ProfessorAdmin)
+admin.site.register(Skript, SkriptAdmin)
 admin.site.register(StudyGroup)
+admin.site.register(NewStudentRegistration)
 admin.site.register(AritcleInStock)
-
-
-# TODO: Löschen
-admin.site.register(ShopSettings)
-admin.site.register(Order)
-

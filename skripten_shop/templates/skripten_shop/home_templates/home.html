@@ -3,13 +3,15 @@
 
 {% block content %}
 
-    <div class="container">
-        <div class="panel panel-success">
-            <div class="panel-heading">Hinweis:</div>
-            <div class="panel-body">
-                {{ info_text|safe }}
+    {% if info_text %}
+        <div class="container">
+            <div class="panel panel-success">
+                <div class="panel-heading">Hinweis:</div>
+                <div class="panel-body">
+                    {{ info_text|safe }}
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock %}

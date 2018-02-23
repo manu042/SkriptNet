@@ -1,28 +1,6 @@
-INFO|20/Jul/2017 15:52:27|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|20/Jul/2017 16:06:14|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-ERROR|12/Aug/2017 15:04:29|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|12/Aug/2017 15:04:31|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|12/Aug/2017 18:41:10|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|12/Aug/2017 18:41:15|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|12/Aug/2017 18:41:24|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-INFO|13/Aug/2017 15:28:03|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse manuel.binici@me.com erstellt.
-ERROR|14/Aug/2017 17:05:31|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|14/Aug/2017 17:05:41|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|14/Aug/2017 17:13:34|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|14/Aug/2017 17:15:06|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|14/Aug/2017 17:28:40|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|14/Aug/2017 17:30:36|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|15/Aug/2017 15:15:16|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|15/Aug/2017 15:16:37|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|01/Sep/2017 12:37:40|ausgabe_views|ausgabe_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-INFO|16/Sep/2017 20:05:05|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse binici@hm.edu erstellt.
-INFO|16/Sep/2017 20:26:11|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse binici@hm.edu erstellt.
-INFO|16/Sep/2017 20:28:51|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|16/Sep/2017 20:30:21|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|17/Sep/2017 13:46:00|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|17/Sep/2017 13:47:12|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|17/Sep/2017 13:49:36|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|17/Sep/2017 14:00:49|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|17/Sep/2017 14:14:10|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|17/Sep/2017 14:18:07|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
-INFO|24/Sep/2017 15:55:21|home_views|registration_view|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse inbox9k@gmail.com erstellt.
+INFO|17/Feb/2018 22:09:15|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse b2zdsntfsc@bbpog.anonbox.net erstellt.
+INFO|17/Feb/2018 22:09:46|send_mail|send_registration_mail|Es wurde eine Mail zur Registrierung an b2zdsntfsc@bbpog.anonbox.net gesendet.
+INFO|18/Feb/2018 01:01:59|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse brojuj7abt@2doc5.anonbox.net erstellt.
+INFO|18/Feb/2018 01:02:30|send_mail|send_registration_mail|Es wurde eine Mail zur Registrierung an brojuj7abt@2doc5.anonbox.net gesendet.
+ERROR|18/Feb/2018 01:43:05|home_views|get_context_data|ShopSettings matching query does not exist.
+ERROR|18/Feb/2018 01:43:20|home_views|get_context_data|ShopSettings matching query does not exist.

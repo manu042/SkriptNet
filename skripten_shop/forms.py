@@ -8,7 +8,74 @@ import re
 import datetime
 from captcha.fields import ReCaptchaField
 
+# My packages
+from skripten_shop.models import ShopSettings
+
+
 User = get_user_model()
+
+
+class SendAssociationMailForm(forms.Form):
+    subject = forms.CharField(label='Betreff')
+    mail_text = forms.CharField(label='Nachricht', widget=forms.Textarea)
+
+
+class AssociationSettingsForm(forms.ModelForm):
+    # max = "{{ order_in_print.order_amount }}
+
+    class Meta:
+        model = ShopSettings
+        fields = [
+            'membership_fee',
+        ]
+
+
+class ScanLegicForm(forms.Form):
+    """
+    Form zum Scannen der Legic ID bei der Ausgabe
+    """
+    legic_id = forms.CharField(label="Legic-ID", widget=forms.TextInput(attrs={'autofocus': 'autofocus'}))
+
+
+class ActivateStudentForm(forms.Form):
+    """
+    Form zum verknüpfen einer Legic ID mit dem Account eines Studenten
+    """
+    legic_id = forms.CharField(label="Legic-ID")
+    birth_date = forms.DateField(label="Geburtsdatum (TT.MM.JJJJ)",
+                                 widget=forms.DateInput(attrs={'autofocus': 'autofocus'}))
+
+
+class NewLegicCardForm(forms.Form):
+    """
+    Form zur Eingabe einer neuen Legic-ID
+    """
+    email = forms.EmailField(max_length=100, label='E-Mail Adresse',
+                             widget=forms.EmailInput(attrs={'autofocus': 'autofocus'}))
+    new_legic_id = forms.CharField(label="Neue Legic-ID")
+
+
+class SettingsForm(forms.ModelForm):
+    class Meta:
+        state = forms.BooleanField(widget=forms.CheckboxInput)
+        info_text = forms.TextInput(attrs={'required': False})
+
+        model = ShopSettings
+        fields = [
+            'state',
+            'max_article',
+            'days_reserved',
+        ]
+
+
+class InfoTextForm(forms.ModelForm):
+    class Meta:
+        info_text = forms.TextInput(attrs={'required': False})
+
+        model = ShopSettings
+        fields = [
+            'info_text',
+        ]
 
 
 class UserLoginForm(forms.Form):
@@ -89,11 +156,8 @@ class UserRegisterForm(forms.Form):
 
         username_qs = User.objects.filter(username=mail_address)
 
-        # TODO Code aktivieren und umschreiben (siehe http://chimera.labs.oreilly.com/books/1230000000393/ch02.html#_problem_22)
-        # if re.split(r'@', mail_address)[-1] == 'hm.edu':
-        #     pass
-        # else:
-        #     raise forms.ValidationError("Die Email-Adresse ist keine gültige Hochschul Adresse")
+        if not re.split(r'@', mail_address)[-1] == 'hm.edu':
+            raise forms.ValidationError("Diese Email-Adresse ist keine gültige Hochschul Adresse")
 
         if username_qs.exists():
             raise forms.ValidationError("Diese Email-Adresse wurde bereits registriert")

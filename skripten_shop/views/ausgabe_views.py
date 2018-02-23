@@ -18,7 +18,6 @@ from skripten_shop.utilities import current_semester_is, max_article_is
 logger = logging.getLogger('skripten_shop.default')
 
 
-
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
 def scan_legic_view(request):
@@ -109,7 +108,7 @@ def ausgabe_view(request):
             print('Bestellung > max. Skripte')
             residue = int(max_article_is()) - student_order.count()
             messages.error(request, "Der Student kann nur noch " + str(residue) + " Skripte erhalten!")
-            return redirect(reverse("skripten-shop:ausgabe"))
+            return redirect(reverse("skripten_shop:ausgabe"))
 
         for selected_articel_id in selected_articels_id:
             try:

@@ -1,51 +1,55 @@
-from django.conf.urls import url
+# Django Packages
+from django.urls import path, re_path
 
+# My Packages
 from . import views
 
 app_name = 'skripten_shop'
 urlpatterns = [
 
     # Home URLs
-    url(r'^$', views.login_view, name='login'),
-    url(r'^logout/$', views.logout_view, name='logout'),
-    url(r'^home/$', views.HomeView.as_view(), name='home'),
-    url(r'^register/$', views.registration_view, name='register'),
-    url(r'^register/confirm/(?P<activation_key>.+)$', views.confirm_mail_view, name='register_confirm'),
+    path('', views.LoginView.as_view(), name="login"),
+    path('logout/', views.LogoutView.as_view(), name="logout"),
+    path('home/', views.HomeView.as_view(), name="home"),
+    path('signup/', views.RegistrationView.as_view(), name="signup"),
+    # activation_key wird der View als Parameter übergeben
+    re_path('signup/confirm/(?P<activation_key>\w+)/$', views.ConfirmationView.as_view(), name="confirm_signup"),
 
-    # TODO: shop entfernen
+
+
+
     # Shop Urls
-    # url(r'^shop/$', views.skriptenshopview, name='skripten-list'),
-    # url(r'^warenkorb/$', views.cartView, name='warenkorb'),
-    # url(r'^bestellung/$', views.orderView, name='bestellung'),
-    # url(r'^ajax/addtocart/$', views.addtocart),
+    # path('shop/', views.skriptenshopview, name='skripten-list'),
+    # path('warenkorb/', views.cartView, name='warenkorb'),
+    # path('bestellung/', views.orderView, name='bestellung'),
+    # path('ajax/addtocart/', views.addtocart),
 
     # Ausgabe URLs
-    url(r'^scan_legic/$', views.scan_legic_view, name='scan-legic'),
-    url(r'^ausgabe/$', views.ausgabe_view, name='ausgabe'),
-    url(r'^ausgabe/info/$', views.ausgabe_messages_view, name='ausgabe-info'),
-    url(r'^individualbetreuung/$', views.individual_assistance_view, name='individualbetreuung'),
-    url(r'^reorder/$', views.reorder_view, name='reorder'),
-    url(r'^aktivierung/$', views.activation_view, name='aktivierung'),
-    url(r'^reaktivierung/$', views.reactivation_view, name='reaktivierung'),
-    url(r'^newlegic/$', views.newlegic_view, name='newlegic'),
+    path('scan_legic/', views.scan_legic_view, name='scan-legic'),
+    path('ausgabe/', views.ausgabe_view, name='ausgabe'),
+    path('ausgabe/info/', views.ausgabe_messages_view, name='ausgabe-info'),
+    path('individualbetreuung/', views.individual_assistance_view, name='individualbetreuung'),
+    path('reorder/', views.reorder_view, name='reorder'),
+    path('aktivierung/', views.activation_view, name='aktivierung'),
+    path('reaktivierung/', views.reactivation_view, name='reaktivierung'),
+    path('newlegic/', views.newlegic_view, name='newlegic'),
 
     # Settings URLs
-    url(r'^settings/$', views.shop_settings_view, name='shop-settings'),
-    url(r'^settings/info_text/$', views.edit_info_text_view, name='info-text'),
+    path('settings/', views.shop_settings_view, name='shop-settings'),
+    path('settings/info_text/', views.edit_info_text_view, name='info-text'),
 
     # Warehouse URLs
-    url(r'^lager/$', views.stock_overview, name='lager'),
-    url(r'^lager/reorder/$', views.show_reorder_view, name='reorder_overview'),
-    url(r'^lager/enter_reorder/$', views.enter_reorder_view, name='enter_reorder'),
+    path('lager/', views.stock_overview, name='lager'),
+    path('lager/reorder/', views.show_reorder_view, name='reorder_overview'),
+    path('lager/enter_reorder/', views.enter_reorder_view, name='enter_reorder'),
+    #path('deckblatt_to_pdf/', views.pdf_creation_view, name='deckblatt_to_pdf'),
 
-    # TODO: anpassen
     # Association URLs
-    url(r'^verein/einstellungen/$', views.association_settings_view, name='association-settings'),
-    url(r'^verein/mitglieder/$', views.association_members_view, name='association-members'),
-    url(r'^verein/mitglieder_aktiv/$', views.active_association_members_view, name='association-members-active'),
-    url(r'^verein/sendmail/$', views.mail_association_members_view, name='association-mail'),
+    path('verein/einstellungen/', views.association_settings_view, name='association-settings'),
+    path('verein/mitglieder/', views.association_members_view, name='association-members'),
+    path('verein/mitglieder_aktiv/', views.active_association_members_view, name='association-members-active'),
+    path('verein/sendmail/', views.mail_association_members_view, name='association-mail'),
 
     # Admin URLs
-    url(r'^admin/logfile/$', views.show_logfile_view, name='admin-logfiles'),
-
+    path('admin/logfile/', views.LogfileView.as_view(), name='admin-logfiles'),
 ]
