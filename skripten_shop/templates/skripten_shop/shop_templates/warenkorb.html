@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    {% if articles == False %}
+
+        <div class="container">
+            <div class="panel panel-warning">
+                <div class="panel-heading">Warenkorb</div>
+                <div class="panel-body">
+                    <span>Es befinden sich keine Artikel im Warenkorb</span>
+                </div>
+            </div>
+        </div>
+
+    {% elif bestellt == True %}
+
+        <div class="container">
+            <div class="panel panel-success">
+                <div class="panel-heading">Warenkorb</div>
+                <div class="panel-body">
+                    <span>Die Bestellung wurde aufgenommen</span>
+                    <br>
+                    <br>
+                    <a class="btn btn-primary" href="{% url 'skripten-shop:bestellung' %}" role="button">Zur
+                        Bestellübersicht</a>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Warenkorb</div>
+                <div class="panel-body">
+
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Artieklnummer</th>
+                            <th>Name</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in articles %}
+                            <tr>
+                                <td>{{ article.article.article_number }}</td>
+                                <td>{{ article.article.name }}</td>
+                                <td>
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger btn-sm" name="delete" value="{{ article.pk }}"
+                                                title="Aus Warenkorb entfernen">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input class="btn btn-success" type="submit" name="bestellen" value="Bestellen">
+            </form>
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}

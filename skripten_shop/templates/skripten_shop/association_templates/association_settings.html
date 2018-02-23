@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Einstellungen</div>
+            <div class="panel-body">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    {{ form| crispy }}
+
+                    <input class="btn btn-danger" type="submit" name="save_settings" value="Speichern">
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

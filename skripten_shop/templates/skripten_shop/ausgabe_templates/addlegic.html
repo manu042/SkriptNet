@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="panel panel-success">
+            <div class="panel-heading">Skripten Ausgabe</div>
+
+            <div class="panel-body">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

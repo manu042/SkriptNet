@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container">
+                <div class="alert alert-danger">
+                    <strong>{{ message }}</strong>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if error_message %}
+        <meta http-equiv="refresh" content="3;url={% url 'skripten_shop:scan-legic' %}">
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        {% if student_order %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>
+                        Bestellungen von
+                        <u style="font-weight: bold">
+                            {{ student.user.first_name }} {{ student.user.last_name }}
+                        </u>
+                    </h4>
+                    <h5><span class="glyphicon glyphicon-info-sign"></span>
+                        Bestellungen mit dem Status "auf Lager" können über die "Individualbetreuung"
+                        ausgegeben werden.</h5>
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th>Skriptnummer</th>
+                            <th>Skriptname</th>
+                            <th>letze Änderung</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in student_order %}
+                            <tr {% if order.status == order.RESERVED_STATUS %}
+                                style="background: greenyellow" {% endif %}>
+                                <td>{{ order.article.article_number }}</td>
+                                <td>{{ order.article.name }}</td>
+                                <td>{{ order.last_modified_date.date }}</td>
+                                <td>{{ order.get_status_display }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{% url 'skripten_shop:individualbetreuung' %}" class="btn btn-danger btn-sm" role="button">Individualbetreuung</a>
+                </div>
+            </div>
+            <br>
+        {% else %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>
+                        Bestellungen von
+                        <u style="font-weight: bold">
+                            {{ student.user.first_name }} {{ student.user.last_name }}
+                        </u>
+                    </h4>
+                    <h5 style="color: red">Der Student hat noch keine Skripte bestellt.</h5>
+
+                </div>
+            </div>
+            <br>
+        {% endif %}
+
+        {% if student_order.count >= max_article %}
+
+            <div class="alert alert-danger">
+                Der Student hat die maximale Anzahl an Skripten bestellt.
+            </div>
+
+        {% else %}
+
+            {% if stock_infos %}
+                <h4><u>Liste frei verfügbarer Skripte:</u></h4>
+                <h5>Diese können an <strong>jeden</strong> ausgegeben werden</h5>
+                <h5>Ist ein Skript nich mehr verfügbar, kann es unter <span style="color: blue;">"Nachbestellung"</span>
+                    für den Studenten reserviert
+                    werden</h5>
+
+                <br>
+                <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary btn-sm"
+                   role="button">Nachbestellung</a>
+                <form action="" method="post">
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th>Skript-Nr.</th>
+                            <th>Skriptname</th>
+                            <th>Autor</th>
+                            <th>Studiengruppe</th>
+                            <th>Gesamtmenge</th>
+                            <th>Frei</th>
+                            <th>Fach-Nr.</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for stock_info in stock_infos %}
+                            <tr>
+                                <td>{{ stock_info.article.article_number }}</td>
+                                <td>{{ stock_info.article.name }}</td>
+                                <td>{{ stock_info.article.skript.author }}</td>
+                                <td>
+                                    <ul>
+                                        {% for studygroup in stock_info.article.skript.studygroup.all %}
+                                            <li>{{ studygroup }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td>{{ stock_info.amount_available|add:stock_info.amount_reserved }}</td>
+                                {% if stock_info.amount_available < 1 %}
+                                    <td style="color: red; font-weight: bold">{{ stock_info.amount_available }}</td>
+                                {% else %}
+                                    <td>{{ stock_info.amount_available }}</td>
+                                {% endif %}
+                                <td style="color: grey">{{ stock_info.article.shelf_number }}</td>
+                                <td>
+                                    <div class="checkbox">
+                                        {% if stock_info.amount_available < 1 %}
+                                            <label><input type="checkbox" disabled></label>
+                                        {% else %}
+                                            <label>
+                                                <input type="checkbox" name="selected_articel[]"
+                                                       value="{{ stock_info.article.id }}">
+                                            </label>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% csrf_token %}
+                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben"
+                           style="margin-bottom: 20px">
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+
+{% endblock %}

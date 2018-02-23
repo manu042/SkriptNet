@@ -1,0 +1,180 @@
+{% load static %}
+{% load navbar_permission_tag %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <meta name="description" content="Fachschaft 04 Skriptenshop">
+    <link rel="icon" href="{% static 'favicon/favicon.png' %}">
+
+    <title>SkriptNet</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Customized Bootstrap CSS -->
+    <style type="text/css">
+        .panel-success > .panel-heading {
+            color: #FFFFFF;
+            background-color: #00AAB5;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .panel-body > h4 {
+            color: #FFFFFF;
+            background-color: #00AAB5;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        .panel-body > h5 {
+            color: #000000;
+            font-weight: bold;
+        {#            background-color: #00AAB5;#} padding: 10px 15px;
+            border: 1px solid #00AAB5;
+            border-radius: 3px;
+        }
+
+        .distance-top {
+        {#            Nur zum Testen für das LandingBild#} padding-top: 30px;
+        }
+
+        {% comment %}
+                .container{
+                    border: 1px solid #DDDDDD;
+                    border-bottom:1px solid transparent;
+                    border-top-left-radius:3px;
+                    border-top-right-radius:3px;
+                }{% endcomment %}
+        .container > h3 {
+            color: #FFFFFF;
+            background-color: #00AAB5;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 10px 15px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        .container > .table.table-striped.add-to-cart thead {
+            color: #FFFFFF;
+            background-color: #00AAB5;
+            font-weight: bold;
+            border: 1px solid #00AAB5;
+        }
+
+        .container > .table.table-striped.add-to-cart {
+            border: 1px solid #00AAB5;
+        }
+
+        .container > table {
+        {#            background-color: #DDDDDD;#}{#            border: 0px solid #000;#}
+        }
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'skripten_shop:home' %}">SkriptNet</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="{% url 'skripten_shop:home' %}">Home</a></li>
+            <li><a href="{% url 'skripten_shop:lager' %}">Skriptenlager</a></li>
+
+            {% if request.user|has_group:'Skriptenausgabe' %}
+                <li><a href="{% url 'skripten_shop:scan-legic' %}">Skripten Ausgabe</a></li>
+            {% endif %}
+
+            {% if request.user|has_group:'Skriptenadmin' %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Skriptenadmin<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'skripten_shop:reorder_overview' %}">Nachbestellungen</a></li>
+                        <li><a href="{% url 'skripten_shop:enter_reorder' %}">Nachbestellungen einpflegen</a></li>
+                        <li><a href="{% url 'skripten_shop:shop-settings' %}">Einstellungen</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'admin:skripten_shop_skript_changelist' %}">Skripte</a></li>
+                        <li><a href="{% url 'admin:skripten_shop_aritcleinstock_changelist' %}">Skriptenlager
+                            bearbeiten</a></li>
+                        <li><a href="{% url 'admin:skripten_shop_professor_changelist' %}">Professoren</a></li>
+                        <li><a href="{% url 'admin:skripten_shop_studygroup_changelist' %}">Studiengruppen</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if request.user|has_group:'Vorstand Verein' %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Vorstand Verein<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'skripten_shop:association-members' %}">Mitglieder</a></li>
+                        <li><a href="{% url 'skripten_shop:association-members-active' %}">Aktive Mitglieder</a></li>
+                        <li><a href="{% url 'skripten_shop:association-mail' %}">Mailversand</a></li>
+                        <li><a href="{% url 'skripten_shop:association-settings' %}">Einstellungen</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'admin:skripten_shop_student_changelist' %}">Studenten</a></li>
+                        <li><a href="{% url 'admin:skripten_shop_newstudentregistration_changelist' %}">Neue
+                            Registrierungen</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if request.user|has_group:'Admin' %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'skripten_shop:admin-logfiles' %}">Logfile</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'skripten_shop:logout' %}">Abmelden</a></li>
+        </ul>
+    </div>
+</nav>
+
+{% block content %}
+
+{% endblock %}
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+{% block script %}
+
+
+{% endblock %}
+
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+# https://pip.readthedocs.io/en/1.1/requirements.html
+# pip install -r requirements.txt
+
+Django
+django-crispy-forms
+django-extensions
+
+
+pyaml
+
+# https://github.com/praekelt/django-recaptcha
+django-recaptcha

@@ -1,0 +1,15 @@
+- model: skripten_shop.studygroup
+  pk: 1
+  fields: {title: BAC1A}
+- model: skripten_shop.studygroup
+  pk: 2
+  fields: {title: BAC1B}
+- model: skripten_shop.studygroup
+  pk: 3
+  fields: {title: BAC1C}
+- model: skripten_shop.studygroup
+  pk: 4
+  fields: {title: BAC1D}
+- model: skripten_shop.studygroup
+  pk: 5
+  fields: {title: REB3A}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if error_message %}
+        <meta http-equiv="refresh" content="2;url={% url 'skripten_shop:scan-legic' %}">
+        <div class="container">
+            <div class="alert alert-danger">
+                <strong>{{ error_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>
+                        <div class="alert alert-danger">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if student_order %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="" method="post">
+                        <h4>Bestellungen von {{ student.user.first_name }} {{ student.user.last_name }}</h4>
+                        <table class="table table-striped" id="article-table">
+                            <thead>
+                            <tr>
+                                <th>Skriptnummer</th>
+                                <th>Skriptname</th>
+                                <th>letze Änderung</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in student_order %}
+                                <tr {% if order.status == order.RESERVED_STATUS %}
+                                    style="background: greenyellow" {% endif %}>
+                                    <td>{{ order.article.article_number }}</td>
+                                    <td>{{ order.article.name }}</td>
+                                    <td>{{ order.last_modified_date.date }}</td>
+                                    <td>{{ order.get_status_display }}</td>
+                                    <td>
+                                        {% if order.status == order.RESERVED_STATUS %}
+                                            <label>
+                                                <input type="checkbox" name="selected_reserved[]"
+                                                       value="{{ order.id }}">
+                                            </label>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% csrf_token %}
+                        <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

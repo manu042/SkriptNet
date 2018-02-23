@@ -1,0 +1,13 @@
+{% if aritkel_nr %}
+
+    <div class="alert alert-danger">
+        Der Artikel {{ aritkel_nr }} befindet sich bereits in ihrem Warenkorb.
+    </div>
+
+{% elif artikle_nr2 %}
+
+    <div class="alert alert-danger">
+        Sie haben den Artikel {{ artikle_nr2 }} bereits bestellt.
+    </div>
+
+{% endif %}

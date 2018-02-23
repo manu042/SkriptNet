@@ -1,0 +1,6 @@
+INFO|17/Feb/2018 22:09:15|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse b2zdsntfsc@bbpog.anonbox.net erstellt.
+INFO|17/Feb/2018 22:09:46|send_mail|send_registration_mail|Es wurde eine Mail zur Registrierung an b2zdsntfsc@bbpog.anonbox.net gesendet.
+INFO|18/Feb/2018 01:01:59|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse brojuj7abt@2doc5.anonbox.net erstellt.
+INFO|18/Feb/2018 01:02:30|send_mail|send_registration_mail|Es wurde eine Mail zur Registrierung an brojuj7abt@2doc5.anonbox.net gesendet.
+ERROR|18/Feb/2018 01:43:05|home_views|get_context_data|ShopSettings matching query does not exist.
+ERROR|18/Feb/2018 01:43:20|home_views|get_context_data|ShopSettings matching query does not exist.
