@@ -28,9 +28,9 @@ SECRET_KEY = config["SECRET_KEY"]
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["129.187.206.200", "skripten.fs04.de", "skripten.fs04.ee.hm.edu"]
+ALLOWED_HOSTS = ["*",]
 
 # Application definition
 
@@ -92,12 +92,8 @@ WSGI_APPLICATION = 'SkriptNet.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'SkriptnetDB',
-        'USER': 'Skriptnetadmin',
-        'PASSWORD': 'R7E.kwqm69Qrd',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -132,7 +128,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 STATICFILES_DIRS = [
