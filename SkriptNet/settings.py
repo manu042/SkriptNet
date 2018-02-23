@@ -93,9 +93,9 @@ WSGI_APPLICATION = 'SkriptNet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'SkriptnetDB',
-        'USER': 'Skriptnetadmin',
-        'PASSWORD': 'R7E.kwqm69Qrd',
+        'NAME': config["DB_NAME"],  # 'SkriptnetDB'
+        'USER': config["DB_USER"],  # 'Skriptnetadmin'
+        'PASSWORD': config["DB_PW"],
         'HOST': 'localhost',
         'PORT': '',
     }
