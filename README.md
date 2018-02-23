@@ -6,22 +6,67 @@
 * Folgt noch
 
 # Entwicklungsumgebung einrichten
-1. [Virtual Environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) mit Pyton 3.6 einrichten
-2. Python Pakete installieren 
-    * siehe requirements.txt
-3. Dieses Git Repository clonen
-4. Befehl ```python manage.py makemigrations``` ausführen
-5. Befehl ```python manage.py migrate``` ausführen
-6. Server schneller starten: [Optional] 
-    * oben rechts auf ```Edit Configurations...```
-        * oben links auf ```+```, dann in der Liste (Add New Configuration) auf ```Django server```
-        * als Name z. B. ```start_server```
-        * Bei Environment Variables auf ```...``` und unter ```DJANGO_SETTINGS_MODULE``` in Value ```SkriptNet.settings``` eintragen
-    * In den Einstellungen (```Str``` + ```Alt``` + ```S```) unter ```Language & Frameworks``` -> ```Django``` ...
-        * Haken bei  ```Enable Django Support``` setzen
-        * Django project root: ```...\PycharmProjects\SkriptNet```
-        * Settings: ```SkriptNet\settings.py```
-        * Manage script:  ```manage.py```
+1. Aktuelle Projekt Dateien downloaden
+```shell
+$ git clone https://github.com/manu042/SkriptNet.git
+```
+
+2. Branch wechseln (z.B. Develop oder fcome_fserved ) oder neu anlegen
+
+    Wichtig!!! In der Branch **Master** wird nicht entwickelt
+    ```shell
+    $ git checkout develop
+    ```
+3. Python Pakete installieren
+
+    Die benötigten Python Pakete findet man in der Datei requirements.txt
+    ```shell
+    $ pip install -r requirements.txt
+    ```
+    Für Python Projekte ist es sinnvoll, eine Virtual Envivroment einzurichten. Eine Anleitung dazu findet man
+    [hier](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
+
+4. SQLite Datenbank anlegen
+```shell
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+5. Fixtures laden
+
+    ```shell
+    python manage.py loaddata groups.yaml
+    python manage.py loaddata settings.yaml
+    python manage.py loaddata study_groups.yaml
+    python manage.py loaddata user.yaml
+    python manage.py loaddata professor.yaml
+    python manage.py loaddata article.yaml
+    python manage.py loaddata skripte.yaml
+    ```
+
+weitere Infos dazu in der fixtures_help.md
+
+
+6. Admin User erstellen
+
+    ```shell
+    $ python manage.py createsuperuser
+    ```
+    Damit sich der User auf der Startseite von SkriptNet anmelden kann, sollte der Username wie eine Email-Adresse aufgebaut sein
+    
+    [DAS STANDARD PASSWORT FÜR DEN ADMIN WÄHRE MAL INTERESSANT AN DIESER STELLE]
+
+7. Development Server starten
+    
+    Um änderungen im Browser testen zu können, kann Lokal ein Development Server gestartet werden
+    ```shell
+    $ python manage.py runserver
+    ```
+    Die Webseite kann dann über die URL **http://127.0.0.1:8000/** aufgerufen werden
+
+
+
+# Projekt Struktur
+* [Google Drive](https://drive.google.com/drive/folders/0BwRnCXKlxFwISnRRLUVGQkRUQ2c)
 
 # Quellen
 * [Django documentation](https://docs.djangoproject.com/en/dev/)
