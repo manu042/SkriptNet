@@ -19,7 +19,7 @@
             {% for order in orders %}
                 <tr>
                     <td>{{ order.article.article_number }}</td>
-                    <td>{{ order.article }}</td>
+                    <td>{{ order.article.name }}</td>
                     <td>{{ order.order_amount }}</td>
                 </tr>
             {% endfor %}
