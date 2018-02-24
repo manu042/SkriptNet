@@ -81,6 +81,7 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('skripten_shop:home')
+        return render(request, self.template_name, {'form': form})
 
 
 class LogoutView(View):
