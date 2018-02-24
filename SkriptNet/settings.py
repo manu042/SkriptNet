@@ -187,6 +187,16 @@ LOGGING = {
     },
 }
 
+# Critical settings
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000 # Ein Jahr
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+
+
 # My Settings
 #############################################################
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
