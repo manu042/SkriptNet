@@ -29,7 +29,7 @@ class ProfessorAdmin(admin.ModelAdmin):
 
 
 class SkriptAdmin(admin.ModelAdmin):
-    list_display = ["article_number", "__str__", "active", ]
+    list_display = ["__str__", "name", "active", ]
     filter_horizontal = ('studygroup',)
     ordering = ["article_number", "name",]
 

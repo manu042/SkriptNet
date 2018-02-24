@@ -77,7 +77,7 @@ class Article(models.Model):
         verbose_name_plural = 'Artikel'
 
     def __str__(self):
-        return self.name
+        return self.article_number
 
 
 class Skript(Article):
