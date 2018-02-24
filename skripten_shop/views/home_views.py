@@ -55,8 +55,6 @@ class LoginView(View):
     - In der Datenbank sind der Username und die Mail-Adresse das selbe.
     """
     form_class = UserLoginForm
-    # TODO: Inital entfernen
-    initial = {"username": "admin@hm.edu"}
     template_name = "skripten_shop/home_templates/login.html"
 
     def get(self, request):
@@ -68,7 +66,7 @@ class LoginView(View):
         if request.user.is_authenticated:
             return redirect("skripten_shop:home")
 
-        form = self.form_class(initial=self.initial)
+        form = self.form_class()
         return render(request, self.template_name, {"form": form})
 
     def post(self, request):

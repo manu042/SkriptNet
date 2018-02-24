@@ -85,12 +85,12 @@ class UserLoginForm(forms.Form):
     """
     username = forms.EmailField(label="HM-E-Mail-Adresse", max_length=30,
                                 widget=forms.TextInput(
-                                    attrs={'class': 'form-control', 'name': 'email', 'placeholder': 'HM-Email'}))
-    # TODO: 'autofocus': 'autofocus' zu username hinzufügen
+                                    attrs={'class': 'form-control', 'name': 'email', 'placeholder': 'HM-Email',
+                                           'autofocus': 'autofocus'}))
+
     password = forms.CharField(label="Password", max_length=30,
                                widget=forms.PasswordInput(
-                                   attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort',
-                                          'autofocus': 'autofocus'}))
+                                   attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort'}))
 
     def clean(self, *args, **kwargs):
         clean_data = super(UserLoginForm, self).clean()
