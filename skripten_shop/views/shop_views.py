@@ -29,7 +29,8 @@ def stock_overview(request):
         'stock_infos': stock_infos,
     }
 
-    return render(request, 'skripten_shop/warehouse_templates/stock_overview.html', context)
+    return render(request,
+                  'skripten_shop/shop_templates/stock_overview.html', context)
 
 
 @login_required

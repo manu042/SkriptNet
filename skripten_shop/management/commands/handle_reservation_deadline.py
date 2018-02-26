@@ -20,8 +20,6 @@ class Command(BaseCommand):
     - Funktion über einen täglichen Cronjob ausführen
 
     Wenn der Skriptenshop geöffnet ist, werden evtl. abgelaufene Reservierungen freigegben
-    
-        - Falls sich eine Bestellung mit dem Artikel im Status "in Bearbeitung" befindet, wird der Artikel dieser zugeordnet.
     """
 
     help = 'Evtl. abgelaufene Bestellungen löschen'

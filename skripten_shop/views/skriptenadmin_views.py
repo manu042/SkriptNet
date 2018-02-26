@@ -46,7 +46,8 @@ def shop_settings_view(request):
         'form': form,
     }
 
-    return render(request, 'skripten_shop/settings_templates/settings.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin_templates/settings.html', context)
 
 
 @login_required
@@ -69,7 +70,8 @@ def edit_info_text_view(request):
         'form': form,
     }
 
-    return render(request, 'skripten_shop/settings_templates/edit_info_text.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin_templates/edit_info_text.html', context)
 
 
 @login_required
@@ -102,7 +104,8 @@ def show_reorder_view(request):
         'orders': orders,
     }
 
-    return render(request, 'skripten_shop/warehouse_templates/reorder_overview.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin_templates/reorder_overview.html', context)
 
 
 @login_required
@@ -135,4 +138,5 @@ def enter_reorder_view(request):
         'orders_in_print': orders_in_print,
     }
 
-    return render(request, 'skripten_shop/warehouse_templates/enter_reorder.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin_templates/enter_reorder.html', context)
