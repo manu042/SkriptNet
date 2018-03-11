@@ -11,7 +11,7 @@ Dieses Modul enthält die folgden Views:
 # Django Packages
 from django.http import Http404
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, TemplateView
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, authenticate, logout
@@ -24,7 +24,7 @@ import logging
 # My Packages
 from skripten_shop.utilities import SendRegMailThread
 from skripten_shop.forms import UserLoginForm, UserRegisterForm
-from skripten_shop.models import NewStudentRegistration, Student, ShopSettings
+from skripten_shop.models import NewStudentRegistration, Student, ShopSettings, Order
 
 logger = logging.getLogger('skripten_shop.default')
 
@@ -38,6 +38,14 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
+
+        try:
+            student = Student.objects.get(user=self.request.user)
+            context["user"] = self.request.user
+            context["orders"] = Order.objects.filter(student=student)
+        except Exception as e:
+            pass
+
         try:
             # Info Text aus der Datenbank laden
             context['info_text'] = ShopSettings.objects.get(pk=1).info_text

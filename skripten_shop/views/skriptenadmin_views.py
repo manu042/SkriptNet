@@ -51,7 +51,7 @@ def shop_settings_view(request):
         'form': form,
     }
 
-    return render(request, 'skripten_shop/settings_templates/settings.html', context)
+    return render(request, 'skripten_shop/skriptenadmin/settings.html', context)
 
 
 @login_required
@@ -74,7 +74,8 @@ def edit_info_text_view(request):
         'form': form,
     }
 
-    return render(request, 'skripten_shop/settings_templates/edit_info_text.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin/edit_info_text.html', context)
 
 
 @login_required
@@ -86,20 +87,28 @@ def show_reorder_view(request):
 
     if request.method == 'POST':
         if 'print_order' in request.POST:
-
             orders = Order.objects.filter(status=Order.REQUEST_STATUS)
-            orders.status = Order.PRINT_STATUS
+            # Dictonary mit allen Skripten erstellen. Die Zahl steht für die Menge, die zu bestellen ist
+            skripte_dict = {x.article_number: 0 for x in Skript.objects.filter(active=True)}
 
             for order in orders:
+                # Status auf "im Druck ändern"
                 order.status = Order.PRINT_STATUS
                 order.save()
+                skripte_dict[order.article.article_number] += 1
+
+            # Zu bestellene Skripten nochmal anzeigen
+            return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'skripte_dict': skripte_dict})
+
     orders = []
     for skript in skripte:
         order = Order.objects.filter(article=skript).filter(status=Order.REQUEST_STATUS)
-        orders.append({
-            'skript': skript,
-            'order_amount': order.count()
-        })
+
+        if order.count() > 0:
+            orders.append({
+                'skript': skript,
+                'order_amount': order.count()
+            })
 
     return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'orders': orders})
 
