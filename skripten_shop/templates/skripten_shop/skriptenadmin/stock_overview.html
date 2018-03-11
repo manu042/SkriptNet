@@ -24,7 +24,7 @@
                 {% for stock_info in stock_infos %}
                     <tr>
                         <td>{{ stock_info.skript.article_number }}</td>
-                        <td>{{ stock_info.skript.name }}</td>
+                        <td style="word-break: break-all">{{ stock_info.skript.name }}</td>
                         <td>{{ stock_info.skript.author }}</td>
                         <td>
                             {% for studygroup in stock_info.skript.studygroup.all %}

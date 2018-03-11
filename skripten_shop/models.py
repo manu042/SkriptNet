@@ -67,8 +67,8 @@ class Article(models.Model):
     """
     # Artikelnummer für Skritpen und Pakete z.B. 01-001
     article_number = models.CharField(verbose_name='Artikel Nummer', max_length=20, unique=True)
-    name = models.CharField(verbose_name='Artikel Name', max_length=50)
-    description = models.CharField(verbose_name='Beschreibung', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Artikel Name', max_length=100)
+    description = models.CharField(verbose_name='Beschreibung', max_length=200, null=True, blank=True)
     shelf_number = models.CharField(verbose_name='Fach-Nummer', max_length=15, null=True, blank=True)
     active = models.BooleanField(default=True)
 
