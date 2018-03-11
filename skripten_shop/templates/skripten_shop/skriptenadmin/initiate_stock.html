@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <h3>Skriptenlager anlegen</h3>
+        <h5>Diese Liste zeigt an, welche Menge von jedem Skript bei der Druckerei bestellt wurde.</h5>
+        <h5>Gelieferte Skripten können in der Spalte "geliefert" in die Datenbank übernommen werden.</h5>
+        <br>
+        <form action="" method="post" autocomplete="off">
+            <table class="table table-striped add-to-cart">
+                <thead>
+                <tr>
+                    <th>Skript-Nr.</th>
+                    <th>Skriptname</th>
+                    <th>Menge</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.article_number }}</td>
+                        <td>{{ article.name }}</td>
+                        <td>
+                            <label><input name="selected_articel[]" value="{{ article.id }}"
+                                          hidden></label>
+                            <label><input type="number" min="0" max="500" name="selected_articel[]" value="0"></label>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="print_order" value="Lager anlegen">
+        </form>
+    </div>
+
+
+
+
+
+{% endblock %}

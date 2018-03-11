@@ -93,9 +93,16 @@
                     werden</h5>
 
                 <br>
-                <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary btn-sm"
+                <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary"
                    role="button">Nachbestellung</a>
+                <br>
+                <br>
+
                 <form action="" method="post">
+                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgabe starten">
+                    <a href="{% url "skripten_shop:scan-legic" %}" class="btn btn-danger" role="button">Abbrechen</a>
+                    <br>
+
                     <table class="table table-striped" id="article-table">
                         <thead>
                         <tr>
@@ -147,8 +154,11 @@
                     </table>
 
                     {% csrf_token %}
-                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben"
-                           style="margin-bottom: 20px">
+                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgabe starten"
+                           style="margin-bottom: 80px">
+                    <a href="{% url "skripten_shop:scan-legic" %}" class="btn btn-danger" role="button"
+                       style="margin-bottom: 80px">Abbrechen</a>
+
                 </form>
             {% endif %}
         {% endif %}

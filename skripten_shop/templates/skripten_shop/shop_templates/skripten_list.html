@@ -43,44 +43,6 @@
             </tbody>
         </table>
     </div>
-
-    <div class="container">
-        <table class="table table-striped add-to-cart">
-            <thead>
-            <tr>
-                <th>Paketnummer</th>
-                <th>Paketname</th>
-                <th>Skripte</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for article in articles %}
-                {% if article.paket %}
-
-                    <tr>
-                        <td>{{ article.paket.article_number }}</td>
-                        <td>{{ article.paket.name }}</td>
-                        <td>
-                            {% for skript in article.paket.skripte.all %}
-                                <li>{{ skript }}</li>
-                            {% endfor %}
-                        </td>
-                        <td data-val="{{ article.id }}">
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <button class="btn btn-primary btn-sm addtocart" type="submit"
-                                        title="In den Warenkorb">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
 {% endblock %}
 
 

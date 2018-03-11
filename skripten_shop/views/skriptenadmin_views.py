@@ -2,11 +2,15 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic import View, TemplateView
+
 
 # My packages
-from skripten_shop.models import ShopSettings, Article, Order
+from skripten_shop.models import ShopSettings, Article, Order, Skript, SkriptInStock
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
+from skripten_shop.utilities import get_current_semester
 
 
 @login_required
@@ -26,9 +30,10 @@ def shop_settings_view(request):
     form = SettingsForm(instance=shop_settings)
 
     if request.method == 'POST':
-
         if 'start_new_semester' in request.POST:
-            print('start_new_semester')
+            # Todo: Funktion überarbeiten
+            shop_settings.current_semester = get_current_semester()
+            shop_settings.save()
 
         if 'save_settings' in request.POST:
             form = SettingsForm(request.POST)
@@ -102,7 +107,8 @@ def show_reorder_view(request):
         'orders': orders,
     }
 
-    return render(request, 'skripten_shop/warehouse_templates/reorder_overview.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin/reorder_overview.html', context)
 
 
 @login_required
@@ -135,4 +141,87 @@ def enter_reorder_view(request):
         'orders_in_print': orders_in_print,
     }
 
-    return render(request, 'skripten_shop/warehouse_templates/enter_reorder.html', context)
+    return render(request,
+                  'skripten_shop/skriptenadmin/enter_reorder.html', context)
+
+
+class InitiateStockView(UserPassesTestMixin, TemplateView):
+    """
+    Lager erstmalig im Semester anlegen
+
+    Todo: View deaktivieren, wenn Shop offen ist.
+    """
+    template_name = "skripten_shop/skriptenadmin/initiate_stock.html"
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["articles"] = Article.objects.filter(active=True)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        selected_articels_id = request.POST.getlist('selected_articel[]')
+
+        for article_id, amount in zip(selected_articels_id[::2], selected_articels_id[1::2]):
+            if amount is not "0":
+                for x in range(int(amount)):
+                    SkriptInStock.objects.create(skript=Skript.objects.get(pk=article_id))
+
+        return super().get(request, *args, **kwargs)
+
+
+class StudentOrderView(UserPassesTestMixin, TemplateView):
+    """
+    Bestellungen der Studenten anzeigen und an Druckdienstleister übergeben
+    """
+    template_name = "skripten_shop/skriptenadmin/student_orders.html"
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        orders = []
+        articles = Article.objects.filter(active=True)
+        for article in articles:
+            orders.append({
+                "article": article,
+                "amount_orders": Order.objects.filter(article=article, status=Order.REQUEST_STATUS).count()
+            })
+        context["orders"] = orders
+        return context
+
+    def post(self, request, *args, **kwargs):
+        orders = Order.objects.filter(status=Order.REQUEST_STATUS)
+
+        for order in orders:
+            order.status = Order.PRINT_STATUS
+            order.save()
+
+        return super().get(request, *args, **kwargs)
+
+
+class StockOverview(UserPassesTestMixin, TemplateView):
+    """
+    View zeigt das aktuelle Lager an, mit freien und reservierten Skripten
+    """
+    template_name = ""
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h3>Offene Bestellungen</h3>
+        <h5>Diese Liste zeigt an, welche Menge von jedem Skript bei der Druckerei bestellt wurde.</h5>
+        <h5>Gelieferte Skripten können in der Spalte "geliefert" in die Datenbank übernommen werden.</h5>
+        <br>
+        <form action="" method="post" autocomplete="off">
+            <table class="table table-striped add-to-cart">
+                <thead>
+                <tr>
+                    <th>Skript-Nr.</th>
+                    <th>Skriptname</th>
+                    <th>offene Bestellungen</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.article }}</td>
+                        <td>{{ order.article.name }}</td>
+                        <td>{{ order.amount_orders }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="print_order" value="Bestellungen drucken">
+        </form>
+    </div>
+
+{% endblock %}

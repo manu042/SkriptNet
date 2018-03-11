@@ -141,7 +141,7 @@ class ArticleInCart(models.Model):
 
 class Order(models.Model):
     """
-    Auftrag
+    Skriptenbestellung eines Studenten
     """
     REQUEST_STATUS = 1
     PRINT_STATUS = 2
@@ -175,6 +175,18 @@ class Order(models.Model):
     def __str__(self):
         text = 'Bestellung %s von %s' % (self.article.name, self.student.user.last_name)
         return text
+
+
+class SkriptInStock(models.Model):
+    """
+    Die Klasse repräsentiert ein physikalisches Skript im Lager
+    """
+    skript = models.ForeignKey(Skript, on_delete=models.CASCADE, verbose_name='Skript', unique=False)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Bestellung", null=True, blank=True)
+
+    # Todo: Anpassen
+    def __str__(self):
+        return self.skript.name
 
 
 class AritcleInStock(models.Model):

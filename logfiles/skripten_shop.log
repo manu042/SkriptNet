@@ -4,3 +4,33 @@ INFO|18/Feb/2018 01:01:59|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit de
 INFO|18/Feb/2018 01:02:30|send_mail|send_registration_mail|Es wurde eine Mail zur Registrierung an brojuj7abt@2doc5.anonbox.net gesendet.
 ERROR|18/Feb/2018 01:43:05|home_views|get_context_data|ShopSettings matching query does not exist.
 ERROR|18/Feb/2018 01:43:20|home_views|get_context_data|ShopSettings matching query does not exist.
+ERROR|04/Mar/2018 17:00:21|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:00:27|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:02:18|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:02:20|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:04:58|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:04:59|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:05:10|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:05:11|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:05:32|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:05:52|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:06:01|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:07:19|ausgabe_views|get_student|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:09:53|ausgabe_views|get|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:10:01|ausgabe_views|get|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:14:08|ausgabe_views|get|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:16:57|ausgabe_views|get|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:51:49|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:51:50|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:51:53|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:52:00|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:52:11|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:52:23|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 17:58:23|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|04/Mar/2018 19:11:23|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|10/Mar/2018 20:07:56|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|10/Mar/2018 20:07:58|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|10/Mar/2018 20:08:04|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|10/Mar/2018 20:08:09|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|10/Mar/2018 20:08:33|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|10/Mar/2018 20:08:38|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
