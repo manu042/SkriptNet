@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load navbar_permission_tag %}
+
+
+{% block content %}
+
+    {% if request.user|has_group:'Skriptenausgabe' %}
+        <div class="container">
+            <h3>Skriptenlager</h3>
+            <br>
+            <table class="table table-striped add-to-cart">
+                <thead>
+                <tr>
+                    <th>Skript-Nr.</th>
+                    <th>Skriptname</th>
+                    <th>Autor</th>
+                    <th>Studiengruppe</th>
+                    <th>Gesamtmenge</th>
+                    <th>Frei</th>
+                    <th>Fach-Nr.</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for stock_info in stock_infos %}
+                    <tr>
+                        <td>{{ stock_info.skript.article_number }}</td>
+                        <td style="word-break: break-all">{{ stock_info.skript.name }}</td>
+                        <td>{{ stock_info.skript.author }}</td>
+                        <td>
+                            {% for studygroup in stock_info.skript.studygroup.all %}
+                                <li>{{ studygroup }}</li>
+                            {% endfor %}
+                        </td>
+                        <td>{{ stock_info.amount_available|add:stock_info.amount_reserved }}</td>
+                        <td>{{ stock_info.amount_available }}</td>
+                        <td>{{ stock_info.skript.shelf_number }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <div class="container">
+            <h3>Skriptenlager</h3>
+            <br>
+            <table class="table table-striped add-to-cart">
+                <thead>
+                <tr>
+                    <th>Skript-Nr.</th>
+                    <th>Skriptname</th>
+                    <th>Autor</th>
+                    <th>Studiengruppe</th>
+                    <th>Verfügbarkeit</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for stock_info in stock_infos %}
+                    <tr>
+                        <td>{{ stock_info.skript.article_number }}</td>
+                        <td>{{ stock_info.skript.name }}</td>
+                        <td>{{ stock_info.skript.author }}</td>
+                        <td>
+                            {% for studygroup in stock_info.skript.studygroup.all %}
+                                <li>{{ studygroup }}</li>
+                            {% endfor %}
+                        </td>
+                        <td>{{ stock_info.amount_available }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+        <h3>Skripten Ausgabe</h3>
+        <p>
+            Die folgenden Skripten können nun ausgeben werden.
+        </p>
+
+        <form action="" method="post">
+            <table class="table table-striped" id="article-table">
+                <thead>
+                <tr>
+                    <th>Skript-Nr.</th>
+                    <th>Skriptname</th>
+                    <th>Fach-Nr.</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.article_number }}
+                            <input type="hidden" name="article[]" value="{{ article.id }}">
+                        </td>
+                        <td>{{ article.name }}</td>
+                        <td style="color: grey">{{ article.shelf_number }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <br>
+            <br>
+            {% csrf_token %}
+            <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
+
+
+            <input class="btn btn-primary" type="submit" name="ausgeben"
+                   value="Ausgeben und Nachbestellen">
+            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Ausgabe beenden</a>
+        </form>
+    </div>
+
+
+{% endblock %}

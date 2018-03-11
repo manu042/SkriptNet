@@ -7,6 +7,16 @@
 
     <div class="container">
 
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger">
+                        <strong>{{ message }}</strong>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
         {% if error_message %}
             <div class="container">
                 <div class="alert alert-danger">
@@ -35,3 +45,6 @@
 {% endblock %}
 
 
+{% block script %}
+    <script src="{% static 'skripten_shop/js/catch_tab_key.js' %}"></script>
+{% endblock %}

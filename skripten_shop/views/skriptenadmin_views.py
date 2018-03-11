@@ -2,11 +2,15 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic import View, TemplateView
+
 
 # My packages
-from skripten_shop.models import ShopSettings, Article, Order
+from skripten_shop.models import ShopSettings, Article, Order, Skript, SkriptInStock
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
+from skripten_shop.utilities import get_current_semester
 
 
 @login_required
@@ -26,9 +30,10 @@ def shop_settings_view(request):
     form = SettingsForm(instance=shop_settings)
 
     if request.method == 'POST':
-
         if 'start_new_semester' in request.POST:
-            print('start_new_semester')
+            # Todo: Funktion überarbeiten
+            shop_settings.current_semester = get_current_semester()
+            shop_settings.save()
 
         if 'save_settings' in request.POST:
             form = SettingsForm(request.POST)
@@ -46,8 +51,7 @@ def shop_settings_view(request):
         'form': form,
     }
 
-    return render(request,
-                  'skripten_shop/skriptenadmin_templates/settings.html', context)
+    return render(request, 'skripten_shop/skriptenadmin/settings.html', context)
 
 
 @login_required
@@ -71,7 +75,7 @@ def edit_info_text_view(request):
     }
 
     return render(request,
-                  'skripten_shop/skriptenadmin_templates/edit_info_text.html', context)
+                  'skripten_shop/skriptenadmin/edit_info_text.html', context)
 
 
 @login_required
@@ -79,33 +83,34 @@ def edit_info_text_view(request):
 def show_reorder_view(request):
     # Following relationships “backward”
     # https://docs.djangoproject.com/en/1.11/topics/db/queries/#following-relationships-backward
-
-    articles = Article.objects.filter(active=True).order_by("article_number")
+    skripte = Skript.objects.filter(active=True)
 
     if request.method == 'POST':
         if 'print_order' in request.POST:
-
             orders = Order.objects.filter(status=Order.REQUEST_STATUS)
-            orders.status = Order.PRINT_STATUS
+            # Dictonary mit allen Skripten erstellen. Die Zahl steht für die Menge, die zu bestellen ist
+            skripte_dict = {x.article_number: 0 for x in Skript.objects.filter(active=True)}
 
             for order in orders:
+                # Status auf "im Druck ändern"
                 order.status = Order.PRINT_STATUS
                 order.save()
+                skripte_dict[order.article.article_number] += 1
+
+            # Zu bestellene Skripten nochmal anzeigen
+            return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'skripte_dict': skripte_dict})
 
     orders = []
-    for article in articles:
-        order = Order.objects.filter(article=article).filter(status=Order.REQUEST_STATUS)
-        orders.append({
-            'article': article,
-            'order_amount': order.count()
-        })
+    for skript in skripte:
+        order = Order.objects.filter(article=skript).filter(status=Order.REQUEST_STATUS)
 
-    context = {
-        'orders': orders,
-    }
+        if order.count() > 0:
+            orders.append({
+                'skript': skript,
+                'order_amount': order.count()
+            })
 
-    return render(request,
-                  'skripten_shop/skriptenadmin_templates/reorder_overview.html', context)
+    return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'orders': orders})
 
 
 @login_required
@@ -114,7 +119,6 @@ def enter_reorder_view(request):
     articles = Article.objects.filter(active=True).order_by("article_number")
 
     if request.method == 'POST':
-
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
         for article_id, amount in zip(selected_articels_id[::2], selected_articels_id[1::2]):
@@ -139,4 +143,71 @@ def enter_reorder_view(request):
     }
 
     return render(request,
-                  'skripten_shop/skriptenadmin_templates/enter_reorder.html', context)
+                  'skripten_shop/skriptenadmin/enter_reorder.html', context)
+
+
+class InitiateStockView(UserPassesTestMixin, TemplateView):
+    """
+    Lager erstmalig im Semester anlegen
+
+    Todo: View deaktivieren, wenn Shop offen ist.
+    """
+    template_name = "skripten_shop/skriptenadmin/initiate_stock.html"
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["articles"] = Article.objects.filter(active=True)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        selected_articels_id = request.POST.getlist('selected_articel[]')
+
+        for article_id, amount in zip(selected_articels_id[::2], selected_articels_id[1::2]):
+            if amount is not "0":
+                for x in range(int(amount)):
+                    SkriptInStock.objects.create(skript=Skript.objects.get(pk=article_id))
+
+        return super().get(request, *args, **kwargs)
+
+
+class StudentOrderView(UserPassesTestMixin, TemplateView):
+    """
+    Bestellungen der Studenten anzeigen und an Druckdienstleister übergeben
+    """
+    template_name = "skripten_shop/skriptenadmin/student_orders.html"
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        orders = []
+        articles = Article.objects.filter(active=True)
+        for article in articles:
+            orders.append({
+                "article": article,
+                "amount_orders": Order.objects.filter(article=article, status=Order.REQUEST_STATUS).count()
+            })
+        context["orders"] = orders
+        return context
+
+    def post(self, request, *args, **kwargs):
+        orders = Order.objects.filter(status=Order.REQUEST_STATUS)
+
+        for order in orders:
+            order.status = Order.PRINT_STATUS
+            order.save()
+
+        return super().get(request, *args, **kwargs)
+
+

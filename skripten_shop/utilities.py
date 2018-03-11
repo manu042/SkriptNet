@@ -63,17 +63,17 @@ def get_current_semester():
     """
     d = datetime.datetime.now()
 
-    # Zeitraum zw. Jan. & Juli
-    if d.month < 7:
+    # Zeitraum zw. Jan. & Mai
+    if d.month < 6:
         # Beginne SoSe
         s_name = "SoSe %s" % d.year
-        print(s_name)
     else:
         # Sonst WiSe
         c_year = str(d.year)[-2:]
         n_year = str(d.year + 1)[-2:]
         s_name = "WS %s/%s" % (c_year, n_year)
-        print(s_name)
+
+    return s_name
 
 
 class SendRegMailThread:

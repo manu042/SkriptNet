@@ -15,34 +15,27 @@ urlpatterns = [
     # activation_key wird der View als Parameter übergeben
     re_path('signup/confirm/(?P<activation_key>\w+)/$', views.ConfirmationView.as_view(), name="confirm_signup"),
 
-
-
-
     # Shop Urls
-    # path('shop/', views.skriptenshopview, name='skripten-list'),
+    path('lager/', views.stock_overview, name='lager'),
+    # path('shop/', views.skriptenshopview, name='skripten-shop'),
     # path('warenkorb/', views.cartView, name='warenkorb'),
     # path('bestellung/', views.orderView, name='bestellung'),
     # path('ajax/addtocart/', views.addtocart),
 
     # Ausgabe URLs
     path('scan_legic/', views.scan_legic_view, name='scan-legic'),
-    path('ausgabe/', views.ausgabe_view, name='ausgabe'),
-    path('ausgabe/info/', views.ausgabe_messages_view, name='ausgabe-info'),
+    path('ausgabe/', views.AusgabeView.as_view(), name='ausgabe'),
     path('individualbetreuung/', views.individual_assistance_view, name='individualbetreuung'),
     path('reorder/', views.reorder_view, name='reorder'),
     path('aktivierung/', views.activation_view, name='aktivierung'),
     path('reaktivierung/', views.reactivation_view, name='reaktivierung'),
     path('newlegic/', views.newlegic_view, name='newlegic'),
 
-    # Settings URLs
-    path('settings/', views.shop_settings_view, name='shop-settings'),
-    path('settings/info_text/', views.edit_info_text_view, name='info-text'),
-
-    # Warehouse URLs
-    path('lager/', views.stock_overview, name='lager'),
+    # Skriptenadmin URLs
     path('lager/reorder/', views.show_reorder_view, name='reorder_overview'),
     path('lager/enter_reorder/', views.enter_reorder_view, name='enter_reorder'),
-    #path('deckblatt_to_pdf/', views.pdf_creation_view, name='deckblatt_to_pdf'),
+    path('settings/', views.shop_settings_view, name='shop-settings'),
+    path('settings/info_text/', views.edit_info_text_view, name='info-text'),
 
     # Association URLs
     path('verein/einstellungen/', views.association_settings_view, name='association-settings'),

@@ -100,6 +100,7 @@
             <li><a href="{% url 'skripten_shop:home' %}">Home</a></li>
             <li><a href="{% url 'skripten_shop:lager' %}">Skriptenlager</a></li>
 
+
             {% if request.user|has_group:'Skriptenausgabe' %}
                 <li><a href="{% url 'skripten_shop:scan-legic' %}">Skripten Ausgabe</a></li>
             {% endif %}

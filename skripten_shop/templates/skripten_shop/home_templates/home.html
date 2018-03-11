@@ -3,6 +3,18 @@
 
 {% block content %}
 
+    {% if user %}
+        <div class="container">
+            <h4>Benutzerprofil:</h4>
+
+            <ul>
+                <li><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</li>
+                <li><strong>E-Mail:</strong> {{ user }}</li>
+            </ul>
+            <br>
+        </div>
+    {% endif %}
+
     {% if info_text %}
         <div class="container">
             <div class="panel panel-success">
@@ -11,6 +23,39 @@
                     {{ info_text|safe }}
                 </div>
             </div>
+        </div>
+    {% endif %}
+
+
+    {% if orders %}
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Deine Bestellungen:</h4>
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th>Skriptnummer</th>
+                            <th>Skriptname</th>
+                            <th>letze Änderung</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in orders %}
+                            <tr {% if order.status == order.RESERVED_STATUS %}
+                                style="background: greenyellow" {% endif %}>
+                                <td>{{ order.article.article_number }}</td>
+                                <td>{{ order.article.name }}</td>
+                                <td>{{ order.last_modified_date.date }}</td>
+                                <td>{{ order.get_status_display }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
         </div>
     {% endif %}
 

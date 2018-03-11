@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% if skripte_dict %}
+        <div class="container">
+            <h4>Bestelldetails</h4>
+
+            <table class="table table-striped add-to-cart">
+                <thead>
+                <tr>
+                    <th>Skript-Nr.</th>
+                    <th>Skriptname</th>
+                    <th>Menge</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, value  in skripte_dict.items %}
+                    {% if value > 0 %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+
+
+        <div class="container">
+            <h3>Nachbestellungen</h3>
+            <h5>Hier werden alle Nachbestellungen der Studenten aufgelistet</h5>
+            <br>
+
+
+            {% if orders|length == 0 %}
+                <h4 align="center" style="color: red">Aktuell liegen keine Nachbestellungen vor.</h4>
+            {% else %}
+                <table class="table table-striped add-to-cart">
+                    <thead>
+                    <tr>
+                        <th>Skript-Nr.</th>
+                        <th>Skriptname</th>
+                        <th>Menge</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.skript.article_number }}</td>
+                            <td>{{ order.skript.name }}</td>
+                            <td>{{ order.order_amount }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Trigger the modal with a button -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                    Bestellung aufgeben
+                </button>
+
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Bestellung beim Druckdienstleister</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h4><span>Dieser Vorgang kann nicht rückgängig gemacht werden.
+                                    <br>
+                                    Möchten Sie trotzdem fortfahren?</span>
+                                </h4>
+
+
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-primary" name="print_order"
+                                           value="Bestellung aufgeben">
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% endif %}
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}

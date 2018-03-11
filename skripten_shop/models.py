@@ -67,8 +67,8 @@ class Article(models.Model):
     """
     # Artikelnummer für Skritpen und Pakete z.B. 01-001
     article_number = models.CharField(verbose_name='Artikel Nummer', max_length=20, unique=True)
-    name = models.CharField(verbose_name='Artikel Name', max_length=50)
-    description = models.CharField(verbose_name='Beschreibung', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Artikel Name', max_length=100)
+    description = models.CharField(verbose_name='Beschreibung', max_length=200, null=True, blank=True)
     shelf_number = models.CharField(verbose_name='Fach-Nummer', max_length=15, null=True, blank=True)
     active = models.BooleanField(default=True)
 
@@ -96,6 +96,7 @@ class Skript(Article):
     class Meta:
         verbose_name = 'Skript'
         verbose_name_plural = 'Skripte'
+        ordering = ['semester', 'article_number']
 
 
 class NewStudentRegistration(models.Model):
@@ -141,7 +142,7 @@ class ArticleInCart(models.Model):
 
 class Order(models.Model):
     """
-    Auftrag
+    Skriptenbestellung eines Studenten
     """
     REQUEST_STATUS = 1
     PRINT_STATUS = 2
@@ -175,6 +176,18 @@ class Order(models.Model):
     def __str__(self):
         text = 'Bestellung %s von %s' % (self.article.name, self.student.user.last_name)
         return text
+
+
+class SkriptInStock(models.Model):
+    """
+    Die Klasse repräsentiert ein physikalisches Skript im Lager
+    """
+    skript = models.ForeignKey(Skript, on_delete=models.CASCADE, verbose_name='Skript', unique=False)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Bestellung", null=True, blank=True)
+
+    # Todo: Anpassen
+    def __str__(self):
+        return self.skript.name
 
 
 class AritcleInStock(models.Model):

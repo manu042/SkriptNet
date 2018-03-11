@@ -3,7 +3,7 @@ from django.contrib import admin
 
 # My Packages
 from .models import Student, NewStudentRegistration, Professor, BezahltStatus, Skript
-from .models import AritcleInStock, StudyGroup
+from .models import AritcleInStock, StudyGroup, SkriptInStock, Order
 
 
 class StudentSemesterInline(admin.TabularInline):
@@ -41,3 +41,5 @@ admin.site.register(Skript, SkriptAdmin)
 admin.site.register(StudyGroup)
 admin.site.register(NewStudentRegistration)
 admin.site.register(AritcleInStock)
+admin.site.register(SkriptInStock)
+admin.site.register(Order)
