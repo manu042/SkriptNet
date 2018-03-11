@@ -5,22 +5,22 @@ from django.db.utils import IntegrityError
 
 
 # My packages
-from skripten_shop.models import Article, ArticleInCart, Order, AritcleInStock, Student
+from skripten_shop.models import Article, Skript, ArticleInCart, Order, AritcleInStock, Student
 
 
 @login_required
 def stock_overview(request):
-    articles = Article.objects.filter(active=True).order_by("article_number")
+    skripte = Skript.objects.filter(active=True)
 
     stock_infos = []
-    for article in articles:
+    for skript in skripte:
         try:
-            amount_available = AritcleInStock.objects.get(article=article).amount
+            amount_available = AritcleInStock.objects.get(article=skript).amount
         except AritcleInStock.DoesNotExist:
             amount_available = 0
-        amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=article).count()
+        amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=skript).count()
         stock_infos.append({
-            'article': article,
+            'skript': skript,
             'amount_available': amount_available,
             'amount_reserved': amount_reserved,
         })
@@ -29,8 +29,7 @@ def stock_overview(request):
         'stock_infos': stock_infos,
     }
 
-    return render(request,
-                  'skripten_shop/skriptenadmin/stock_overview.html', context)
+    return render(request, 'skripten_shop/skriptenadmin/stock_overview.html', context)
 
 
 @login_required

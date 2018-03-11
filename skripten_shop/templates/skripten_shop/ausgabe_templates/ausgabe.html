@@ -119,12 +119,12 @@
                         <tbody>
                         {% for stock_info in stock_infos %}
                             <tr>
-                                <td>{{ stock_info.article.article_number }}</td>
-                                <td>{{ stock_info.article.name }}</td>
-                                <td>{{ stock_info.article.skript.author }}</td>
+                                <td>{{ stock_info.skript.article_number }}</td>
+                                <td>{{ stock_info.skript.name }}</td>
+                                <td>{{ stock_info.skript.author }}</td>
                                 <td>
                                     <ul>
-                                        {% for studygroup in stock_info.article.skript.studygroup.all %}
+                                        {% for studygroup in stock_info.skript.studygroup.all %}
                                             <li>{{ studygroup }}</li>
                                         {% endfor %}
                                     </ul>
@@ -135,7 +135,7 @@
                                 {% else %}
                                     <td>{{ stock_info.amount_available }}</td>
                                 {% endif %}
-                                <td style="color: grey">{{ stock_info.article.shelf_number }}</td>
+                                <td style="color: grey">{{ stock_info.skript.shelf_number }}</td>
                                 <td>
                                     <div class="checkbox">
                                         {% if stock_info.amount_available < 1 %}
@@ -143,7 +143,7 @@
                                         {% else %}
                                             <label>
                                                 <input type="checkbox" name="selected_articel[]"
-                                                       value="{{ stock_info.article.id }}">
+                                                       value="{{ stock_info.skript.id }}">
                                             </label>
                                         {% endif %}
                                     </div>

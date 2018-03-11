@@ -82,8 +82,7 @@ def edit_info_text_view(request):
 def show_reorder_view(request):
     # Following relationships “backward”
     # https://docs.djangoproject.com/en/1.11/topics/db/queries/#following-relationships-backward
-
-    articles = Article.objects.filter(active=True).order_by("article_number")
+    skripte = Skript.objects.filter(active=True)
 
     if request.method == 'POST':
         if 'print_order' in request.POST:
@@ -94,21 +93,15 @@ def show_reorder_view(request):
             for order in orders:
                 order.status = Order.PRINT_STATUS
                 order.save()
-
     orders = []
-    for article in articles:
-        order = Order.objects.filter(article=article).filter(status=Order.REQUEST_STATUS)
+    for skript in skripte:
+        order = Order.objects.filter(article=skript).filter(status=Order.REQUEST_STATUS)
         orders.append({
-            'article': article,
+            'skript': skript,
             'order_amount': order.count()
         })
 
-    context = {
-        'orders': orders,
-    }
-
-    return render(request,
-                  'skripten_shop/skriptenadmin/reorder_overview.html', context)
+    return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'orders': orders})
 
 
 @login_required
@@ -117,7 +110,6 @@ def enter_reorder_view(request):
     articles = Article.objects.filter(active=True).order_by("article_number")
 
     if request.method == 'POST':
-
         selected_articels_id = request.POST.getlist('selected_articel[]')
 
         for article_id, amount in zip(selected_articels_id[::2], selected_articels_id[1::2]):
@@ -210,18 +202,3 @@ class StudentOrderView(UserPassesTestMixin, TemplateView):
         return super().get(request, *args, **kwargs)
 
 
-class StockOverview(UserPassesTestMixin, TemplateView):
-    """
-    View zeigt das aktuelle Lager an, mit freien und reservierten Skripten
-    """
-    template_name = ""
-
-    def test_func(self):
-        """
-        Prüfen, ob der User die Berechtigung für diese Seite hat
-        """
-        return self.request.user.groups.filter(name='Skriptenadmin').exists()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context

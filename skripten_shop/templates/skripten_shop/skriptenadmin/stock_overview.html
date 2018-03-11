@@ -5,7 +5,6 @@
 {% block content %}
 
     {% if request.user|has_group:'Skriptenausgabe' %}
-
         <div class="container">
             <h3>Skriptenlager</h3>
             <br>
@@ -24,17 +23,17 @@
                 <tbody>
                 {% for stock_info in stock_infos %}
                     <tr>
-                        <td>{{ stock_info.article.article_number }}</td>
-                        <td>{{ stock_info.article.name }}</td>
-                        <td>{{ stock_info.article.skript.author }}</td>
+                        <td>{{ stock_info.skript.article_number }}</td>
+                        <td>{{ stock_info.skript.name }}</td>
+                        <td>{{ stock_info.skript.author }}</td>
                         <td>
-                            {% for studygroup in stock_info.article.skript.studygroup.all %}
+                            {% for studygroup in stock_info.skript.studygroup.all %}
                                 <li>{{ studygroup }}</li>
                             {% endfor %}
                         </td>
                         <td>{{ stock_info.amount_available|add:stock_info.amount_reserved }}</td>
                         <td>{{ stock_info.amount_available }}</td>
-                        <td>{{ stock_info.article.shelf_number }}</td>
+                        <td>{{ stock_info.skript.shelf_number }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -58,11 +57,11 @@
                 <tbody>
                 {% for stock_info in stock_infos %}
                     <tr>
-                        <td>{{ stock_info.article.article_number }}</td>
-                        <td>{{ stock_info.article.name }}</td>
-                        <td>{{ stock_info.article.skript.author }}</td>
+                        <td>{{ stock_info.skript.article_number }}</td>
+                        <td>{{ stock_info.skript.name }}</td>
+                        <td>{{ stock_info.skript.author }}</td>
                         <td>
-                            {% for studygroup in stock_info.article.skript.studygroup.all %}
+                            {% for studygroup in stock_info.skript.studygroup.all %}
                                 <li>{{ studygroup }}</li>
                             {% endfor %}
                         </td>

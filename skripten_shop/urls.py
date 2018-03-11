@@ -34,11 +34,6 @@ urlpatterns = [
     # Skriptenadmin URLs
     path('lager/reorder/', views.show_reorder_view, name='reorder_overview'),
     path('lager/enter_reorder/', views.enter_reorder_view, name='enter_reorder'),
-    # Todo: Neu, die anderen entfernen
-    path('lager_anlegen/', views.InitiateStockView.as_view(), name='initate-stock'),
-    path('studenten_bestellungen/', views.StudentOrderView.as_view(), name='student-orders'),
-    path('lager3/', views.enter_reorder_view, name='lager3'),
-
     path('settings/', views.shop_settings_view, name='shop-settings'),
     path('settings/info_text/', views.edit_info_text_view, name='info-text'),
 

@@ -44,7 +44,7 @@
             {% endfor %}
         </ul>
 
-        {% if articles %}
+        {% if skripte %}
             <div class="container">
                 <form action="" method="post">
                     <table class="table table-striped" id="article-table">
@@ -58,20 +58,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for article in articles %}
+                        {% for skript in skripte %}
                             <tr>
-                                <td>{{ article.article_number }}</td>
-                                <td>{{ article.name }}</td>
-                                <td>{{ article.skript.author }}</td>
+                                <td>{{ skript.article_number }}</td>
+                                <td>{{ skript.name }}</td>
+                                <td>{{ skript.author }}</td>
                                 <td>
-                                    {% for studygroup in article.skript.studygroup.all %}
+                                    {% for studygroup in skript.studygroup.all %}
                                         <li>{{ studygroup }}</li>
                                     {% endfor %}
                                 </td>
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="selected_articel[]" value="{{ article.id }}">
+                                            <input type="checkbox" name="selected_articel[]" value="{{ skript.id }}">
                                         </label>
                                     </div>
                                 </td>

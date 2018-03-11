@@ -14,7 +14,7 @@ import logging
 
 # My Packages
 from skripten_shop.forms import ScanLegicForm, ActivateStudentForm, NewLegicCardForm
-from skripten_shop.models import Article, Order, Student, BezahltStatus, AritcleInStock
+from skripten_shop.models import Article, Skript, Order, Student, BezahltStatus, AritcleInStock
 from skripten_shop.utilities import has_permisson_skriptenausgabe
 from skripten_shop.utilities import current_semester_is, max_article_is
 
@@ -159,11 +159,34 @@ def reorder_view(request):
 
         return redirect(reverse('skripten_shop:scan-legic'))
 
-    articles = Article.objects.filter(active=True)
+
+
+    # Alle aktiven Skripte aus der Datenbank laden
+    skripte_active = Skript.objects.filter(active=True)
+    # Dictonary mit allen Skripten aus dem Lager und deren Menge erstellen
+    stock_dict = {x.article.article_number: x.amount for x in AritcleInStock.objects.all()}
+    # Alle Bestellungen des Studenten aus der DB laden
+    order = [order.article.article_number for order in Order.objects.filter(student=student)]
+
+    skripte = []
+    # Liste der nachbestellbaren Skripte für den aktuellen Student erstellen
+    for skript in skripte_active:
+        try:
+            # Prüfen, ob das Skript noch frei verfügbar ist
+            amount = stock_dict[skript.article_number]
+            if amount == 0:
+                # Prüfen, ob der Student das Skript bereits erhalten hat
+                if skript.article_number not in order:
+                    skripte.append(skript)
+
+        except Exception as e:
+            # Prüfen, ob der Student das Skript bereits erhalten hat
+            if skript.article_number not in order:
+                skripte.append(skript)
 
     context = {
         'student': student,
-        'articles': articles,
+        'skripte': skripte,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/reorder.html', context)
@@ -442,25 +465,26 @@ class AusgabeView(UserPassesTestMixin, View):
     def get_stock_infos(self):
         # Alle bestellbaren Artikel (Skripte) aus der Datenbank laden und nach Artikelnummer sortieren
         articles = Article.objects.filter(active=True).order_by("article_number")
+        skripte = Skript.objects.filter(active=True)
 
         # Menge der Verfügbaren Skripten ermitteln
         stock_infos = []
-        for article in articles:
+        for skript in skripte:
             # Falls der Student ein Skript bereits erhalten hat, wird es nicht in der Ausgabe angezeigt
-            if self.student_order.filter(article=article).exists():
+            if self.student_order.filter(article=skript).exists():
                 continue
 
             try:
                 # Die Menge der nicht reservierten Skripten im Lager ermitteln
-                amount_available = AritcleInStock.objects.get(article=article).amount
+                amount_available = AritcleInStock.objects.get(article=skript).amount
             except AritcleInStock.DoesNotExist:
                 # Wenn das Objekt nicht existiert, wird die Menge auf 0 gesetzt
                 amount_available = 0
 
             # Menge der reservierten Skripte im Lager ermitteln
-            amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=article).count()
+            amount_reserved = Order.objects.filter(status=Order.RESERVED_STATUS).filter(article=skript).count()
             stock_infos.append({
-                'article': article,
+                'skript': skript,
                 'amount_available': amount_available,
                 'amount_reserved': amount_reserved,
             })

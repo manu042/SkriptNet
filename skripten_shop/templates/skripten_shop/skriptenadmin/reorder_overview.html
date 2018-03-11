@@ -18,8 +18,8 @@
             <tbody>
             {% for order in orders %}
                 <tr>
-                    <td>{{ order.article.article_number }}</td>
-                    <td>{{ order.article.name }}</td>
+                    <td>{{ order.skript.article_number }}</td>
+                    <td>{{ order.skript.name }}</td>
                     <td>{{ order.order_amount }}</td>
                 </tr>
             {% endfor %}
@@ -28,7 +28,8 @@
 
         <form action="" method="post">
             {% csrf_token %}
-            <input type="submit" class="btn btn-primary" name="print_order" value="Bestellung aufgeben">
+            <input type="submit" class="btn btn-primary" name="print_order" value="Bestellung aufgeben"
+                   style="margin-bottom: 80px">
         </form>
 
     </div>

@@ -96,6 +96,7 @@ class Skript(Article):
     class Meta:
         verbose_name = 'Skript'
         verbose_name_plural = 'Skripte'
+        ordering = ['semester', 'article_number']
 
 
 class NewStudentRegistration(models.Model):
