@@ -6,6 +6,14 @@
 
     <div class="container">
         <h3>Mitgliederliste Verein FS04</h3>
+
+        <ul>
+            <li><strong>Mitglieder gesamt:</strong> {{ students.count }}</li>
+            <li><strong>Mitgliedsbeitrag:</strong> {% membership_fee %} €</li>
+            <li><strong>Es haben bezahlt:</strong> {{ total_paid }} Mitglieder</li>
+            <li><strong>Einnahemen gesamt im Sose 2018:</strong> {{ total_income }} €</li>
+        </ul>
+
         <br>
         <table class="table table-striped add-to-cart">
             <thead>
@@ -35,7 +43,13 @@
                     </td>
                     <td>{{ student.user.date_joined }}</td>
 
-                <td>{{ student.bezahltstatus_set.last.semester }}</td>
+                    <td>{% if student|has_paid %}
+                        <span class="glyphicon glyphicon-ok" style="color:limegreen"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                    {% endif %}
+                        {{ student.bezahltstatus_set.last.date|date:"d.m.Y" }}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

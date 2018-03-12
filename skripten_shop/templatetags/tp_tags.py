@@ -4,13 +4,24 @@ from django.contrib.auth.models import Group
 
 # My Packages
 from skripten_shop.utilities import get_current_semester, membership_fee_is
+from skripten_shop.models import BezahltStatus
 
 register = template.Library()
 
 
-@register.simple_tag
-def current_semester():
-    return get_current_semester()
+@register.filter(name="has_paid")
+def check_paid_status(student):
+    """
+    Checken, ob der Student dieses Semester bezahlt hat
+    """
+    bs = BezahltStatus.objects.filter(student=student).latest("date")
+    current_semester = get_current_semester()
+
+    if bs.semester == current_semester:
+        paid = True
+    else:
+        paid = False
+    return paid
 
 
 @register.simple_tag
