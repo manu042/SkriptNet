@@ -2,7 +2,20 @@
 from django import template
 from django.contrib.auth.models import Group
 
+# My Packages
+from skripten_shop.utilities import get_current_semester, membership_fee_is
+
 register = template.Library()
+
+
+@register.simple_tag
+def current_semester():
+    return get_current_semester()
+
+
+@register.simple_tag
+def membership_fee():
+    return membership_fee_is()
 
 
 @register.filter(name='has_group')
