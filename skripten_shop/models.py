@@ -15,6 +15,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = 'Student'
         verbose_name_plural = 'Studenten'
+        ordering = ["user__first_name"]
 
     def __str__(self):
         name = self.user.first_name + ' ' + self.user.last_name
