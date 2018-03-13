@@ -14,12 +14,15 @@ def check_paid_status(student):
     """
     Checken, ob der Student dieses Semester bezahlt hat
     """
-    bs = BezahltStatus.objects.filter(student=student).latest("date")
-    current_semester = get_current_semester()
+    try:
+        bs = BezahltStatus.objects.filter(student=student).latest("date")
+        current_semester = get_current_semester()
 
-    if bs.semester == current_semester:
-        paid = True
-    else:
+        if bs.semester == current_semester:
+            paid = True
+        else:
+            paid = False
+    except:
         paid = False
     return paid
 
