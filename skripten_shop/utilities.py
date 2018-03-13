@@ -106,13 +106,13 @@ class SendRegMailThread:
         message = """ Hallo %s %s,
 
         du erhälst diese Email, weil du dich für den Skriptendienst der Fachschaft 04 angemeldet hast. 
-        Öffne bitte den folgden Link, um deine Anmeldung abzuschließen:
+        Öffne bitte den folgenden Link, um deine Anmeldung abzuschließen:
 
         %s
 
         Viele Grüße
 
-        Skriptenteam - Fachschaft 04 Elektrotechnik und Informationstechnik
+        Skriptenteam - Fachschaft 04 Elektro- und Informationstechnik
         """ % (user.first_name, user.last_name, confirm_url)
 
         try:

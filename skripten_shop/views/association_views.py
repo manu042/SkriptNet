@@ -44,11 +44,15 @@ def association_members_view(request):
         current_semester = ShopSettings.objects.get(pk=1)
     except:
         current_semester = None
-    paid_objects = BezahltStatus.objects.filter(semester=current_semester)
+
+    total_paid = BezahltStatus.objects.filter(semester=current_semester.current_semester).count()
     students = Student.objects.all()
+    total_income = total_paid * current_semester.membership_fee
 
     context = {
         'students': students,
+        'total_paid': total_paid,
+        'total_income': total_income,
     }
 
     return render(request, 'skripten_shop/association_templates/association_members.html', context)

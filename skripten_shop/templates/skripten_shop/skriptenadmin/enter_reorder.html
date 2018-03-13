@@ -8,37 +8,41 @@
         <h5>Diese Liste zeigt an, welche Menge von jedem Skript bei der Druckerei bestellt wurde.</h5>
         <h5>Gelieferte Skripten können in der Spalte "geliefert" in die Datenbank übernommen werden.</h5>
         <br>
-        <form action="" method="post" autocomplete="off">
-            <table class="table table-striped add-to-cart">
-                <thead>
-                <tr>
-                    <th>Skript-Nr.</th>
-                    <th>Skriptname</th>
-                    <th>im Druck</th>
-                    <th>geliefert</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for order_in_print in orders_in_print %}
+        {% if orders_in_print|length == 0 %}
+            <h4 align="center" style="color: red">Aktuell werden keine Lieferungen vom Druckdienstleister erwartet.</h4>
+        {% else %}
+            <form action="" method="post" autocomplete="off">
+                <table class="table table-striped add-to-cart">
+                    <thead>
                     <tr>
-                        <td>{{ order_in_print.article.article_number }}</td>
-                        <td>{{ order_in_print.article.name }}</td>
-                        <td>{{ order_in_print.order_amount }}</td>
-                        <td>
-                            <label><input name="selected_articel[]" value="{{ order_in_print.article.id }}"
-                                          hidden></label>
-                            <label><input type="number" min="0" max="{{ order_in_print.order_amount }}"
-                                          name="selected_articel[]" value="0"></label>
-                        </td>
+                        <th>Skript-Nr.</th>
+                        <th>Skriptname</th>
+                        <th>im Druck</th>
+                        <th>geliefert</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for order_in_print in orders_in_print %}
+                        <tr>
+                            <td>{{ order_in_print.article.article_number }}</td>
+                            <td>{{ order_in_print.article.name }}</td>
+                            <td>{{ order_in_print.order_amount }}</td>
+                            <td>
+                                <label><input name="selected_articel[]" value="{{ order_in_print.article.id }}"
+                                              hidden></label>
+                                <label><input type="number" min="0" max="{{ order_in_print.order_amount }}"
+                                              name="selected_articel[]" value="0"></label>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
 
-            {% csrf_token %}
-            <input type="submit" class="btn btn-primary" name="print_order" value="Bestellung einpflegen"
-                   style="margin-bottom: 80px">
-        </form>
-    </div>
+                {% csrf_token %}
+                <input type="submit" class="btn btn-primary" name="print_order" value="Bestellung einpflegen"
+                       style="margin-bottom: 80px">
+            </form>
+            </div>
+        {% endif %}
 
 {% endblock %}

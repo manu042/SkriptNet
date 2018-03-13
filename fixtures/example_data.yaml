@@ -1,0 +1,900 @@
+- model: skripten_shop.professor
+  pk: 1
+  fields: {title: Prof. Dr., first_name: Norbert, last_name: Geng, mail_address: norbert.geng@hm.edu}
+- model: skripten_shop.professor
+  pk: 2
+  fields: {title: Prof. Dr., first_name: Guido, last_name: Stehr, mail_address: guido.stehr@hm.edu}
+- model: skripten_shop.professor
+  pk: 3
+  fields: {title: Prof., first_name: Michael, last_name: Hiebel, mail_address: michael.hiebel@hm.edu}
+- model: skripten_shop.professor
+  pk: 4
+  fields: {title: Prof. Dr., first_name: Gregor, last_name: Feiertag, mail_address: gregor.feiertag@hm.edu}
+- model: skripten_shop.professor
+  pk: 5
+  fields: {title: Prof. Dr., first_name: Eric-Roger, last_name: "Br\xFCckelmeier",
+    mail_address: eric-roger.bruecklmeier@hm.edu}
+- model: skripten_shop.professor
+  pk: 6
+  fields: {title: Prof. Dr., first_name: Wilfried, last_name: Meyberg, mail_address: wilfried.meyberg@hm.edu}
+- model: skripten_shop.professor
+  pk: 7
+  fields: {title: Prof. Dr., first_name: Bernd, last_name: Schmitt, mail_address: bernd.schmitt@hm.edu}
+- model: skripten_shop.professor
+  pk: 8
+  fields: {title: Prof. Dr., first_name: Christian, last_name: "Ki\xDFling", mail_address: christian.kissling@hm.edu}
+- model: skripten_shop.professor
+  pk: 9
+  fields: {title: Prof. Dr., first_name: Gerhard, last_name: Schillhuber, mail_address: gerhard.schillhuber@hm.edu}
+- model: skripten_shop.professor
+  pk: 10
+  fields: {title: Prof. Dr., first_name: Joachim, last_name: J. Schramm, mail_address: joachim.schramm@hm.edu}
+- model: skripten_shop.professor
+  pk: 11
+  fields: {title: Prof. Dr., first_name: Christian, last_name: "M\xFCnker", mail_address: christian.muenker@hm.edu}
+- model: skripten_shop.professor
+  pk: 12
+  fields: {title: Prof. Dr., first_name: Reinhold, last_name: Unterricker, mail_address: reinhold.unterricker@hm.edu}
+- model: skripten_shop.professor
+  pk: 13
+  fields: {title: Prof. Dr., first_name: Arne, last_name: Striegler, mail_address: arne.striegler@hm.edu}
+- model: skripten_shop.professor
+  pk: 14
+  fields: {title: Prof. Dr., first_name: Christoph, last_name: Rapp, mail_address: christoph.rapp@hm.edu}
+- model: skripten_shop.professor
+  pk: 15
+  fields: {title: Prof. Dr., first_name: Frank, last_name: Klopf, mail_address: frank.klopf@hm.edu}
+- model: skripten_shop.professor
+  pk: 16
+  fields: {title: Prof. Dr., first_name: Klaus Georg, last_name: Rauh, mail_address: klaus_georg.rauh@hm.edu}
+- model: skripten_shop.professor
+  pk: 17
+  fields: {title: Prof. Dr., first_name: Simon, last_name: Hecker, mail_address: simon.hecker@hm.edu}
+- model: skripten_shop.professor
+  pk: 18
+  fields: {title: Prof. Dr., first_name: Peter, last_name: Klein, mail_address: peter.klein@hm.edu}
+- model: skripten_shop.professor
+  pk: 19
+  fields: {title: Prof., first_name: "J\xFCrgen", last_name: Plate, mail_address: juergen.plate@hm.edu}
+- model: skripten_shop.professor
+  pk: 20
+  fields: {title: Herr, first_name: Walter, last_name: Tasin, mail_address: walter.tasin@hm.edu}
+- model: skripten_shop.professor
+  pk: 21
+  fields: {title: Prof. Dr., first_name: Alfred, last_name: "Sch\xF6ttl", mail_address: alfred.schoettl@hm.edu}
+- model: skripten_shop.professor
+  pk: 22
+  fields: {title: Prof. Dr., first_name: Klemens, last_name: Graf, mail_address: klemens.graf@hm.edu}
+- model: skripten_shop.professor
+  pk: 23
+  fields: {title: Prof. Dr., first_name: Alfred, last_name: Irber, mail_address: alfred.irber@hm.edu}
+- model: skripten_shop.professor
+  pk: 24
+  fields: {title: Prof. Dr., first_name: "J\xFCrgen", last_name: Rackles, mail_address: juergen.rackles@hm.edu}
+- model: skripten_shop.professor
+  pk: 25
+  fields: {title: Prof. Dr., first_name: Wolfgang, last_name: "H\xF6ger", mail_address: wolfgang.hoeger@hm.edu}
+- model: skripten_shop.professor
+  pk: 26
+  fields: {title: Prof. Dr., first_name: Wolfgang, last_name: Rehm, mail_address: wolfgang.rehm@hm.edu}
+- model: skripten_shop.professor
+  pk: 27
+  fields: {title: Prof. Dr., first_name: Simon, last_name: S. Schramm, mail_address: simon.schramm@hm.edu}
+- model: skripten_shop.professor
+  pk: 28
+  fields: {title: Frau, first_name: Christine, last_name: Heigl-Eberl, mail_address: christine.heigl-eberl@gmx.de}
+- model: skripten_shop.professor
+  pk: 29
+  fields: {title: Prof. Dr., first_name: Oliver, last_name: Bohlen, mail_address: oliver.bohlen@hm.edu}
+- model: skripten_shop.professor
+  pk: 30
+  fields: {title: Prof. Dr., first_name: Thomas, last_name: Michael, mail_address: thomas.michael@hm.edu}
+- model: skripten_shop.professor
+  pk: 31
+  fields: {title: Prof. Dr., first_name: Georg, last_name: "Strau\xDF", mail_address: georg.strauss@hm.edu}
+- model: skripten_shop.professor
+  pk: 32
+  fields: {title: Prof., first_name: Hermann, last_name: "Wagenh\xE4user", mail_address: hermann.wagenhaeuser@hm.edu}
+- model: skripten_shop.professor
+  pk: 33
+  fields: {title: Prof. Dr., first_name: Rainer, last_name: Seck, mail_address: rainer.seck@hm.edu}
+- model: skripten_shop.professor
+  pk: 34
+  fields: {title: Prof. Dr., first_name: Christoph, last_name: Hackl, mail_address: christoph.hackl@hm.edu}
+- model: skripten_shop.professor
+  pk: 35
+  fields: {title: Frau, first_name: Erika, last_name: Mustermann, mail_address: erika.mustermann@hm.edu}
+- model: skripten_shop.professor
+  pk: 36
+  fields: {title: Prof. Dr., first_name: Claudio, last_name: Zuccaro, mail_address: claudio.zuccaro@hm.edu}
+
+
+- model: skripten_shop.studygroup
+  pk: 2
+  fields: {title: BAC1A}
+- model: skripten_shop.studygroup
+  pk: 3
+  fields: {title: BAC1B}
+- model: skripten_shop.studygroup
+  pk: 4
+  fields: {title: BAC1C}
+- model: skripten_shop.studygroup
+  pk: 5
+  fields: {title: BAC1D}
+- model: skripten_shop.studygroup
+  pk: 6
+  fields: {title: BAC2A}
+- model: skripten_shop.studygroup
+  pk: 7
+  fields: {title: BAC2B}
+- model: skripten_shop.studygroup
+  pk: 8
+  fields: {title: BAC2C}
+- model: skripten_shop.studygroup
+  pk: 9
+  fields: {title: BAC2D}
+- model: skripten_shop.studygroup
+  pk: 10
+  fields: {title: EIB3A}
+- model: skripten_shop.studygroup
+  pk: 11
+  fields: {title: EIB3B}
+- model: skripten_shop.studygroup
+  pk: 12
+  fields: {title: EIB4A}
+- model: skripten_shop.studygroup
+  pk: 13
+  fields: {title: EIB4B}
+- model: skripten_shop.studygroup
+  pk: 14
+  fields: {title: B5P}
+- model: skripten_shop.studygroup
+  pk: 15
+  fields: {title: EIB6}
+- model: skripten_shop.studygroup
+  pk: 16
+  fields: {title: EIB7}
+- model: skripten_shop.studygroup
+  pk: 17
+  fields: {title: REB3A}
+- model: skripten_shop.studygroup
+  pk: 18
+  fields: {title: REB4A}
+- model: skripten_shop.studygroup
+  pk: 19
+  fields: {title: REB6}
+- model: skripten_shop.studygroup
+  pk: 20
+  fields: {title: REB7}
+- model: skripten_shop.studygroup
+  pk: 21
+  fields: {title: EMB3A}
+- model: skripten_shop.studygroup
+  pk: 22
+  fields: {title: EMB4A}
+- model: skripten_shop.studygroup
+  pk: 23
+  fields: {title: EMB6}
+- model: skripten_shop.studygroup
+  pk: 24
+  fields: {title: EMB7}
+- model: skripten_shop.studygroup
+  pk: 25
+  fields: {title: BGO1}
+- model: skripten_shop.studygroup
+  pk: 26
+  fields: {title: ELM1/2}
+- model: skripten_shop.studygroup
+  pk: 27
+  fields: {title: SMM1}
+- model: skripten_shop.studygroup
+  pk: 28
+  fields: {title: SMM2}
+- model: skripten_shop.studygroup
+  pk: 29
+  fields: {title: CiE}
+
+- model: skripten_shop.article
+  pk: 2
+  fields: {article_number: 01-001, name: Elektrische und magnetische Felder, description: null,
+    shelf_number: 2A, active: true}
+- model: skripten_shop.article
+  pk: 3
+  fields: {article_number: 01-002, name: Gleichstromnetze, description: null, shelf_number: 3A,
+    active: true}
+- model: skripten_shop.article
+  pk: 4
+  fields: {article_number: 01-003, name: 'Gleichstromnetze: Praktikumsanleitung',
+    description: null, shelf_number: 5A, active: true}
+- model: skripten_shop.article
+  pk: 5
+  fields: {article_number: 01-005, name: Werkstofftechnik, description: null, shelf_number: 7A,
+    active: true}
+- model: skripten_shop.article
+  pk: 6
+  fields: {article_number: 02-001, name: 'Wechselstromnetze: Praktikumsanleitung',
+    description: null, shelf_number: 2B, active: true}
+- model: skripten_shop.article
+  pk: 7
+  fields: {article_number: 02-002, name: Wechselstromnetze, description: null, shelf_number: '3B,
+      5B', active: true}
+- model: skripten_shop.article
+  pk: 8
+  fields: {article_number: 02-003, name: Elektronische Bauelemente, description: null,
+    shelf_number: '6B, 7B', active: true}
+- model: skripten_shop.article
+  pk: 9
+  fields: {article_number: 02-004, name: Elektronische Bauelemente, description: null,
+    shelf_number: '2C, 3C', active: true}
+- model: skripten_shop.article
+  pk: 10
+  fields: {article_number: 02-005, name: TI I - Digitaltechnik, description: null,
+    shelf_number: '4C, 5C', active: true}
+- model: skripten_shop.article
+  pk: 11
+  fields: {article_number: 02-007, name: Nachhaltige Produktentwicklung, description: null,
+    shelf_number: 2D, active: true}
+- model: skripten_shop.article
+  pk: 12
+  fields: {article_number: 02-008, name: Wechselstromnetze, description: null, shelf_number: '3D,
+      4D', active: true}
+- model: skripten_shop.article
+  pk: 13
+  fields: {article_number: 02-009, name: 'Elektronische Bauelemente: Versuchsanleitung',
+    description: null, shelf_number: 5D, active: true}
+- model: skripten_shop.article
+  pk: 14
+  fields: {article_number: 03-001, name: TI II - Dig. Schaltwerke, description: null,
+    shelf_number: '2E, 3E', active: true}
+- model: skripten_shop.article
+  pk: 15
+  fields: {article_number: 03-005, name: Elektronische Schaltungen, description: null,
+    shelf_number: '6E, 7E', active: true}
+- model: skripten_shop.article
+  pk: 16
+  fields: {article_number: 03-007, name: Signale und Systeme, description: null, shelf_number: '2F,
+      3F', active: true}
+- model: skripten_shop.article
+  pk: 17
+  fields: {article_number: 03-008, name: Elektrische Messtechnik, description: null,
+    shelf_number: 4F, active: true}
+- model: skripten_shop.article
+  pk: 18
+  fields: {article_number: 04-001, name: Numerische Mathematik, description: null,
+    shelf_number: 2G, active: true}
+- model: skripten_shop.article
+  pk: 19
+  fields: {article_number: 04-002, name: Grundlagen der Regelungstechnik, description: null,
+    shelf_number: 3G, active: true}
+- model: skripten_shop.article
+  pk: 20
+  fields: {article_number: 04-003, name: Mikroelektronik, description: null, shelf_number: 4G,
+    active: true}
+- model: skripten_shop.article
+  pk: 21
+  fields: {article_number: 04-004, name: 'Mikroelektronik: Praktikumsanleitung', description: null,
+    shelf_number: 5G, active: true}
+- model: skripten_shop.article
+  pk: 22
+  fields: {article_number: 04-005, name: 'TI III - Embedded Systems: Skript', description: null,
+    shelf_number: 6G, active: true}
+- model: skripten_shop.article
+  pk: 23
+  fields: {article_number: 04-011, name: Microcomputer-English, description: null,
+    shelf_number: 4H, active: true}
+- model: skripten_shop.article
+  pk: 24
+  fields: {article_number: EM-402, name: Elektrische Fahrzeugantriebe 1, description: null,
+    shelf_number: 6H, active: true}
+- model: skripten_shop.article
+  pk: 25
+  fields: {article_number: 05-001, name: Betriebswirtschaftslehre, description: null,
+    shelf_number: 4I, active: true}
+- model: skripten_shop.article
+  pk: 26
+  fields: {article_number: AT-007, name: Elektrische Maschinen, description: null,
+    shelf_number: 6I, active: true}
+- model: skripten_shop.article
+  pk: 27
+  fields: {article_number: RE-007, name: Solar- und Windenergie, description: null,
+    shelf_number: 2L, active: true}
+- model: skripten_shop.article
+  pk: 28
+  fields: {article_number: TI-004, name: Embedded Systems, description: null, shelf_number: 3L,
+    active: true}
+- model: skripten_shop.article
+  pk: 29
+  fields: {article_number: TI-007, name: Entwurf komplexer Digitalschaltungen, description: null,
+    shelf_number: 5L, active: true}
+- model: skripten_shop.article
+  pk: 30
+  fields: {article_number: WP-201, name: Radartechnik, description: null, shelf_number: 6L,
+    active: true}
+- model: skripten_shop.article
+  pk: 31
+  fields: {article_number: ME-006, name: Human Machine Interface, description: null,
+    shelf_number: 2M, active: true}
+- model: skripten_shop.article
+  pk: 32
+  fields: {article_number: ME-010, name: Werkstoffe und Elektroniktechnologie, description: null,
+    shelf_number: 3M, active: true}
+- model: skripten_shop.article
+  pk: 33
+  fields: {article_number: ME-011, name: Bildgebende Untersuchungsverfahren, description: null,
+    shelf_number: 4M, active: true}
+- model: skripten_shop.article
+  pk: 34
+  fields: {article_number: ME-013, name: Zustandsregelungen, description: null, shelf_number: 6M,
+    active: true}
+- model: skripten_shop.article
+  pk: 35
+  fields: {article_number: ME-014, name: Digitale Signalverarbeitung auf FPGAs, description: null,
+    shelf_number: 7M, active: true}
+- model: skripten_shop.article
+  pk: 36
+  fields: {article_number: 00-000, name: "Ersti-T\xFCte", description: null, shelf_number: null,
+    active: true}
+- model: skripten_shop.article
+  pk: 37
+  fields: {article_number: 01-004, name: Physik, description: null, shelf_number: 6A,
+    active: true}
+- model: skripten_shop.article
+  pk: 38
+  fields: {article_number: 02-006, name: TI I - C mit Microcontroller, description: null,
+    shelf_number: '6C, 7C', active: true}
+- model: skripten_shop.article
+  pk: 39
+  fields: {article_number: 03-002, name: TI II - Mikrocomputer, description: null,
+    shelf_number: 4E, active: true}
+- model: skripten_shop.article
+  pk: 40
+  fields: {article_number: 03-003, name: Elektrische Messtechnik, description: null,
+    shelf_number: 5E, active: true}
+- model: skripten_shop.article
+  pk: 41
+  fields: {article_number: 04-006, name: 'TI III - Embedded Systems: Folien', description: null,
+    shelf_number: 7G, active: true}
+- model: skripten_shop.article
+  pk: 42
+  fields: {article_number: 04-007, name: TI III - Python, description: null, shelf_number: 2H,
+    active: true}
+- model: skripten_shop.article
+  pk: 43
+  fields: {article_number: 04-009, name: Grundlagen der Regelungstechnik, description: null,
+    shelf_number: 3H, active: true}
+- model: skripten_shop.article
+  pk: 44
+  fields: {article_number: 04-012, name: Leistungselektronik RE/EM, description: null,
+    shelf_number: 5H, active: true}
+- model: skripten_shop.article
+  pk: 45
+  fields: {article_number: RE-401, name: 'Energieumwandlung: Teil I', description: null,
+    shelf_number: 2I, active: true}
+- model: skripten_shop.article
+  pk: 46
+  fields: {article_number: RE-402, name: 'Energieumwandlung: Teil II', description: null,
+    shelf_number: 3I, active: true}
+- model: skripten_shop.article
+  pk: 47
+  fields: {article_number: AT-006, name: Regelungstechnik 2, description: null, shelf_number: 5I,
+    active: true}
+- model: skripten_shop.article
+  pk: 48
+  fields: {article_number: AT-009, name: Leistungselektronik, description: null, shelf_number: 7I,
+    active: true}
+- model: skripten_shop.article
+  pk: 49
+  fields: {article_number: EM-004, name: 'Energiespeicher: Skript', description: null,
+    shelf_number: 2K, active: true}
+- model: skripten_shop.article
+  pk: 50
+  fields: {article_number: EM-005, name: 'Energiespeicher: Folien', description: null,
+    shelf_number: 3K, active: true}
+- model: skripten_shop.article
+  pk: 51
+  fields: {article_number: KT-005, name: Modulationsverfahren, description: null,
+    shelf_number: 4K, active: true}
+- model: skripten_shop.article
+  pk: 52
+  fields: {article_number: KT-007, name: "Sichere Nachrichten\xFCbertragung", description: null,
+    shelf_number: 5K, active: true}
+- model: skripten_shop.article
+  pk: 53
+  fields: {article_number: KT-008, name: Digital Signal Processing, description: null,
+    shelf_number: 6K, active: true}
+- model: skripten_shop.article
+  pk: 54
+  fields: {article_number: RE-006, name: "Elektrische Energie\xFCbertragung und -verteilung",
+    description: null, shelf_number: 7K, active: true}
+- model: skripten_shop.article
+  pk: 55
+  fields: {article_number: ME-012, name: Elektrische Antriebe, description: null,
+    shelf_number: 5M, active: true}
+
+
+- model: skripten_shop.skript
+  pk: 2
+  fields:
+    author: 1
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 310
+    semester: 1
+    revision_date: 2018-03-02
+    studygroup: [2]
+- model: skripten_shop.skript
+  pk: 3
+  fields:
+    author: 1
+    cover_sheet_color: hell blau
+    page_numbers: 260
+    semester: 1
+    revision_date: 2018-03-02
+    studygroup: [2]
+- model: skripten_shop.skript
+  pk: 4
+  fields:
+    author: 1
+    cover_sheet_color: hell rot
+    page_numbers: 14
+    semester: 1
+    revision_date: 2018-03-02
+    studygroup: [2]
+- model: skripten_shop.skript
+  pk: 5
+  fields:
+    author: 3
+    cover_sheet_color: gelb
+    page_numbers: 85
+    semester: 1
+    revision_date: 2018-03-02
+    studygroup: [2]
+- model: skripten_shop.skript
+  pk: 6
+  fields:
+    author: 2
+    cover_sheet_color: rosa
+    page_numbers: 18
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [8, 9, 6, 7]
+- model: skripten_shop.skript
+  pk: 7
+  fields:
+    author: 1
+    cover_sheet_color: hell rot
+    page_numbers: 426
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [8, 9, 7]
+- model: skripten_shop.skript
+  pk: 8
+  fields:
+    author: 5
+    cover_sheet_color: gelb
+    page_numbers: 181
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [6, 7]
+- model: skripten_shop.skript
+  pk: 9
+  fields:
+    author: 6
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 280
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [8, 9]
+- model: skripten_shop.skript
+  pk: 10
+  fields:
+    author: 7
+    cover_sheet_color: lila
+    page_numbers: 208
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [8, 9, 6, 7]
+- model: skripten_shop.skript
+  pk: 11
+  fields:
+    author: 3
+    cover_sheet_color: hell blau
+    page_numbers: 85
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [8, 9, 6, 7]
+- model: skripten_shop.skript
+  pk: 12
+  fields:
+    author: 5
+    cover_sheet_color: rot
+    page_numbers: 157
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [6]
+- model: skripten_shop.skript
+  pk: 13
+  fields:
+    author: 6
+    cover_sheet_color: "hell gr\xFCn"
+    page_numbers: 50
+    semester: 2
+    revision_date: 2018-03-02
+    studygroup: [8, 9, 6, 7]
+- model: skripten_shop.skript
+  pk: 14
+  fields:
+    author: 7
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 174
+    semester: 3
+    revision_date: 2018-03-03
+    studygroup: [17, 10, 21]
+- model: skripten_shop.skript
+  pk: 15
+  fields:
+    author: 12
+    cover_sheet_color: hell blau
+    page_numbers: 308
+    semester: 3
+    revision_date: 2018-03-03
+    studygroup: [17, 10, 21]
+- model: skripten_shop.skript
+  pk: 16
+  fields:
+    author: 1
+    cover_sheet_color: hell rot
+    page_numbers: 450
+    semester: 3
+    revision_date: 2018-03-03
+    studygroup: [10]
+- model: skripten_shop.skript
+  pk: 17
+  fields:
+    author: 15
+    cover_sheet_color: "hell gr\xFCn"
+    page_numbers: 345
+    semester: 3
+    revision_date: 2018-03-03
+    studygroup: [10]
+- model: skripten_shop.skript
+  pk: 18
+  fields:
+    author: 16
+    cover_sheet_color: hell blau
+    page_numbers: 233
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [18, 22]
+- model: skripten_shop.skript
+  pk: 19
+  fields:
+    author: 17
+    cover_sheet_color: rosa
+    page_numbers: 181
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [18, 12, 22]
+- model: skripten_shop.skript
+  pk: 20
+  fields:
+    author: 18
+    cover_sheet_color: hell rot
+    page_numbers: 297
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [12, 13]
+- model: skripten_shop.skript
+  pk: 21
+  fields:
+    author: 18
+    cover_sheet_color: rosa
+    page_numbers: 30
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [12, 13]
+- model: skripten_shop.skript
+  pk: 22
+  fields:
+    author: 19
+    cover_sheet_color: gelb
+    page_numbers: 113
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [18, 12, 13, 22]
+- model: skripten_shop.skript
+  pk: 23
+  fields:
+    author: 23
+    cover_sheet_color: rosa
+    page_numbers: 229
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [29]
+- model: skripten_shop.skript
+  pk: 24
+  fields:
+    author: 25
+    cover_sheet_color: lila
+    page_numbers: 148
+    semester: 4
+    revision_date: 2018-03-03
+    studygroup: [22]
+- model: skripten_shop.skript
+  pk: 25
+  fields:
+    author: 28
+    cover_sheet_color: rosa
+    page_numbers: 93
+    semester: 5
+    revision_date: 2018-03-03
+    studygroup: [14]
+- model: skripten_shop.skript
+  pk: 26
+  fields:
+    author: 25
+    cover_sheet_color: hell rot
+    page_numbers: 132
+    semester: 6
+    revision_date: 2018-03-03
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 27
+  fields:
+    author: 27
+    cover_sheet_color: "hell gr\xFCn"
+    page_numbers: 181
+    semester: 6
+    revision_date: 2018-03-03
+    studygroup: [19, 20]
+- model: skripten_shop.skript
+  pk: 28
+  fields:
+    author: 23
+    cover_sheet_color: rosa
+    page_numbers: 159
+    semester: 6
+    revision_date: 2018-03-03
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 29
+  fields:
+    author: 7
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 180
+    semester: 6
+    revision_date: 2018-03-03
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 30
+  fields:
+    author: 3
+    cover_sheet_color: hell blau
+    page_numbers: 170
+    semester: 6
+    revision_date: 2018-03-03
+    studygroup: [15]
+- model: skripten_shop.skript
+  pk: 31
+  fields:
+    author: 20
+    cover_sheet_color: gelb
+    page_numbers: 134
+    semester: 8
+    revision_date: 2018-03-03
+    studygroup: [26, 27, 28]
+- model: skripten_shop.skript
+  pk: 32
+  fields:
+    author: 3
+    cover_sheet_color: "hell gr\xFCn"
+    page_numbers: 224
+    semester: 8
+    revision_date: 2018-03-03
+    studygroup: [26, 27, 28]
+- model: skripten_shop.skript
+  pk: 33
+  fields:
+    author: 3
+    cover_sheet_color: gelb
+    page_numbers: 251
+    semester: 8
+    revision_date: 2018-03-03
+    studygroup: [26, 27, 28]
+- model: skripten_shop.skript
+  pk: 34
+  fields:
+    author: 17
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 138
+    semester: 8
+    revision_date: 2018-03-03
+    studygroup: [26, 27, 28]
+- model: skripten_shop.skript
+  pk: 35
+  fields:
+    author: 11
+    cover_sheet_color: lila
+    page_numbers: 517
+    semester: 8
+    revision_date: 2018-03-03
+    studygroup: [26, 27, 28]
+- model: skripten_shop.skript
+  pk: 36
+  fields:
+    author: 35
+    cover_sheet_color: keine
+    page_numbers: 1000
+    semester: 1
+    revision_date: 2018-03-05
+    studygroup: [2]
+- model: skripten_shop.skript
+  pk: 37
+  fields:
+    author: 36
+    cover_sheet_color: lila
+    page_numbers: 155
+    semester: 1
+    revision_date: 2018-03-10
+    studygroup: [2]
+- model: skripten_shop.skript
+  pk: 38
+  fields:
+    author: 9
+    cover_sheet_color: orange
+    page_numbers: 170
+    semester: 2
+    revision_date: 2018-03-10
+    studygroup: [8, 9, 6, 7]
+- model: skripten_shop.skript
+  pk: 39
+  fields:
+    author: 9
+    cover_sheet_color: gelb
+    page_numbers: 183
+    semester: 3
+    revision_date: 2018-03-10
+    studygroup: [17, 10, 21]
+- model: skripten_shop.skript
+  pk: 40
+  fields:
+    author: 10
+    cover_sheet_color: orange
+    page_numbers: 226
+    semester: 3
+    revision_date: 2018-03-10
+    studygroup: [17, 21]
+- model: skripten_shop.skript
+  pk: 41
+  fields:
+    author: 20
+    cover_sheet_color: blau
+    page_numbers: 200
+    semester: 4
+    revision_date: 2018-03-10
+    studygroup: [17, 10, 11, 21]
+- model: skripten_shop.skript
+  pk: 42
+  fields:
+    author: 21
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 169
+    semester: 4
+    revision_date: 2018-03-10
+    studygroup: [18, 12, 13, 22]
+- model: skripten_shop.skript
+  pk: 43
+  fields:
+    author: 22
+    cover_sheet_color: orange
+    page_numbers: 132
+    semester: 4
+    revision_date: 2018-03-10
+    studygroup: [13]
+- model: skripten_shop.skript
+  pk: 44
+  fields:
+    author: 24
+    cover_sheet_color: gelb
+    page_numbers: 126
+    semester: 4
+    revision_date: 2018-03-10
+    studygroup: [18, 22]
+- model: skripten_shop.skript
+  pk: 45
+  fields:
+    author: 26
+    cover_sheet_color: gelb
+    page_numbers: 90
+    semester: 4
+    revision_date: 2018-03-10
+    studygroup: [18]
+- model: skripten_shop.skript
+  pk: 46
+  fields:
+    author: 27
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 90
+    semester: 4
+    revision_date: 2018-03-10
+    studygroup: [18]
+- model: skripten_shop.skript
+  pk: 47
+  fields:
+    author: 22
+    cover_sheet_color: rot
+    page_numbers: 107
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 48
+  fields:
+    author: 24
+    cover_sheet_color: rot
+    page_numbers: 106
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 49
+  fields:
+    author: 29
+    cover_sheet_color: gelb
+    page_numbers: 121
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [24, 23]
+- model: skripten_shop.skript
+  pk: 50
+  fields:
+    author: 29
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 148
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [24, 23]
+- model: skripten_shop.skript
+  pk: 51
+  fields:
+    author: 30
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 129
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 52
+  fields:
+    author: 14
+    cover_sheet_color: rot
+    page_numbers: 117
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 53
+  fields:
+    author: 14
+    cover_sheet_color: gelb
+    page_numbers: 110
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [16, 15]
+- model: skripten_shop.skript
+  pk: 54
+  fields:
+    author: 26
+    cover_sheet_color: gelb
+    page_numbers: 139
+    semester: 6
+    revision_date: 2018-03-10
+    studygroup: [19, 20]
+- model: skripten_shop.skript
+  pk: 55
+  fields:
+    author: 34
+    cover_sheet_color: "gr\xFCn"
+    page_numbers: 250
+    semester: 8
+    revision_date: 2018-03-10
+    studygroup: [26, 27, 28]

@@ -3,7 +3,7 @@ from django.contrib import admin
 
 # My Packages
 from .models import Student, NewStudentRegistration, Professor, BezahltStatus, Skript
-from .models import AritcleInStock, StudyGroup, SkriptInStock, Order
+from .models import AritcleInStock, StudyGroup, Order
 
 
 class StudentSemesterInline(admin.TabularInline):
@@ -33,6 +33,10 @@ class SkriptAdmin(admin.ModelAdmin):
     filter_horizontal = ('studygroup',)
     ordering = ["article_number", "name",]
 
+class ArticleInStockAdmin(admin.ModelAdmin):
+    list_display = ["article", "__str__", "amount", ]
+    ordering = ["article",]
+
 
 # Models in der Django Admin Oberfläche anzeigen
 admin.site.register(Student, StudentAdmin)
@@ -40,6 +44,5 @@ admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(Skript, SkriptAdmin)
 admin.site.register(StudyGroup)
 admin.site.register(NewStudentRegistration)
-admin.site.register(AritcleInStock)
-admin.site.register(SkriptInStock)
+admin.site.register(AritcleInStock, ArticleInStockAdmin)
 admin.site.register(Order)

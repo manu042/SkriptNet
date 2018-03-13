@@ -133,10 +133,12 @@ def enter_reorder_view(request):
     orders_in_print = []
     for article in articles:
         order = Order.objects.filter(article=article).filter(status=Order.PRINT_STATUS)
-        orders_in_print.append({
-            'article': article,
-            'order_amount': order.count()
-        })
+
+        if order.count() > 0:
+            orders_in_print.append({
+                'article': article,
+                'order_amount': order.count()
+            })
 
     context = {
         'orders_in_print': orders_in_print,
