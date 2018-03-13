@@ -33,7 +33,6 @@ def association_settings_view(request):
     context = {
         'form': form,
     }
-
     return render(request, 'skripten_shop/association_templates/association_settings.html', context)
 
 
