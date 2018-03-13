@@ -94,7 +94,7 @@ class UserLoginForm(forms.Form):
 
     def clean(self, *args, **kwargs):
         clean_data = super(UserLoginForm, self).clean()
-        username = self.cleaned_data.get("username")
+        username = self.cleaned_data.get("username").lower()
         password = self.cleaned_data.get("password")
 
         if username and password:
@@ -152,7 +152,7 @@ class UserRegisterForm(forms.Form):
         Prüft, ob Email bereits registriert wurde und ob die Eingabe eine plausible HM Email ist.
         Die Email Adresse wird in der Datenbank, für den Usernamen und die Email Adresse verwendet
         """
-        mail_address = self.cleaned_data.get("mail_address")
+        mail_address = self.cleaned_data.get("mail_address").lower()
 
         username_qs = User.objects.filter(username=mail_address)
 

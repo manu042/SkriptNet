@@ -75,6 +75,7 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Artikel'
         verbose_name_plural = 'Artikel'
+        ordering = ["article_number"]
 
     def __str__(self):
         return self.article_number

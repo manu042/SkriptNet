@@ -64,7 +64,7 @@ class LoginView(View):
     """
     form_class = UserLoginForm
     # TODO: Inital entfernen
-    initial = {"username": "admin@hm.edu"}
+    initial = {"username": "BeyondAllDoubt@gibts.net"}
     template_name = "skripten_shop/home_templates/login.html"
 
     def get(self, request):
@@ -85,7 +85,7 @@ class LoginView(View):
         """
         form = self.form_class(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            username = form.cleaned_data.get("username").lower()
             password = form.cleaned_data.get("password")
             # authenticate prüft nur, ob der User existiert
             user = authenticate(username=username, password=password)

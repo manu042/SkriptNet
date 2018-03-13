@@ -9,6 +9,7 @@
         <table class="table table-striped add-to-cart">
             <thead>
             <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Email-Adresse</th>
             </tr>
@@ -16,6 +17,7 @@
             <tbody>
             {% for active_member in active_members %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ active_member.first_name }} {{ active_member.last_name }}</td>
                     <td>{{ active_member.email }}</td>
                 </tr>
