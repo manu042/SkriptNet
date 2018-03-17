@@ -19,7 +19,9 @@ from django.contrib.auth.decorators import login_required
 
 
 # Third Party packages
+import re
 import logging
+
 
 # My Packages
 from skripten_shop.utilities import SendRegMailThread

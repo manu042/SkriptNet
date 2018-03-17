@@ -93,12 +93,15 @@ class UserLoginForm(forms.Form):
                                    attrs={'class': 'form-control', 'name': 'password', 'placeholder': 'Passwort'}))
 
     def clean(self, *args, **kwargs):
-        clean_data = super(UserLoginForm, self).clean()
-        username = self.cleaned_data.get("username").lower()
-        password = self.cleaned_data.get("password")
+        cleaned_data = super(UserLoginForm, self).clean()
+
+        try:
+            username = cleaned_data.get("username").lower()
+            password = cleaned_data.get("password")
+        except:
+            raise forms.ValidationError("E-Mail-Adresse bitte auf Leerzeichen überprüfen")
 
         if username and password:
-
             user = None
             # Prüft ob User aktiv ist
             try:

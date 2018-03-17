@@ -159,8 +159,6 @@ def reorder_view(request):
 
         return redirect(reverse('skripten_shop:scan-legic'))
 
-
-
     # Alle aktiven Skripte aus der Datenbank laden
     skripte_active = Skript.objects.filter(active=True)
     # Dictonary mit allen Skripten aus dem Lager und deren Menge erstellen
@@ -404,10 +402,21 @@ class AusgabeView(UserPassesTestMixin, View):
                 else:
                     # Eigentliche Ausgabe starten
                     articles = []
+                    shelf_nums = ""
                     for article_id in selected_articels_id:
-                        articles.append(Article.objects.get(pk=article_id))
+                        article = Article.objects.get(pk=article_id)
+                        articles.append(article)
 
-                    return render(request, "skripten_shop/ausgabe_templates/ausgabe_b.html", {'articles': articles})
+                        if article.shelf_number:
+                            for x in article.shelf_number.split(","):
+                                shelf_nums += (x.strip()) + ","
+
+                    context = {
+                        'articles': articles,
+                        "shelf_nums": shelf_nums,
+                    }
+
+                    return render(request, "skripten_shop/ausgabe_templates/ausgabe_b.html", context)
 
             elif request.POST["ausgeben"] is "Ausgeben" or "Ausgeben und Nachbestellen":
                 # Hier findet die eigentliche Ausgabe statt.
