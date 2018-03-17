@@ -38,8 +38,7 @@
             <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" onclick="led_wall_off()">
             <input class="btn btn-primary" type="submit" name="ausgeben"
                    value="Ausgeben und Nachbestellen" onclick="led_wall_off()">
-            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}" onclick="led_wall_off()">Ausgabe
-                beenden</a>
+            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}" onclick="led_wall_off()">Abbrechen</a>
         </form>
     </div>
 {% endblock %}
