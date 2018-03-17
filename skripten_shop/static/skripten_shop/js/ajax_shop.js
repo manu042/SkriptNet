@@ -17,4 +17,3 @@ function add_to_cart(artikel_id) {
         }
     });
 }
-

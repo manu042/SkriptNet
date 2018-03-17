@@ -35,14 +35,49 @@
             <br>
             <br>
             {% csrf_token %}
-            <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
-
-
+            <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" onclick="led_wall_off()">
             <input class="btn btn-primary" type="submit" name="ausgeben"
-                   value="Ausgeben und Nachbestellen">
-            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Ausgabe beenden</a>
+                   value="Ausgeben und Nachbestellen" onclick="led_wall_off()">
+            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}" onclick="led_wall_off()">Ausgabe
+                beenden</a>
         </form>
     </div>
+
+{% endblock %}
+
+
+{% block script %}
+
+    <script>
+        $(document).ready(function () {
+            led_wall_on();
+        });
+
+        function led_wall_on() {
+            $.ajax({
+                url: 'http://127.0.0.1:8081/',  //'http://192.168.0.18:8081/'
+                type: 'POST',
+                data: {
+                    "user": "{{ request.user.first_name }}",
+                    "shelf_number": "{{ shelf_nums }}",
+                    "state": "ON"
+                }
+            });
+        }
+
+        function led_wall_off() {
+            $.ajax({
+                url: 'http://127.0.0.1:8081/',  //'http://192.168.0.18:8081/'
+                type: 'POST',
+                data: {
+                    "user": "{{ request.user.first_name }}",
+                    "shelf_number": "{{ shelf_nums }}",
+                    "stat": "OFF"
+                }
+            });
+        }
+    </script>
+
 
 
 {% endblock %}
