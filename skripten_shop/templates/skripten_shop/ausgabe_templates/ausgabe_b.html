@@ -53,10 +53,12 @@
 
         function led_wall_on() {
             $.ajax({
-                url: 'https://127.0.0.1:4443/',
+                url: 'http://127.0.0.1:8081/',
                 type: 'POST',
+                dataType: 'json',
                 data: {
-                    "user": "{{ request.user.first_name }}",
+                    "job": "Ausgabe",
+                    "user": "Ausgabe1",
                     "shelf_number": "{{ shelf_nums }}",
                     "state": "ON"
                 }
@@ -67,8 +69,10 @@
             $.ajax({
                 url: 'http://127.0.0.1:8081/',
                 type: 'POST',
+                dataType: 'json',
                 data: {
-                    "user": "{{ request.user.first_name }}",
+                    "job": "Ausgabe",
+                    "user": "Ausgabe1",
                     "shelf_number": "{{ shelf_nums }}",
                     "state": "OFF"
                 }
