@@ -54,7 +54,9 @@
             $.ajax({
                 url: 'http://192.168.0.18:8081/',
                 type: 'POST',
+                dataType: 'json',
                 data: {
+                    "job": "Ausgabe",
                     "user": "{{ request.user.first_name }}",
                     "shelf_number": "{{ shelf_nums }}",
                     "state": "ON"
@@ -66,7 +68,9 @@
             $.ajax({
                 url: 'http://192.168.0.18:8081/',
                 type: 'POST',
+                dataType: 'json',
                 data: {
+                    "job": "Ausgabe",
                     "user": "{{ request.user.first_name }}",
                     "shelf_number": "{{ shelf_nums }}",
                     "state": "OFF"
