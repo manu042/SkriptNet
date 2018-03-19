@@ -106,6 +106,7 @@
                     <table class="table table-striped" id="article-table">
                         <thead>
                         <tr>
+                            <th></th>
                             <th>Skript-Nr.</th>
                             <th>Skriptname</th>
                             <th>Autor</th>
@@ -113,12 +114,23 @@
                             <th>Gesamtmenge</th>
                             <th>Frei</th>
                             <th>Fach-Nr.</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for stock_info in stock_infos %}
                             <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        {% if stock_info.amount_available < 1 %}
+                                            <label><input type="checkbox" disabled></label>
+                                        {% else %}
+                                            <label>
+                                                <input type="checkbox" name="selected_articel[]"
+                                                       value="{{ stock_info.skript.id }}">
+                                            </label>
+                                        {% endif %}
+                                    </div>
+                                </td>
                                 <td>{{ stock_info.skript.article_number }}</td>
                                 <td>{{ stock_info.skript.name }}</td>
                                 <td>{{ stock_info.skript.author }}</td>
@@ -136,18 +148,6 @@
                                     <td>{{ stock_info.amount_available }}</td>
                                 {% endif %}
                                 <td style="color: grey">{{ stock_info.skript.shelf_number }}</td>
-                                <td>
-                                    <div class="checkbox">
-                                        {% if stock_info.amount_available < 1 %}
-                                            <label><input type="checkbox" disabled></label>
-                                        {% else %}
-                                            <label>
-                                                <input type="checkbox" name="selected_articel[]"
-                                                       value="{{ stock_info.skript.id }}">
-                                            </label>
-                                        {% endif %}
-                                    </div>
-                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

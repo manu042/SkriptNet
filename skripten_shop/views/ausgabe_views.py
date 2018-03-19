@@ -94,9 +94,33 @@ def individual_assistance_view(request):
     student_order = Order.objects.filter(student=student)
 
     if request.method == 'POST':
+        # Rückgabe starten
+        if "return" in request.POST:
+            order_id = request.POST["return"]
+            order_return = Order.objects.get(pk=order_id)
+
+            context = {
+                'student': student,
+                "return": order_return
+            }
+            return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
+        # Rückgabe durchführen
+        elif "execute_return" in request.POST:
+            try:
+                order_id = request.POST["execute_return"]
+                order_return = Order.objects.get(pk=order_id)
+                order_return.delete()
+                article_in_stock = AritcleInStock.objects.get(article=order_return.article)
+                article_in_stock.amount += 1
+                article_in_stock.save()
+                messages.success(request, "Das Skript wurde erfolgreich zurückgegeben")
+            except Exception as e:
+                messages.error(request, "Bei der Rückgabe ist ein Fehler aufgetreten")
+                logger.error(e)
+            finally:
+                return redirect(reverse("skripten_shop:individualbetreuung"))
 
         selected_orders_id = request.POST.getlist('selected_reserved[]')
-
         for selected_order_id in selected_orders_id:
             order = Order.objects.get(pk=selected_order_id)
             order.status = Order.DELIVERD_STATUS
@@ -107,7 +131,6 @@ def individual_assistance_view(request):
 
         return redirect(reverse('skripten_shop:scan-legic'))
 
-    student_order = Order.objects.filter(student=student)
 
     context = {
         'student': student,

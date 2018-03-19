@@ -14,6 +14,7 @@
             <table class="table table-striped" id="article-table">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Skript-Nr.</th>
                     <th>Skriptname</th>
                     <th>Fach-Nr.</th>
@@ -22,6 +23,7 @@
                 <tbody>
                 {% for article in articles %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ article.article_number }}
                             <input type="hidden" name="article[]" value="{{ article.id }}">
                         </td>
