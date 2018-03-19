@@ -21,6 +21,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Email-Adresse</th>
+                <th>Geburtsdatum</th>
                 <th>Mitglied seit</th>
                 <th>Bezahlt Status</th>
             </tr>
@@ -35,12 +36,12 @@
                             {{ student.user.first_name }} {{ student.user.last_name }}
                         </a>
                     </td>
-
                     <td>
                         <a href="{% url 'admin:auth_user_change' object_id=student.user.id %}">
                             {{ student.user.email }}
                         </a>
                     </td>
+                    <td>{{ student.birth_date|date:"d.m.Y" }}</td>
                     <td>{{ student.user.date_joined }}</td>
 
                     <td>{% if student|has_paid %}

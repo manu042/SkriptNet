@@ -15,59 +15,103 @@
 
     <div class="container">
 
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>
-                        <div class="alert alert-danger">
-                            <strong>{{ message }}</strong>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>
+                    <div class="alert alert-info">
+                        <strong>{{ message }}</strong>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-        {% if student_order %}
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form action="" method="post">
-                        <h4>Bestellungen von {{ student.user.first_name }} {{ student.user.last_name }}</h4>
-                        <table class="table table-striped" id="article-table">
-                            <thead>
-                            <tr>
-                                <th>Skriptnummer</th>
-                                <th>Skriptname</th>
-                                <th>letze Änderung</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for order in student_order %}
-                                <tr {% if order.status == order.RESERVED_STATUS %}
-                                    style="background: greenyellow" {% endif %}>
-                                    <td>{{ order.article.article_number }}</td>
-                                    <td>{{ order.article.name }}</td>
-                                    <td>{{ order.last_modified_date.date }}</td>
-                                    <td>{{ order.get_status_display }}</td>
-                                    <td>
-                                        {% if order.status == order.RESERVED_STATUS %}
-                                            <label>
-                                                <input type="checkbox" name="selected_reserved[]"
-                                                       value="{{ order.id }}">
-                                            </label>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        {% csrf_token %}
-                        <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
-                    </form>
-                </div>
+    {% if return %}
+
+        <h2>Skriptenrückgabe</h2>
+        <h5><span>Mit dieser Funktion kann das Skript zurückgenommen werden.</span></h5>
+        <h5><span>Es wird automatisch wieder ins Lager eingepflegt.</span></h5>
+
+        <ul>
+            <li>Student: {{ student }}</li>
+            <li>Skriptnummer: {{ return.article.article_number }}</li>
+            <li>Skriptname: {{ return.article.name }}</li>
+            <li>Fach-Nr.: {{ return.article.shelf_number }}</li>
+        </ul>
+
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" name="execute_return"
+                    value="{{ return.id }}" title="Skript zurückgeben">
+                Rückgabe durchführen
+            </button>
+            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Abbrechen</a>
+        </form>
+
+
+    {% elif student_order %}
+        <div class="panel panel-default">
+        <div class="panel-body">
+            <form action="" method="post">
+                <h4>Bestellungen von {{ student.user.first_name }} {{ student.user.last_name }}</h4>
+                <table class="table table-striped" id="article-table">
+                    <thead>
+                    <tr>
+                        <th>Skriptnummer</th>
+                        <th>Skriptname</th>
+                        <th>letze Änderung</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in student_order %}
+                        <tr {% if order.status == order.RESERVED_STATUS %}
+                            style="background: greenyellow" {% endif %}>
+                            <td>{{ order.article.article_number }}</td>
+                            <td>{{ order.article.name }}</td>
+                            <td>{{ order.last_modified_date.date }}</td>
+                            <td>{{ order.get_status_display }}</td>
+                            <td>
+                                {% if order.status == order.RESERVED_STATUS %}
+                                    <label>
+                                        <input type="checkbox" name="selected_reserved[]"
+                                               value="{{ order.id }}">
+                                    </label>
+                                {% elif order.status == order.DELIVERD_STATUS %}
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger" name="return"
+                                                value="{{ order.id }}" title="Skript zurückgeben">
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% csrf_token %}
+                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
+                <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Abbrechen</a>
+            </form>
+        </div>
+    {% else %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>
+                    Bestellungen von
+                    <u style="font-weight: bold">
+                        {{ student.user.first_name }} {{ student.user.last_name }}
+                    </u>
+                </h4>
+                <h5 style="color: red">Der Student hat noch keine Skripte bestellt.</h5>
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
+</div>
 
 {% endblock %}

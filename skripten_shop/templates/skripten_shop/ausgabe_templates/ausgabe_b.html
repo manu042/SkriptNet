@@ -14,6 +14,7 @@
             <table class="table table-striped" id="article-table">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Skript-Nr.</th>
                     <th>Skriptname</th>
                     <th>Fach-Nr.</th>
@@ -22,6 +23,7 @@
                 <tbody>
                 {% for article in articles %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ article.article_number }}
                             <input type="hidden" name="article[]" value="{{ article.id }}">
                         </td>
@@ -53,12 +55,12 @@
 
         function led_wall_on() {
             $.ajax({
-                url: 'http://127.0.0.1:8081/',
+                url: 'http://192.168.0.18:8081/',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     "job": "Ausgabe",
-                    "user": "Ausgabe1",
+                    "user": "Ausgabe2",
                     "shelf_number": "{{ shelf_nums }}",
                     "state": "ON"
                 }
@@ -67,12 +69,12 @@
 
         function led_wall_off() {
             $.ajax({
-                url: 'http://127.0.0.1:8081/',
+                url: 'http://192.168.0.18:8081/',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     "job": "Ausgabe",
-                    "user": "Ausgabe1",
+                    "user": "Ausgabe2",
                     "shelf_number": "{{ shelf_nums }}",
                     "state": "OFF"
                 }
