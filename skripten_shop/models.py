@@ -176,7 +176,7 @@ class Order(models.Model):
         unique_together = (("article", "student"),)
 
     def __str__(self):
-        text = 'Bestellung %s von %s' % (self.article.name, self.student.user.last_name)
+        text = 'Bestellung: %s %s von %s' % (self.article.article_number, self.article.name, self.student.user.get_full_name())
         return text
 
 

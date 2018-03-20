@@ -35,7 +35,6 @@
                 <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
                 <li>{{ student.user.email }}</li>
             </ul>
-
         {% endif %}
 
         <ul>
@@ -50,16 +49,23 @@
                     <table class="table table-striped" id="article-table">
                         <thead>
                         <tr>
+                            <th></th>
                             <th>Skript-Nr.</th>
                             <th>Skriptname</th>
                             <th>Autor</th>
                             <th>Studiengruppe</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for skript in skripte %}
                             <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="selected_articel[]" value="{{ skript.id }}">
+                                        </label>
+                                    </div>
+                                </td>
                                 <td>{{ skript.article_number }}</td>
                                 <td>{{ skript.name }}</td>
                                 <td>{{ skript.author }}</td>
@@ -68,18 +74,10 @@
                                         <li>{{ studygroup }}</li>
                                     {% endfor %}
                                 </td>
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="selected_articel[]" value="{{ skript.id }}">
-                                        </label>
-                                    </div>
-                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-
                     {% csrf_token %}
                     <input class="btn btn-success" type="submit" name="nachbestellen" value="Bestellen">
                 </form>
