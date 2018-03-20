@@ -57,6 +57,7 @@ class StudyGroup(models.Model):
     class Meta:
         verbose_name = 'Studiengruppe'
         verbose_name_plural = 'Studiengruppen'
+        ordering = ["title"]
 
     def __str__(self):
         return self.title

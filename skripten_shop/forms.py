@@ -11,7 +11,6 @@ from captcha.fields import ReCaptchaField
 # My packages
 from skripten_shop.models import ShopSettings
 
-
 User = get_user_model()
 
 
@@ -43,7 +42,8 @@ class ActivateStudentForm(forms.Form):
     """
     legic_id = forms.CharField(label="Legic-ID")
     birth_date = forms.DateField(label="Geburtsdatum (TT.MM.JJJJ)",
-                                 widget=forms.DateInput(attrs={'autofocus': 'autofocus'}))
+                                 widget=forms.DateInput(attrs={'autofocus': 'autofocus', 'placeholder': '__.__.____',
+                                                               "data-mask": "00.00.0000"}))
 
 
 class NewLegicCardForm(forms.Form):
@@ -125,8 +125,6 @@ class UserRegisterForm(forms.Form):
     - Die Email wird in das Userfeld Username eingetragen
     """
     # Erzeugt eine Jahresliste für das Geburtsdatums Feld für Personen zwischen 15 und 60 Jahren
-    current_year = datetime.datetime.now().year
-    BIRTH_YEAR_CHOICES = sorted(range(current_year - 60, current_year - 14), reverse=True)
 
     mail_address = forms.EmailField(label='HM-Email', widget=forms.TextInput(
         attrs={'class': 'form-control', 'type': 'email', 'name': 'email', 'placeholder': 'muster@hm.edu',
@@ -144,7 +142,14 @@ class UserRegisterForm(forms.Form):
     password_confirm = forms.CharField(label='Passwort bestätigen', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'name': 'password confirm', 'placeholder': 'Passwort bestätigen'}))
 
-    birth_date = forms.DateField(label="Geburtsdatum", widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+
+
+    birth_date = forms.DateField(label="Geburtsdatum (TT.MM.JJJJ)",
+                                 widget=forms.DateInput(attrs={'autofocus': 'autofocus', 'placeholder': '__.__.____',
+                                                               "data-mask": "00.00.0000"}))
+
+
+
 
     terms = forms.BooleanField(label="Allgemeines & Datenschutz gelesen", widget=forms.CheckboxInput())
 
