@@ -6,3 +6,9 @@ ERROR|19/Mar/2018 17:32:16|ausgabe_views|individual_assistance_view|invalid lite
 ERROR|19/Mar/2018 17:32:43|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
 ERROR|19/Mar/2018 17:33:15|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
 ERROR|19/Mar/2018 17:33:40|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
+INFO|20/Mar/2018 23:23:37|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse ba75kla2fq@hm.edu erstellt.
+INFO|20/Mar/2018 23:24:08|utilities|send_registration_mail|Es wurde eine Mail zur Registrierung an ba75kla2fq@hm.edu gesendet.
+INFO|20/Mar/2018 23:26:04|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse ba75ksdla2fq@hm.edu erstellt.
+INFO|20/Mar/2018 23:26:35|utilities|send_registration_mail|Es wurde eine Mail zur Registrierung an ba75ksdla2fq@hm.edu gesendet.
+INFO|20/Mar/2018 23:33:51|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse asfsadf@hm.edu erstellt.
+INFO|20/Mar/2018 23:33:53|utilities|send_registration_mail|Es wurde eine Mail zur Registrierung an asfsadf@hm.edu gesendet.

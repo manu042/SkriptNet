@@ -30,15 +30,23 @@
 {% if success_message %}
     <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
         <div class="alert alert-success">
-            Wir haben dir eine E-Mail mit einem Link zur Verifizierung deines Kontos an {{ success_message }} geschickt.
+            Wir haben dir eine E-Mail mit einem Link zur Verifizierung deines Kontos an {{ success_message }} gesendet.
+            <br>
+            Du kannst deine Emails über die URL <strong>xmail.mwn.de</strong> abrufen.
+            <br>
+            Hinweis: Der Login-Name hat die Form <stron>hm-Benutzername</stron>
             <br>
             <br>
-            Falls du keine E-Mail erhalten hast, wende dich bitte von deiner HM-Mail "{{ success_message }}" an
-            "skripten@fs04.ee.hm.edu".
+            <br>
+            Solltest du nach <strong>24 Stunden</strong> noch keine E-Mail von uns erhalten haben, kannst du dich an
+            <strong>skripten@fs04.ee.hm.edu</strong> wenden.
+            <br>
+            Verwende dazu bitte deinen Hochschul Mail-Account <strong>{{ success_message }}</strong>.
         </div>
     </div>
 
 {% else %}
+
     <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
         <div class="panel panel-default">
             <div class="panel-heading">Login</div>
