@@ -4,9 +4,7 @@
 
 {% block content %}
 
-
     <div class="container">
-
         {% if messages %}
             {% for message in messages %}
                 {% if message.tags == "error" %}
@@ -25,7 +23,6 @@
             </div>
         {% endif %}
 
-
         {% if form %}
             <div class="panel panel-success">
                 <div class="panel-heading">Skripten Ausgabe</div>
@@ -38,9 +35,7 @@
                 </div>
             </div>
         {% endif %}
-
     </div>
-
 
 {% endblock %}
 

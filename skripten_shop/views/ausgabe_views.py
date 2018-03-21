@@ -131,86 +131,12 @@ def individual_assistance_view(request):
 
         return redirect(reverse('skripten_shop:scan-legic'))
 
-
     context = {
         'student': student,
         'student_order': student_order,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
-
-
-@login_required
-@user_passes_test(has_permisson_skriptenausgabe)
-def reorder_view(request):
-    try:
-        # Legic-ID aus Session Cookie auslesen
-        legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
-    except Exception:
-        logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
-
-        context = {
-            'error_message': 'Legic-ID konnte nicht aus dem Session Cookie ausgelesen werden.'
-                             ' Bitte an den Administrator wenden.'
-        }
-
-        return render(request, 'skripten_shop/ausgabe_templates/reorder.html', context)
-
-    student = Student.objects.get(legic_id=legic_id_hash_value)
-
-    if request.method == 'POST':
-
-        selected_articels_id = request.POST.getlist('selected_articel[]')
-
-        error_message = False
-        for selected_articel_id in selected_articels_id:
-            try:
-                article = Article.objects.get(pk=selected_articel_id)
-                order = Order(article=article, student=student)
-                order.save()
-            except IntegrityError:
-                error_message = True
-                messages.error(request,
-                               'Das Skript %s kann nicht bestellt werden!  Der Student hat dieses Skript bereits bestellt.' % Article.objects.get(
-                                   pk=selected_articel_id).article_number)
-
-        if error_message:
-            return redirect(reverse('skripten_shop:reorder'))
-
-        # Legic-ID aus Session Cookie löschen
-        del request.session['current_legic']
-
-        return redirect(reverse('skripten_shop:scan-legic'))
-
-    # Alle aktiven Skripte aus der Datenbank laden
-    skripte_active = Skript.objects.filter(active=True)
-    # Dictonary mit allen Skripten aus dem Lager und deren Menge erstellen
-    stock_dict = {x.article.article_number: x.amount for x in AritcleInStock.objects.all()}
-    # Alle Bestellungen des Studenten aus der DB laden
-    order = [order.article.article_number for order in Order.objects.filter(student=student)]
-
-    skripte = []
-    # Liste der nachbestellbaren Skripte für den aktuellen Student erstellen
-    for skript in skripte_active:
-        try:
-            # Prüfen, ob das Skript noch frei verfügbar ist
-            amount = stock_dict[skript.article_number]
-            if amount == 0:
-                # Prüfen, ob der Student das Skript bereits erhalten hat
-                if skript.article_number not in order:
-                    skripte.append(skript)
-
-        except Exception as e:
-            # Prüfen, ob der Student das Skript bereits erhalten hat
-            if skript.article_number not in order:
-                skripte.append(skript)
-
-    context = {
-        'student': student,
-        'skripte': skripte,
-    }
-
-    return render(request, 'skripten_shop/ausgabe_templates/reorder.html', context)
 
 
 @login_required
@@ -389,12 +315,10 @@ class AusgabeView(UserPassesTestMixin, View):
             context = {'error_message': 'Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.'
                                         ' Bitte an den Administrator wenden.'
                        }
-
-            return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+            return render(request, 'skripten_shop/ausgabe_templates/ausgabe_a.html', context)
 
         # Die Bestellungen des Studenten aus der Datenbank laden
         self.student_order = Order.objects.filter(student=self.student)
-
         return super(AusgabeView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -404,83 +328,134 @@ class AusgabeView(UserPassesTestMixin, View):
             'student_order': self.student_order,
             'stock_infos': self.get_stock_infos(),
             'max_article': int(max_article_is()),
+            'rest': int(max_article_is()) - self.student_order.count(),
         }
-        return render(request, 'skripten_shop/ausgabe_templates/ausgabe.html', context)
+        return render(request,
+                      'skripten_shop/ausgabe_templates/ausgabe_a.html', context)
 
     def post(self, request, *args, **kwargs):
-        # Liste der ausgewählten Skripte abrufen
-        selected_articels_id = request.POST.getlist('selected_articel[]')
+        # Ausgabe wird gestartet
+        if "ausgabe_starten" in request.POST:
+            # Liste der ausgewählten Skripte abrufen
+            selected_skript_ids = request.POST.getlist('selected_articel[]')
 
-        if "ausgeben" in request.POST:
-            if request.POST["ausgeben"] == "Ausgabe starten":
-                # Wenn kein Skript ausgewählt wurde, wird die Seite neu geladen
-                if len(selected_articels_id) < 1:
-                    return redirect(reverse("skripten_shop:ausgabe"))
+            if len(selected_skript_ids) == 0:
+                messages.error(request, "Es wurden keine Skripte für die Ausgabe ausgewählt")
+                return redirect(reverse("skripten_shop:ausgabenew"))
+            else:
+                context = self.get_ausgabe_infos(request, selected_skript_ids)
+            return render(request,
+                          "skripten_shop/ausgabe_templates/ausgabe_b.html", context)
 
-                # Prüfen, ob mehr Skripte ausgegeben werden sollen als der Student noch erhalten kann
-                if len(selected_articels_id) + self.student_order.count() > int(max_article_is()):
-                    residue = int(max_article_is()) - self.student_order.count()
-                    messages.error(request, "Der Student kann nur noch " + str(residue) + " Skripte erhalten!")
-                    return redirect(reverse("skripten_shop:ausgabe"))
-                else:
-                    # Eigentliche Ausgabe starten
-                    articles = []
-                    shelf_nums = ""
-                    for article_id in selected_articels_id:
-                        article = Article.objects.get(pk=article_id)
-                        articles.append(article)
+        # Ausgabe durchführen
+        elif "ausgeben" in request.POST:
+            available_skript_ids = request.POST.getlist('available_skript[]')
+            reorder_skript_ids = request.POST.getlist('reorder_skript[]')
 
-                        if article.shelf_number:
-                            for x in article.shelf_number.split(","):
-                                shelf_nums += (x.strip()) + ","
+            total_checked = len(available_skript_ids) + len(reorder_skript_ids)
+            max = int(max_article_is())
+            total = total_checked
+            rest = max - self.student_order.count()
 
-                    context = {
-                        'articles': articles,
-                        "shelf_nums": shelf_nums,
-                    }
+            # Falls wieder zuviele Skripten ausgewählt wurden
+            if total > rest:
+                selected_skript_ids = available_skript_ids + reorder_skript_ids
+                context = self.get_ausgabe_infos(request, selected_skript_ids)
+                return render(request, "skripten_shop/ausgabe_templates/ausgabe_b.html", context)
 
-                    return render(request, "skripten_shop/ausgabe_templates/ausgabe_b.html", context)
+            # Wenn nichts ausgewählt wurde
+            elif total_checked == 0:
+                selected_skript_ids = available_skript_ids + reorder_skript_ids
+                messages.error(request, "Es wurden keine Skripte für die Ausgabe ausgewählt")
+                logger.info("Bei der Ausgabe wurden keine Skripte ausgeweahlt.")
+                return redirect(reverse("skripten_shop:scan-legic"))
 
-            elif request.POST["ausgeben"] is "Ausgeben" or "Ausgeben und Nachbestellen":
-                # Hier findet die eigentliche Ausgabe statt.
-                articel_ids = request.POST.getlist('article[]')
-
-                # Verfügbare Menge eines Skripts in der Datenbank anpassen und dem Studenten die Skripte zuordnen
-                for article_id in articel_ids:
-                    try:
-                        # Ausgewählte Artikel (Skripte) aus Datenbank laden und deren Menge um 1 reduzieren
-                        article_in_stock = AritcleInStock.objects.get(article=article_id)
-                        article_in_stock.amount -= 1
-
-                        # Dem Studenten die Bestellung bzw. Skripte zuordnen
-                        served_article = Order(student=self.student, status=Order.DELIVERD_STATUS)
-                        served_article.article = article_in_stock.article
-
-                        # Änderungen in der Datenbank speichern
-                        served_article.save()
-                        article_in_stock.save()
-
-                        # Bei erfolgreicher Ausgabe, Erfolgsmeldung in Messages speichern
-                        # messages.success(request, 'Das Skript %s wurde ausgegeben.' % Article.objects.get(
-                        #    pk=article_id).article_number)
-
-                    except IntegrityError:
-                        # Bei einem Fehler während er Ausgabe Fehlermeldung in Messages speichern
-                        # Ein Fehler tritt z.B. auf, wenn das Objekt "served_article" nicht gespeichert werden kann.
-                        # - In diesem Fall hat der Student bereits den jeweiligen Artikel (Skript) erhalten.
-                        messages.error(request,
-                                       'Das Skript %s kann nicht ausgegeben werden! Der Student hat dieses Skript bereits bestellt.'
-                                       % Article.objects.get(pk=article_id).article_number)
-
-                # Evtl. Weiterleitung zur Nachbestellung
-                if request.POST["ausgeben"] == "Ausgeben und Nachbestellen":
-                    return redirect(reverse("skripten_shop:reorder"))
-                else:
-                    # Sonst Ausgabe beenden und zurück zur Scan-Legic Seite
-                    # Legic-ID aus Session Cookie löschen
+            # Wenn alles passt, Ausgabe abschließen
+            else:
+                self.proceed_ausgabe(request, available_skript_ids, reorder_skript_ids)
+                # Legic-ID aus Session Cookie löschen
+                try:
                     del request.session['current_legic']
+                except:
+                    pass
+                return render(request, "skripten_shop/ausgabe_templates/ausgabe_c.html")
+        else:
+            return redirect(reverse("skripten_shop:scan-legic"))
 
-                    return redirect(reverse("skripten_shop:scan-legic"))
+    def proceed_ausgabe(self, request, available_skript_ids, reorder_skript_ids):
+
+        # Skripten ausgeben
+        for id in available_skript_ids:
+            try:
+                skript = Skript.objects.get(pk=id)
+                article_in_stock = AritcleInStock.objects.get(article=skript)
+                article_in_stock.amount -= 1
+
+                # Dem Studenten die Bestellung bzw. Skripte zuordnen
+                order = Order(student=self.student, status=Order.DELIVERD_STATUS)
+                order.article = skript
+
+                # Änderungen in der Datenbank speichern
+                article_in_stock.save()
+                order.save()
+                messages.success(request, "Das Skript %s wurde erfolgreich ausgegeben." % skript.article_number)
+            except Exception as e:
+                messages.error(request,
+                               "Das Skript %s kann nicht ausgegeben werden. Der Student hat dieses Skript bereits in seiner Bestellhistorie." % skript.article_number)
+
+        # Skripten nachbestellen
+        for id in reorder_skript_ids:
+            try:
+                skript = Skript.objects.get(pk=id)
+                order = Order(article=skript, student=self.student)
+                order.save()
+                messages.success(request, "Das Skript %s wurde erfolgreich bestellt." % skript.article_number)
+            except Exception as e:
+                messages.error(request,
+                               "Das Skript %s kann nicht bestellt werden. Der Student hat dieses Skript bereits in seiner Bestellhistorie." % skript.article_number)
+
+    def get_ausgabe_infos(self, request, selected_skript_ids):
+        skripte_available = []
+        skripte_to_reorder = []
+        shelf_numbers = ""
+
+        for id in selected_skript_ids:
+            skript = Skript.objects.get(pk=id)
+
+            try:
+                # Verfügbare Menge im Lager ermitteln
+                amount_available = skript.aritcleinstock.amount
+            except:
+                amount_available = 0
+
+            # Skript ist nicht mehr vorhanden
+            if amount_available < 1:
+                skripte_to_reorder.append(skript)
+            else:
+                # Skript ist noch vorhanden
+                skripte_available.append(skript)
+                # Fachnummern ermitteln
+                if skript.shelf_number:
+                    for x in skript.shelf_number.split(","):
+                        shelf_numbers += (x.strip()) + ","
+
+        # Prüfen, wie viele Skripte der Student noch erhalten kann
+        checked = True
+        max = int(max_article_is())
+        total = len(selected_skript_ids) + self.student_order.count()
+        rest = max - self.student_order.count()
+        if total > max:
+            checked = False
+            messages.error(request, "Der Student kann nur noch %s Skript(e) erhalten" % rest)
+
+        context = {
+            "skripte_available": skripte_available,
+            "skripte_to_reorder": skripte_to_reorder,
+            "shelf_numbers": shelf_numbers,
+            "checked": checked,
+            "student": self.student,
+        }
+        return context
 
     def get_student(self, request):
         try:
@@ -491,7 +466,6 @@ class AusgabeView(UserPassesTestMixin, View):
 
         # Objekt Student anhand der Legic_ID aus der Datenbank laden
         student = Student.objects.get(legic_id=legic_id_hash_value)
-
         return student
 
     def get_stock_infos(self):
