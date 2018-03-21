@@ -4,80 +4,160 @@
 
 
 {% block content %}
-    <div class="container">
-        <h3>Skripten Ausgabe</h3>
-        <p>
-            Die folgenden Skripten können nun ausgeben werden.
-        </p>
+    <div>
+        <div class="container">
+            <h4>Ausgabe für:</h4>
+            <ul>
+                <li><strong>{{ student }}</strong></li>
+            </ul>
+        </div>
 
-        <form action="" method="post">
-            <table class="table table-striped" id="article-table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Skript-Nr.</th>
-                    <th>Skriptname</th>
-                    <th>Fach-Nr.</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for article in articles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ article.article_number }}
-                            <input type="hidden" name="article[]" value="{{ article.id }}">
-                        </td>
-                        <td>{{ article.name }}</td>
-                        <td style="color: grey">{{ article.shelf_number }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
 
-            <br>
-            <br>
-            {% csrf_token %}
-            <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" onclick="led_wall_off()">
-            <input class="btn btn-primary" type="submit" name="ausgeben"
-                   value="Ausgeben und Nachbestellen" onclick="led_wall_off()">
-            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}" onclick="led_wall_off()">Abbrechen</a>
+        <form action="" method="post" style="padding-bottom: 30px">
+            <div class="container">
+
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <li>
+                                    <div class="alert alert-danger">
+                                        {{ message }}
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if skripte_available %}
+                    <h4 style="background: greenyellow">Verfügbare Skripten</h4>
+                    <p>
+                        Die folgenden Skripten können nun ausgegeben werden.
+                    </p>
+
+
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>#</th>
+                            <th>Skript-Nr.</th>
+                            <th>Skriptname</th>
+                            <th>Fach-Nr.</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for skript_a in skripte_available %}
+                            <tr>
+                                <td>
+                                    <label>
+                                        {% if checked %}
+                                            <input type="checkbox" name="available_skript[]" value="{{ skript_a.id }}"
+                                                   checked>
+                                        {% else %}
+                                            <input type="checkbox" name="available_skript[]" value="{{ skript_a.id }}">
+                                        {% endif %}
+                                    </label>
+                                </td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ skript_a.article_number }}</td>
+                                <td>{{ skript_a.name }}</td>
+                                <td style="color: grey">{{ skript_a.shelf_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <br>
+                {% endif %}
+
+
+                {% if skripte_to_reorder %}
+                    <h4 style="background: red">Nachbestellung</h4>
+                    <p>
+                        Diese Skripten werden beim Druckdienstleister nachbestellt.
+                    </p>
+
+
+                    <table class="table table-striped" id="article-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>#</th>
+                            <th>Skript-Nr.</th>
+                            <th>Skriptname</th>
+                            <th>Fach-Nr.</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for skript_r in skripte_to_reorder %}
+                            <tr>
+                                <td>
+                                    <label>
+                                        {% if checked %}
+                                            <input type="checkbox" name="reorder_skript[]" value="{{ skript_r.id }}"
+                                                   checked>
+                                        {% else %}
+                                            <input type="checkbox" name="reorder_skript[]" value="{{ skript_r.id }}">
+                                        {% endif %}
+                                    </label>
+                                </td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ skript_r.article_number }}</td>
+                                <td>{{ skript_r.name }}</td>
+                                <td style="color: grey">{{ skript_r.shelf_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+                <br>
+                {% csrf_token %}
+                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgabe abschließen"
+                       onclick="led_wall_off()">
+                <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}"
+                   onclick="led_wall_off()">Abbrechen</a>
+            </div>
         </form>
     </div>
+
 {% endblock %}
 
 
 {% block script %}
-    <script>
-        $(document).ready(function () {
-            led_wall_on();
-        });
-
-        function led_wall_on() {
-            $.ajax({
-                url: 'http://192.168.0.18:8081/',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    "job": "Ausgabe",
-                    "user": "{{ request.user.first_name }}",
-                    "shelf_number": "{{ shelf_nums }}",
-                    "state": "ON"
-                }
+    {% if shelf_numbers %}
+        <script>
+            $(document).ready(function () {
+                led_wall_on();
             });
-        }
 
-        function led_wall_off() {
-            $.ajax({
-                url: 'http://192.168.0.18:8081/',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    "job": "Ausgabe",
-                    "user": "{{ request.user.first_name }}",
-                    "shelf_number": "{{ shelf_nums }}",
-                    "state": "OFF"
-                }
-            });
-        }
-    </script>
+            function led_wall_on() {
+                $.ajax({
+                    url: 'http://192.168.0.18:8081/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "job": "Ausgabe",
+                        "user": "{{ request.user.first_name }}",
+                        "shelf_number": "{{ shelf_numbers }}",
+                        "state": "ON"
+                    }
+                });
+            }
+
+            function led_wall_off() {
+                $.ajax({
+                    url: 'http://192.168.0.18:8081/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "job": "Ausgabe",
+                        "user": "{{ request.user.first_name }}",
+                        "shelf_number": "{{ shelf_numbers }}",
+                        "state": "OFF"
+                    }
+                });
+            }
+        </script>
+    {% endif %}
 {% endblock %}

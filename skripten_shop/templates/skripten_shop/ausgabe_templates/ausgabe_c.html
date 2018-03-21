@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+
+        <h4>Die Ausgabe wurde abgeschlossen.</h4>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <li>
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <ul class="messages">
+                {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <li>
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="{% url "skripten_shop:scan-legic" %}" class="btn btn-success" role="button"
+           style="margin-bottom: 80px">Fertig</a>
+    </div>
+
+
+{% endblock %}

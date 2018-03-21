@@ -4,6 +4,7 @@ from django.urls import path, re_path
 # My Packages
 from . import views
 
+
 app_name = 'skripten_shop'
 urlpatterns = [
 
@@ -26,7 +27,6 @@ urlpatterns = [
     path('scan_legic/', views.scan_legic_view, name='scan-legic'),
     path('ausgabe/', views.AusgabeView.as_view(), name='ausgabe'),
     path('individualbetreuung/', views.individual_assistance_view, name='individualbetreuung'),
-    path('reorder/', views.reorder_view, name='reorder'),
     path('aktivierung/', views.activation_view, name='aktivierung'),
     path('reaktivierung/', views.reactivation_view, name='reaktivierung'),
     path('newlegic/', views.newlegic_view, name='newlegic'),

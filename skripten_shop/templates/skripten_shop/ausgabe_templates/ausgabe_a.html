@@ -4,26 +4,33 @@
 
 {% block content %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="container">
-                <div class="alert alert-danger">
-                    <strong>{{ message }}</strong>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
 
-    {% if error_message %}
-        <meta http-equiv="refresh" content="3;url={% url 'skripten_shop:scan-legic' %}">
-        <div class="container">
-            <div class="alert alert-danger">
-                <strong>{{ error_message }}</strong>
-            </div>
-        </div>
-    {% endif %}
+
+
+
 
     <div class="container">
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <li>
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        </li>
+                    {% endif %}
+
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+
+
+
+
+        {# Übersicht für des Studenten #}
         {% if student_order %}
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -70,13 +77,27 @@
                             {{ student.user.first_name }} {{ student.user.last_name }}
                         </u>
                     </h4>
-                    <h5 style="color: red">Der Student hat noch keine Skripte bestellt.</h5>
+                    <h5 style="color: red">Der Student hat noch kein Skript bestellt.</h5>
 
                 </div>
             </div>
             <br>
         {% endif %}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {# Skriptenliste #}
         {% if student_order.count >= max_article %}
 
             <div class="alert alert-danger">
@@ -86,20 +107,13 @@
         {% else %}
 
             {% if stock_infos %}
-                <h4><u>Liste frei verfügbarer Skripte:</u></h4>
-                <h5>Diese können an <strong>jeden</strong> ausgegeben werden</h5>
-                <h5>Ist ein Skript nich mehr verfügbar, kann es unter <span style="color: blue;">"Nachbestellung"</span>
-                    für den Studenten reserviert
-                    werden</h5>
-
-                <br>
-                <a href="{% url 'skripten_shop:reorder' %}" class="btn btn-primary"
-                   role="button">Nachbestellung</a>
+                <h4><u>Skriptenliste:</u></h4>
+                <strong><mark>Der Student kann noch {{ rest }} Skript(e) bestellen.</mark></strong>
                 <br>
                 <br>
 
                 <form action="" method="post">
-                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgabe starten">
+                    <input class="btn btn-success" type="submit" name="ausgabe_starten" value="Ausgabe starten">
                     <a href="{% url "skripten_shop:scan-legic" %}" class="btn btn-danger" role="button">Abbrechen</a>
                     <br>
 
@@ -121,14 +135,10 @@
                             <tr>
                                 <td>
                                     <div class="checkbox">
-                                        {% if stock_info.amount_available < 1 %}
-                                            <label><input type="checkbox" disabled></label>
-                                        {% else %}
-                                            <label>
-                                                <input type="checkbox" name="selected_articel[]"
-                                                       value="{{ stock_info.skript.id }}">
-                                            </label>
-                                        {% endif %}
+                                        <label>
+                                            <input type="checkbox" name="selected_articel[]"
+                                                   value="{{ stock_info.skript.id }}">
+                                        </label>
                                     </div>
                                 </td>
                                 <td>{{ stock_info.skript.article_number }}</td>
@@ -154,7 +164,7 @@
                     </table>
 
                     {% csrf_token %}
-                    <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgabe starten"
+                    <input class="btn btn-success" type="submit" name="ausgabe_starten" value="Ausgabe starten"
                            style="margin-bottom: 80px">
                     <a href="{% url "skripten_shop:scan-legic" %}" class="btn btn-danger" role="button"
                        style="margin-bottom: 80px">Abbrechen</a>
@@ -163,5 +173,16 @@
             {% endif %}
         {% endif %}
     </div>
+
+
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

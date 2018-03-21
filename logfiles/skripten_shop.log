@@ -12,3 +12,8 @@ INFO|20/Mar/2018 23:26:04|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit de
 INFO|20/Mar/2018 23:26:35|utilities|send_registration_mail|Es wurde eine Mail zur Registrierung an ba75ksdla2fq@hm.edu gesendet.
 INFO|20/Mar/2018 23:33:51|home_views|post|ANMELDUNG!!! Es wurde ein Konto mit der E-Mail-Adresse asfsadf@hm.edu erstellt.
 INFO|20/Mar/2018 23:33:53|utilities|send_registration_mail|Es wurde eine Mail zur Registrierung an asfsadf@hm.edu gesendet.
+ERROR|21/Mar/2018 16:35:16|tryanderror_view|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+ERROR|21/Mar/2018 16:35:24|tryanderror_view|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+INFO|21/Mar/2018 21:09:04|tryanderror_view|post|b'Bei der Ausgabe wurden keine Skripte ausgew\xc3\xa4hlt'
+INFO|21/Mar/2018 21:10:26|tryanderror_view|post|Bei der Ausgabe wurden keine Skripte ausgeweahlt.
+ERROR|21/Mar/2018 22:35:25|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
