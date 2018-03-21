@@ -3,8 +3,8 @@ from django import template
 from django.contrib.auth.models import Group
 
 # My Packages
-from skripten_shop.utilities import get_current_semester, membership_fee_is
-from skripten_shop.models import BezahltStatus
+from skripten_shop.utilities import membership_fee_is
+from skripten_shop.models import BezahltStatus, ShopSettings
 
 register = template.Library()
 
@@ -15,14 +15,14 @@ def check_paid_status(student):
     Checken, ob der Student dieses Semester bezahlt hat
     """
     try:
+        current_semester = ShopSettings.objects.get(pk=1).current_semester
         bs = BezahltStatus.objects.filter(student=student).latest("date")
-        current_semester = get_current_semester()
 
         if bs.semester == current_semester:
             paid = True
         else:
             paid = False
-    except:
+    except Exception as e:
         paid = False
     return paid
 
