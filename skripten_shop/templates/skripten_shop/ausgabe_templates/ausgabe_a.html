@@ -4,11 +4,6 @@
 
 {% block content %}
 
-
-
-
-
-
     <div class="container">
 
         {% if messages %}
@@ -26,10 +21,6 @@
             </ul>
         {% endif %}
 
-
-
-
-
         {# Übersicht für des Studenten #}
         {% if student_order %}
             <div class="panel panel-default">
@@ -43,6 +34,9 @@
                     <h5><span class="glyphicon glyphicon-info-sign"></span>
                         Bestellungen mit dem Status "auf Lager" können über die "Individualbetreuung"
                         ausgegeben werden.</h5>
+                    <ul>
+                        <li>E-Mail: {{ student.user.email }}</li>
+                    </ul>
                     <table class="table table-striped" id="article-table">
                         <thead>
                         <tr>
@@ -77,25 +71,15 @@
                             {{ student.user.first_name }} {{ student.user.last_name }}
                         </u>
                     </h4>
+                    <ul>
+                        <li>E-Mail: {{ student.user.email }}</li>
+                    </ul>
                     <h5 style="color: red">Der Student hat noch kein Skript bestellt.</h5>
 
                 </div>
             </div>
             <br>
         {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         {# Skriptenliste #}
         {% if student_order.count >= max_article %}
@@ -108,7 +92,9 @@
 
             {% if stock_infos %}
                 <h4><u>Skriptenliste:</u></h4>
-                <strong><mark>Der Student kann noch {{ rest }} Skript(e) bestellen.</mark></strong>
+                <strong>
+                    <mark>Der Student kann noch {{ rest }} Skript(e) bestellen.</mark>
+                </strong>
                 <br>
                 <br>
 
@@ -173,16 +159,4 @@
             {% endif %}
         {% endif %}
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
 {% endblock %}
