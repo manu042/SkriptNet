@@ -17,3 +17,4 @@ ERROR|21/Mar/2018 16:35:24|tryanderror_view|dispatch|Legic-ID konnte nich aus de
 INFO|21/Mar/2018 21:09:04|tryanderror_view|post|b'Bei der Ausgabe wurden keine Skripte ausgew\xc3\xa4hlt'
 INFO|21/Mar/2018 21:10:26|tryanderror_view|post|Bei der Ausgabe wurden keine Skripte ausgeweahlt.
 ERROR|21/Mar/2018 22:35:25|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
+INFO|22/Mar/2018 02:35:17|ausgabe_views|post|Bei der Ausgabe wurden keine Skripte ausgeweahlt.

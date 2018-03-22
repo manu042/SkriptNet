@@ -379,6 +379,14 @@ class AusgabeView(UserPassesTestMixin, View):
                 except:
                     pass
                 return render(request, "skripten_shop/ausgabe_templates/ausgabe_c.html")
+
+        # Skript von Ausgabe zu Nachbestellung verschieben
+        elif "move_to_reorder" in request.POST:
+            available_skript_ids = request.POST.getlist('available_skript[]')
+            reorder_skript_ids = request.POST.getlist('reorder_skript[]')
+            skript_to_move = str(request.POST.get("move_to_reorder"))
+            context = self.move_to_reorder(request, available_skript_ids, reorder_skript_ids, skript_to_move)
+            return render(request, "skripten_shop/ausgabe_templates/ausgabe_b.html", context)
         else:
             return redirect(reverse("skripten_shop:scan-legic"))
 
@@ -494,5 +502,49 @@ class AusgabeView(UserPassesTestMixin, View):
                 'amount_available': amount_available,
                 'amount_reserved': amount_reserved,
             })
-
         return stock_infos
+
+    def move_to_reorder(self, request, available_skript_ids, reorder_skript_ids, skript_to_move):
+        """
+        Falls ein Skript doch nicht verfügbar ist, wird es mit dieser Funktion
+        zur Nachbestellung verschieben
+        """
+        if skript_to_move in available_skript_ids:
+            available_skript_ids.remove(skript_to_move)
+
+        if skript_to_move not in reorder_skript_ids:
+            reorder_skript_ids.append(skript_to_move)
+
+        skripte_available = []
+        skripte_to_reorder = []
+        shelf_numbers = ""
+
+        for id in available_skript_ids:
+            skript = Skript.objects.get(pk=id)
+            skripte_available.append(skript)
+            # Fachnummern ermitteln
+            if skript.shelf_number:
+                for x in skript.shelf_number.split(","):
+                    shelf_numbers += (x.strip()) + ","
+
+        for id in reorder_skript_ids:
+            skript = Skript.objects.get(pk=id)
+            skripte_to_reorder.append(skript)
+
+        # Prüfen, wie viele Skripte der Student noch erhalten kann
+        checked = True
+        max = int(max_article_is())
+        total = len(skripte_available) + len(skripte_available) + self.student_order.count()
+        rest = max - self.student_order.count()
+        if total > max:
+            checked = False
+            messages.error(request, "Der Student kann nur noch %s Skript(e) erhalten" % rest)
+
+        context = {
+            "skripte_available": skripte_available,
+            "skripte_to_reorder": skripte_to_reorder,
+            "shelf_numbers": shelf_numbers,
+            "checked": checked,
+            "student": self.student,
+        }
+        return context

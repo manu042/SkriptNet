@@ -52,6 +52,7 @@ def association_members_view(request):
         'students': students,
         'total_paid': total_paid,
         'total_income': total_income,
+        'current_semester': current_semester.current_semester,
     }
 
     return render(request, 'skripten_shop/association_templates/association_members.html', context)
