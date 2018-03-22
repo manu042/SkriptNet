@@ -341,7 +341,7 @@ class AusgabeView(UserPassesTestMixin, View):
 
             if len(selected_skript_ids) == 0:
                 messages.error(request, "Es wurden keine Skripte für die Ausgabe ausgewählt")
-                return redirect(reverse("skripten_shop:ausgabenew"))
+                return redirect(reverse("skripten_shop:ausgabe"))
             else:
                 context = self.get_ausgabe_infos(request, selected_skript_ids)
             return render(request,
