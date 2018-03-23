@@ -17,7 +17,7 @@ class StudentAdmin(admin.ModelAdmin):
     inlines = [StudentSemesterInline, ]
     # Geburtsdatum in der Gesamtliste anzeigen
     list_display = ['__str__', 'birth_date']
-    search_fields = ["student__user__first_name", "student__user__last_name"]
+    search_fields = ["user__first_name", "user__last_name"]
 
 
 class SkriptInline(admin.StackedInline):
