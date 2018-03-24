@@ -89,13 +89,13 @@ def show_reorder_view(request):
         if 'print_order' in request.POST:
             orders = Order.objects.filter(status=Order.REQUEST_STATUS)
             # Dictonary mit allen Skripten erstellen. Die Zahl steht für die Menge, die zu bestellen ist
-            skripte_dict = {x.article_number: 0 for x in Skript.objects.filter(active=True)}
+            skripte_dict = {x.article_number: [x.name, 0] for x in Skript.objects.filter(active=True)}
 
             for order in orders:
                 # Status auf "im Druck ändern"
                 order.status = Order.PRINT_STATUS
-                order.save()
-                skripte_dict[order.article.article_number] += 1
+                #order.save()
+                skripte_dict[order.article.article_number][1] += 1
 
             # Zu bestellene Skripten nochmal anzeigen
             return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'skripte_dict': skripte_dict})

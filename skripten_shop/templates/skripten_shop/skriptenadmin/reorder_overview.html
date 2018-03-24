@@ -16,11 +16,11 @@
                 </thead>
                 <tbody>
                 {% for key, value  in skripte_dict.items %}
-                    {% if value > 0 %}
+                    {% if value.1 > 0 %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
+                            <td>{{ value.0 }}</td>
+                            <td>{{ value.1 }}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}
