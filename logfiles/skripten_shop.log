@@ -18,3 +18,7 @@ INFO|21/Mar/2018 21:09:04|tryanderror_view|post|b'Bei der Ausgabe wurden keine S
 INFO|21/Mar/2018 21:10:26|tryanderror_view|post|Bei der Ausgabe wurden keine Skripte ausgeweahlt.
 ERROR|21/Mar/2018 22:35:25|ausgabe_views|dispatch|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
 INFO|22/Mar/2018 02:35:17|ausgabe_views|post|Bei der Ausgabe wurden keine Skripte ausgeweahlt.
+ERROR|26/Mar/2018 01:32:21|ausgabe_views|individual_assistance_view|AritcleInStock matching query does not exist.
+ERROR|26/Mar/2018 01:33:59|ausgabe_views|individual_assistance_view|'tuple' object has no attribute 'amount'
+ERROR|26/Mar/2018 01:38:37|ausgabe_views|individual_assistance_view|AritcleInStock matching query does not exist.
+ERROR|26/Mar/2018 01:41:13|ausgabe_views|individual_assistance_view|'tuple' object has no attribute 'save'

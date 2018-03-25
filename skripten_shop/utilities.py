@@ -146,7 +146,7 @@ class SendStatusMailThread:
             # Manually open the connection
             connection.open()
 
-            orders = Order.objects.filter(status=Order.DELIVERD_STATUS).filter(mail_flag=False)
+            orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)
 
             for order in orders:
                 order.mail_flag = True
