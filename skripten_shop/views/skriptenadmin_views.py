@@ -10,7 +10,7 @@ from django.views.generic import View, TemplateView
 from skripten_shop.models import ShopSettings, Article, Order, Skript, SkriptInStock
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
-from skripten_shop.utilities import get_current_semester
+from skripten_shop.utilities import get_current_semester, SendStatusMailThread
 
 
 @login_required
@@ -130,6 +130,9 @@ def enter_reorder_view(request):
                 order.status = Order.RESERVED_STATUS
                 order.save()
 
+        # Lieferbenachrichtigung an Studenten versenden
+        # SendStatusMailThread()
+
     orders_in_print = []
     for article in articles:
         order = Order.objects.filter(article=article).filter(status=Order.PRINT_STATUS)
@@ -144,72 +147,4 @@ def enter_reorder_view(request):
         'orders_in_print': orders_in_print,
     }
 
-    return render(request,
-                  'skripten_shop/skriptenadmin/enter_reorder.html', context)
-
-
-class InitiateStockView(UserPassesTestMixin, TemplateView):
-    """
-    Lager erstmalig im Semester anlegen
-
-    Todo: View deaktivieren, wenn Shop offen ist.
-    """
-    template_name = "skripten_shop/skriptenadmin/initiate_stock.html"
-
-    def test_func(self):
-        """
-        Prüfen, ob der User die Berechtigung für diese Seite hat
-        """
-        return self.request.user.groups.filter(name='Skriptenadmin').exists()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["articles"] = Article.objects.filter(active=True)
-        return context
-
-    def post(self, request, *args, **kwargs):
-        selected_articels_id = request.POST.getlist('selected_articel[]')
-
-        for article_id, amount in zip(selected_articels_id[::2], selected_articels_id[1::2]):
-            if amount is not "0":
-                for x in range(int(amount)):
-                    SkriptInStock.objects.create(skript=Skript.objects.get(pk=article_id))
-
-        return super().get(request, *args, **kwargs)
-
-
-class StudentOrderView(UserPassesTestMixin, TemplateView):
-    """
-    Bestellungen der Studenten anzeigen und an Druckdienstleister übergeben
-    """
-    template_name = "skripten_shop/skriptenadmin/student_orders.html"
-
-    def test_func(self):
-        """
-        Prüfen, ob der User die Berechtigung für diese Seite hat
-        """
-        return self.request.user.groups.filter(name='Skriptenadmin').exists()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        orders = []
-        articles = Article.objects.filter(active=True)
-        for article in articles:
-            orders.append({
-                "article": article,
-                "amount_orders": Order.objects.filter(article=article, status=Order.REQUEST_STATUS).count()
-            })
-        context["orders"] = orders
-        return context
-
-    def post(self, request, *args, **kwargs):
-        orders = Order.objects.filter(status=Order.REQUEST_STATUS)
-
-        for order in orders:
-            order.status = Order.PRINT_STATUS
-            order.save()
-
-        return super().get(request, *args, **kwargs)
-
-
+    return render(request, 'skripten_shop/skriptenadmin/enter_reorder.html', context)

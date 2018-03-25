@@ -170,6 +170,7 @@ class Order(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     last_modified_date = models.DateTimeField(default=timezone.now, verbose_name='letzte Änderung')
     status = models.IntegerField(choices=STATUS_CHOICES, default=REQUEST_STATUS)
+    mail_flag = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Bestellung'
