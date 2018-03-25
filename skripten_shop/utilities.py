@@ -1,4 +1,5 @@
 # Django Packages
+from django.core import mail
 from django.template import loader
 from django.core.mail import send_mail
 
@@ -8,7 +9,7 @@ import datetime
 import threading
 
 # My packages
-from skripten_shop.models import ShopSettings
+from skripten_shop.models import ShopSettings, Order
 
 logger = logging.getLogger('skripten_shop.default')
 
@@ -121,3 +122,45 @@ class SendRegMailThread:
             logger.info('Es wurde eine Mail zur Registrierung an %s gesendet.' % user.email)
         except Exception as e:
             logger.error('Beim Versenden der Mail zur Registrierung an %s ist ein fehler aufgetreten.' % user.email)
+
+
+class SendStatusMailThread:
+    """
+    Die Klasse startet einen neuen Thread und versendet an die Studenten eine Lieferbestätigung
+    """
+    def __init__(self):
+        self.thread = threading.Thread(target=self.worker)
+        self.thread.start()
+
+    def worker(self):
+        self.send_mail()
+
+    def send_mail(self):
+        connection = mail.get_connection()
+
+        try:
+            # https://docs.djangoproject.com/en/2.0/topics/email/
+
+
+
+            # Manually open the connection
+            connection.open()
+
+            orders = Order.objects.filter(status=Order.DELIVERD_STATUS).filter(mail_flag=False)
+
+            for order in orders:
+                order.mail_flag = True
+
+
+
+
+
+        except Exception as e:
+            logger.error("e")
+        finally:
+            # We need to manually close the connection.
+            connection.close()
+
+    def create_mail_body(self):
+
+        pass

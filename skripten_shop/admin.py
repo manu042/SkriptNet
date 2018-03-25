@@ -46,7 +46,8 @@ class NewStudentRegistrationAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     search_fields = ["student__user__first_name", "student__user__last_name", "article__article_number", "article__name"]
-    list_filter = ["status"]
+    list_display = ["__str__", "status", "last_modified_date", "mail_flag"]
+    list_filter = ["status", "mail_flag"]
 
 
 # Models in der Django Admin Oberfläche anzeigen

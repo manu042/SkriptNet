@@ -152,7 +152,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logfiles/skripten_shop.log'),
-            'maxBytes': 1024 * 1024 * 1,  # 1MB
+            'maxBytes': 300 * 1024 * 1,  #Byte = 0,3MB
             'backupCount': 5,
             'formatter': 'verbose',
         },
