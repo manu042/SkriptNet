@@ -200,7 +200,7 @@ class AritcleInStock(models.Model):
     """
 
     article = models.OneToOneField(Article, unique=True, on_delete=models.CASCADE, verbose_name='Artikel')
-    amount = models.SmallIntegerField()
+    amount = models.SmallIntegerField(default=0)
 
     class Meta:
         verbose_name = 'Artikel im Lager'

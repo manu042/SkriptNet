@@ -95,8 +95,8 @@
                     </tbody>
                 </table>
                 {% csrf_token %}
-                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben">
-                <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Abbrechen</a>
+                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" onclick="led_wall_off()">
+                <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}" onclick="led_wall_off()">Abbrechen</a>
             </form>
         </div>
     {% else %}
@@ -114,4 +114,43 @@
     {% endif %}
 </div>
 
+{% endblock %}
+
+
+{% block script %}
+    {% if shelf_numbers %}
+        <script>
+            $(document).ready(function () {
+                led_wall_on();
+            });
+
+            function led_wall_on() {
+                $.ajax({
+                    url: 'http://192.168.0.18:8081/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "job": "Ausgabe",
+                        "user": "Ausgabe1",
+                        "shelf_number": "{{ shelf_numbers }}",
+                        "state": "ON"
+                    }
+                });
+            }
+
+            function led_wall_off() {
+                $.ajax({
+                    url: 'http://192.168.0.18:8081/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "job": "Ausgabe",
+                        "user": "Ausgabe1",
+                        "shelf_number": "{{ shelf_numbers }}",
+                        "state": "OFF"
+                    }
+                });
+            }
+        </script>
+    {% endif %}
 {% endblock %}

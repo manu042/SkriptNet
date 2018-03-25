@@ -93,6 +93,15 @@ def individual_assistance_view(request):
     student = Student.objects.get(legic_id=legic_id_hash_value)
     student_order = Order.objects.filter(student=student)
 
+    # Fachnummer für Skritpenschrank beleuchtung ermitteln
+    shelf_numbers = ""
+    reserved_orders = student_order.filter(status=Order.RESERVED_STATUS)
+    for reserved_order in reserved_orders:
+        # Fachnummern ermitteln
+        if reserved_order.article.shelf_number:
+            for x in reserved_order.article.shelf_number.split(","):
+                shelf_numbers += (x.strip()) + ","
+
     if request.method == 'POST':
         # Rückgabe starten
         if "return" in request.POST:
@@ -119,12 +128,12 @@ def individual_assistance_view(request):
                 logger.error(e)
             finally:
                 return redirect(reverse("skripten_shop:individualbetreuung"))
-
-        selected_orders_id = request.POST.getlist('selected_reserved[]')
-        for selected_order_id in selected_orders_id:
-            order = Order.objects.get(pk=selected_order_id)
-            order.status = Order.DELIVERD_STATUS
-            order.save()
+        else:
+            selected_orders_id = request.POST.getlist('selected_reserved[]')
+            for selected_order_id in selected_orders_id:
+                order = Order.objects.get(pk=selected_order_id)
+                order.status = Order.DELIVERD_STATUS
+                order.save()
 
         # Legic-ID aus Session Cookie löschen
         del request.session['current_legic']
@@ -134,6 +143,7 @@ def individual_assistance_view(request):
     context = {
         'student': student,
         'student_order': student_order,
+        'shelf_numbers': shelf_numbers,
     }
 
     return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
