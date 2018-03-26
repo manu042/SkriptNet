@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from django.contrib import messages
-from django.db import IntegrityError
-from django.views.generic import TemplateView, DetailView, View
+from django.views.generic import View
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 
 # Third party packages
 import hashlib
@@ -133,6 +133,7 @@ def individual_assistance_view(request):
             for selected_order_id in selected_orders_id:
                 order = Order.objects.get(pk=selected_order_id)
                 order.status = Order.DELIVERD_STATUS
+                order.last_modified_date = timezone.now()
                 order.save()
 
         # Legic-ID aus Session Cookie löschen
