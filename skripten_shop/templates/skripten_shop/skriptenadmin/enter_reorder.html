@@ -11,6 +11,7 @@
         {% if orders_in_print|length == 0 %}
             <h4 align="center" style="color: red">Aktuell werden keine Lieferungen vom Druckdienstleister erwartet.</h4>
         {% else %}
+            <p>Gesamt: {{ total }}</p>
             <form action="" method="post" autocomplete="off">
                 <table class="table table-striped add-to-cart">
                     <thead>

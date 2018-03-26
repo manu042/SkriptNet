@@ -2,8 +2,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import View, TemplateView
 
 
 # My packages
@@ -109,8 +107,12 @@ def show_reorder_view(request):
                 'skript': skript,
                 'order_amount': order.count()
             })
+    context = {
+        'orders': orders,
+        'total': Order.objects.filter(status=Order.REQUEST_STATUS).count()
+    }
 
-    return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'orders': orders})
+    return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', context)
 
 
 @login_required
@@ -131,7 +133,7 @@ def enter_reorder_view(request):
                 order.save()
 
         # Lieferbenachrichtigung an Studenten versenden
-        # SendStatusMailThread()
+        SendStatusMailThread()
 
     orders_in_print = []
     for article in articles:
@@ -145,6 +147,6 @@ def enter_reorder_view(request):
 
     context = {
         'orders_in_print': orders_in_print,
+        'total': Order.objects.filter(status=Order.PRINT_STATUS).count()
     }
-
     return render(request, 'skripten_shop/skriptenadmin/enter_reorder.html', context)

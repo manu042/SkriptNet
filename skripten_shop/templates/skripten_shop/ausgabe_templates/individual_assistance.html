@@ -131,7 +131,7 @@
                     dataType: 'json',
                     data: {
                         "job": "Ausgabe",
-                        "user": "Ausgabe1",
+                        "user": "{{ request.user.first_name }}",
                         "shelf_number": "{{ shelf_numbers }}",
                         "state": "ON"
                     }
@@ -145,7 +145,7 @@
                     dataType: 'json',
                     data: {
                         "job": "Ausgabe",
-                        "user": "Ausgabe1",
+                        "user": "{{ request.user.first_name }}",
                         "shelf_number": "{{ shelf_numbers }}",
                         "state": "OFF"
                     }

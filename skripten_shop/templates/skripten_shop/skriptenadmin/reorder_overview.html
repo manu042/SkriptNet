@@ -36,6 +36,7 @@
             {% if orders|length == 0 %}
                 <h4 align="center" style="color: red">Aktuell liegen keine Nachbestellungen vor.</h4>
             {% else %}
+                <p>Gesamt: {{ total }}</p>
                 <table class="table table-striped add-to-cart">
                     <thead>
                     <tr>
