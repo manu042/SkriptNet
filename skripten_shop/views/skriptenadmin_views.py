@@ -1,6 +1,7 @@
 # Django packages
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 
@@ -92,7 +93,8 @@ def show_reorder_view(request):
             for order in orders:
                 # Status auf "im Druck ändern"
                 order.status = Order.PRINT_STATUS
-                #order.save()
+                order.last_modified_date = timezone.now()
+                order.save()
                 skripte_dict[order.article.article_number][1] += 1
 
             # Zu bestellene Skripten nochmal anzeigen
@@ -130,6 +132,7 @@ def enter_reorder_view(request):
                 "last_modified_date")[:int(amount):]
             for order in orders:
                 order.status = Order.RESERVED_STATUS
+                order.last_modified_date = timezone.now()
                 order.save()
 
         # Lieferbenachrichtigung an Studenten versenden

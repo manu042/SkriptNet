@@ -149,13 +149,14 @@ class SendStatusMailThread:
     def send_mail(self):
         connection = mail.get_connection()
         try:
+            logger.info("Bestaetigungsmails werden versendet!")
             # Manually open the connection
             connection.open()
 
             sendFlag = True
-            emails = []
             while sendFlag:
-                orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)[:50]
+                emails = []
+                orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)[:1]
                 for order in orders:
                     subject = "Dein Skript %s wurde geliefert" % order.article.article_number
                     send_to = order.student.user.email
@@ -169,6 +170,7 @@ class SendStatusMailThread:
                 try:
                     # Send emails in a single call
                     connection.send_messages(emails)
+                    logger.info("Es wurden %s Bestaetigungsmails versendet" % len(emails))
                 except Exception as e:
                     logger.error(e)
 
@@ -180,6 +182,7 @@ class SendStatusMailThread:
         finally:
             # We need to manually close the connection.
             connection.close()
+            logger.info("Bestaetigungsmails wurden versendet!")
 
     def create_mail_body(self, user, skript):
         res_deadline = get_reservation_deadline()
