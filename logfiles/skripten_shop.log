@@ -22,3 +22,18 @@ ERROR|26/Mar/2018 01:32:21|ausgabe_views|individual_assistance_view|AritcleInSto
 ERROR|26/Mar/2018 01:33:59|ausgabe_views|individual_assistance_view|'tuple' object has no attribute 'amount'
 ERROR|26/Mar/2018 01:38:37|ausgabe_views|individual_assistance_view|AritcleInStock matching query does not exist.
 ERROR|26/Mar/2018 01:41:13|ausgabe_views|individual_assistance_view|'tuple' object has no attribute 'save'
+ERROR|26/Mar/2018 12:24:00|utilities|send_mail|e
+ERROR|26/Mar/2018 12:48:59|utilities|send_mail|e
+ERROR|26/Mar/2018 12:49:28|utilities|send_mail|e
+ERROR|26/Mar/2018 12:49:58|utilities|send_mail|e
+ERROR|26/Mar/2018 12:51:41|utilities|send_mail|e
+ERROR|26/Mar/2018 12:53:01|utilities|send_mail|e
+ERROR|26/Mar/2018 13:01:29|utilities|send_mail|e
+ERROR|26/Mar/2018 13:01:34|utilities|send_mail|e
+ERROR|26/Mar/2018 13:03:28|utilities|send_mail|e
+ERROR|26/Mar/2018 13:03:59|utilities|send_mail|"reply_to" argument must be a list or tuple
+ERROR|26/Mar/2018 13:04:30|utilities|send_mail|'<' not supported between instances of 'QuerySet' and 'int'
+ERROR|26/Mar/2018 13:06:23|utilities|send_mail|'<' not supported between instances of 'QuerySet' and 'int'
+ERROR|26/Mar/2018 13:07:22|utilities|send_mail|'<' not supported between instances of 'QuerySet' and 'int'
+ERROR|26/Mar/2018 13:08:24|utilities|send_mail|'<' not supported between instances of 'QuerySet' and 'int'
+ERROR|26/Mar/2018 13:17:14|utilities|send_mail|'<' not supported between instances of 'QuerySet' and 'int'

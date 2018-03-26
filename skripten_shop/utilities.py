@@ -1,7 +1,9 @@
 # Django Packages
 from django.core import mail
+from django.conf import settings
 from django.template import loader
 from django.core.mail import send_mail
+
 
 # Third Party packages
 import logging
@@ -58,6 +60,13 @@ def max_article_is():
     return ShopSettings.objects.get(pk=1).max_article
 
 
+def get_reservation_deadline():
+    """
+    Funktion liefert max. anzahl Tage, die ein Skript reserviert ist.
+    """
+    return ShopSettings.objects.get(pk=1).days_reserved
+
+
 def get_current_semester():
     """
     Aktuelles Semester ermitteln
@@ -81,6 +90,7 @@ class SendRegMailThread:
     """
     Starten eines neuen Threds, um asynchron von Django eine Mail für die Registrierung neuer Studenten zu versenden.
     """
+
     def __init__(self, user, confirm_url):
         self.user = user
         self.confirm_url = confirm_url
@@ -128,6 +138,7 @@ class SendStatusMailThread:
     """
     Die Klasse startet einen neuen Thread und versendet an die Studenten eine Lieferbestätigung
     """
+
     def __init__(self):
         self.thread = threading.Thread(target=self.worker)
         self.thread.start()
@@ -137,30 +148,46 @@ class SendStatusMailThread:
 
     def send_mail(self):
         connection = mail.get_connection()
-
         try:
-            # https://docs.djangoproject.com/en/2.0/topics/email/
-
-
-
             # Manually open the connection
             connection.open()
 
-            orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)
+            sendFlag = True
+            emails = []
+            while sendFlag:
+                orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)[:50]
+                for order in orders:
+                    subject = "Dein Skript %s wurde geliefert" % order.article.article_number
+                    send_to = order.student.user.email
+                    msg = self.create_mail_body(order.student.user, order.article)
 
-            for order in orders:
-                order.mail_flag = True
+                    email = mail.EmailMessage(subject=subject, body=msg, to=[send_to],
+                                             reply_to=[settings.DEFAULT_FROM_EMAIL], connection=connection)
+                    emails.append(email)
+                    order.mail_flag = True
+                    order.save()
+                try:
+                    # Send emails in a single call
+                    connection.send_messages(emails)
+                except Exception as e:
+                    logger.error(e)
 
-
-
-
+                if Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False) < 1:
+                    sendFlag = False
 
         except Exception as e:
-            logger.error("e")
+            logger.error(e)
         finally:
             # We need to manually close the connection.
             connection.close()
 
-    def create_mail_body(self):
+    def create_mail_body(self, user, skript):
+        res_deadline = get_reservation_deadline()
 
-        pass
+        msg1 = "Hallo %s %s,\n\n" % (user.first_name, user.last_name)
+        msg2 = "das Skript %s %s, liegt absofot für dich für %s Tage in der Fachschaft zur abholung bereit.\n\n\n" % (
+            skript.article_number, skript.name, res_deadline)
+        msg3 = "Viele Grüße\n\nSkriptenteam - Fachschaft 04 Elektro- und Informationstechnik"
+        message = msg1 + msg2 + msg3
+
+        return message

@@ -192,7 +192,8 @@ RECAPTCHA_PRIVATE_KEY = config["RECAPTCHA_PRIVATE_KEY"]
 NOCAPTCHA = True
 
 # Mail Setting
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'ldap.fs04.ee.hm.edu'
 EMAIL_HOST_PORT = '587'
 EMAIL_PORT = '587'
