@@ -172,7 +172,7 @@ class SendStatusMailThread:
                 except Exception as e:
                     logger.error(e)
 
-                if Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False) < 1:
+                if Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False).count() < 1:
                     sendFlag = False
 
         except Exception as e:
