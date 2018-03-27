@@ -87,17 +87,20 @@ def show_reorder_view(request):
     if request.method == 'POST':
         if 'print_order' in request.POST:
             orders = Order.objects.filter(status=Order.REQUEST_STATUS)
-            # Dictonary mit allen Skripten erstellen. Die Zahl steht für die Menge, die zu bestellen ist
-            skripte_dict = {x.article_number: [x.name, 0] for x in Skript.objects.filter(active=True)}
 
+            # Bestellung speichern, um sie erneut anzuzeigen
+            skripte_dict = {}
+            for skript in skripte:
+                amount = orders.filter(article=skript).count()
+                skripte_dict[skript.article_number] = [skript.name, amount]
+
+            # Status auf "im Druck ändern"
             for order in orders:
-                # Status auf "im Druck ändern"
                 order.status = Order.PRINT_STATUS
                 order.last_modified_date = timezone.now()
                 order.save()
-                skripte_dict[order.article.article_number][1] += 1
 
-            # Zu bestellene Skripten nochmal anzeigen
+            # Zu bestellende Skripten nochmal anzeigen
             return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'skripte_dict': skripte_dict})
 
     orders = []
@@ -120,7 +123,7 @@ def show_reorder_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def enter_reorder_view(request):
-    articles = Article.objects.filter(active=True).order_by("article_number")
+    skripte = Skript.objects.filter(active=True)
 
     if request.method == 'POST':
         selected_articels_id = request.POST.getlist('selected_articel[]')
@@ -139,12 +142,12 @@ def enter_reorder_view(request):
         SendStatusMailThread()
 
     orders_in_print = []
-    for article in articles:
-        order = Order.objects.filter(article=article).filter(status=Order.PRINT_STATUS)
+    for skript in skripte:
+        order = Order.objects.filter(article=skript).filter(status=Order.PRINT_STATUS)
 
         if order.count() > 0:
             orders_in_print.append({
-                'article': article,
+                'skript': skript,
                 'order_amount': order.count()
             })
 
