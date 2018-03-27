@@ -76,82 +76,6 @@ def scan_legic_view(request):
 
 @login_required
 @user_passes_test(has_permisson_skriptenausgabe)
-def individual_assistance_view(request):
-    try:
-        # Legic-ID aus Session Cookie auslesen
-        legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
-    except Exception:
-        logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
-
-        context = {
-            'error_message': 'Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.'
-                             ' Bitte an den Administrator wenden.'
-        }
-
-        return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
-
-    student = Student.objects.get(legic_id=legic_id_hash_value)
-    student_order = Order.objects.filter(student=student)
-
-    # Fachnummer für Skritpenschrank beleuchtung ermitteln
-    shelf_numbers = ""
-    reserved_orders = student_order.filter(status=Order.RESERVED_STATUS)
-    for reserved_order in reserved_orders:
-        # Fachnummern ermitteln
-        if reserved_order.article.shelf_number:
-            for x in reserved_order.article.shelf_number.split(","):
-                shelf_numbers += (x.strip()) + ","
-
-    if request.method == 'POST':
-        # Rückgabe starten
-        if "return" in request.POST:
-            order_id = request.POST["return"]
-            order_return = Order.objects.get(pk=order_id)
-
-            context = {
-                'student': student,
-                "return": order_return
-            }
-            return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
-        # Rückgabe durchführen
-        elif "execute_return" in request.POST:
-            try:
-                order_id = request.POST["execute_return"]
-                order_return = Order.objects.get(pk=order_id)
-                order_return.delete()
-                article_in_stock = AritcleInStock.objects.get(article=order_return.article)
-                article_in_stock.amount += 1
-                article_in_stock.save()
-                messages.success(request, "Das Skript wurde erfolgreich zurückgegeben")
-            except Exception as e:
-                messages.error(request, "Bei der Rückgabe ist ein Fehler aufgetreten")
-                logger.error(e)
-            finally:
-                return redirect(reverse("skripten_shop:individualbetreuung"))
-        else:
-            selected_orders_id = request.POST.getlist('selected_reserved[]')
-            for selected_order_id in selected_orders_id:
-                order = Order.objects.get(pk=selected_order_id)
-                order.status = Order.DELIVERD_STATUS
-                order.last_modified_date = timezone.now()
-                order.save()
-
-        # Legic-ID aus Session Cookie löschen
-        del request.session['current_legic']
-
-        return redirect(reverse('skripten_shop:scan-legic'))
-
-    context = {
-        'student': student,
-        'student_order': student_order,
-        'shelf_numbers': shelf_numbers,
-    }
-
-    return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
-
-
-@login_required
-@user_passes_test(has_permisson_skriptenausgabe)
 def activation_view(request):
     """
     View zur verknüpfung des Studenten und seiner Legic-ID
@@ -559,3 +483,79 @@ class AusgabeView(UserPassesTestMixin, View):
             "student": self.student,
         }
         return context
+
+
+@login_required
+@user_passes_test(has_permisson_skriptenausgabe)
+def individual_assistance_view(request):
+    try:
+        # Legic-ID aus Session Cookie auslesen
+        legic_id_hash_value = hashlib.sha256(request.session['current_legic'].encode('utf-8')).hexdigest()
+    except Exception:
+        logger.error('Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.')
+
+        context = {
+            'error_message': 'Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.'
+                             ' Bitte an den Administrator wenden.'
+        }
+
+        return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
+
+    student = Student.objects.get(legic_id=legic_id_hash_value)
+    student_order = Order.objects.filter(student=student)
+
+    # Fachnummer für Skritpenschrank beleuchtung ermitteln
+    shelf_numbers = ""
+    reserved_orders = student_order.filter(status=Order.RESERVED_STATUS)
+    for reserved_order in reserved_orders:
+        # Fachnummern ermitteln
+        if reserved_order.article.shelf_number:
+            for x in reserved_order.article.shelf_number.split(","):
+                shelf_numbers += (x.strip()) + ","
+
+    if request.method == 'POST':
+        # Rückgabe starten
+        if "return" in request.POST:
+            order_id = request.POST["return"]
+            order_return = Order.objects.get(pk=order_id)
+
+            context = {
+                'student': student,
+                "return": order_return
+            }
+            return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
+        # Rückgabe durchführen
+        elif "execute_return" in request.POST:
+            try:
+                order_id = request.POST["execute_return"]
+                order_return = Order.objects.get(pk=order_id)
+                order_return.delete()
+                article_in_stock = AritcleInStock.objects.get(article=order_return.article)
+                article_in_stock.amount += 1
+                article_in_stock.save()
+                messages.success(request, "Das Skript wurde erfolgreich zurückgegeben")
+            except Exception as e:
+                messages.error(request, "Bei der Rückgabe ist ein Fehler aufgetreten")
+                logger.error(e)
+            finally:
+                return redirect(reverse("skripten_shop:individualbetreuung"))
+        else:
+            selected_orders_id = request.POST.getlist('selected_reserved[]')
+            for selected_order_id in selected_orders_id:
+                order = Order.objects.get(pk=selected_order_id)
+                order.status = Order.DELIVERD_STATUS
+                order.last_modified_date = timezone.now()
+                order.save()
+
+        # Legic-ID aus Session Cookie löschen
+        del request.session['current_legic']
+
+        return redirect(reverse('skripten_shop:scan-legic'))
+
+    context = {
+        'student': student,
+        'student_order': student_order,
+        'shelf_numbers': shelf_numbers,
+    }
+
+    return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
