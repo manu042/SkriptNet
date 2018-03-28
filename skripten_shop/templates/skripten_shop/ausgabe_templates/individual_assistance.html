@@ -80,11 +80,11 @@
                                         <input type="checkbox" name="selected_reserved[]"
                                                value="{{ order.id }}" checked>
                                     </label>
-                                {% elif order.status == order.REQUEST_STATUS or order.status == order.DELIVERD_STATUS %}
+                                {% elif order.status == order.DELIVERD_STATUS %}
                                     <form action="" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger" name="cancel"
-                                                value="{{ order.id }}" title="Skript stornieren">
+                                        <button type="submit" class="btn btn-danger" name="return"
+                                                value="{{ order.id }}" title="Skript zurückgeben">
                                             <span class="glyphicon glyphicon-exclamation-sign"></span>
                                         </button>
                                     </form>
