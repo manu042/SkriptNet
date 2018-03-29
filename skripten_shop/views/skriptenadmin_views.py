@@ -9,11 +9,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # My packages
-from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus
+from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus, Student
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
 from skripten_shop.utilities import get_current_semester, SendStatusMailThread
-from skripten_shop.utilities import current_semester_is
+from skripten_shop.utilities import current_semester_is, max_article_is
 
 
 @login_required
@@ -178,6 +178,20 @@ class StatisticView(UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StatisticView, self).get_context_data(**kwargs)
 
+        students = Student.objects.all()
+        total_customers = 0
+        ordered_max = 0
+        # Ermittle wie viel Studenten min. 1 Skript abgeholt haben
+        # und wie viele die Gesamtmenge abgeholt haben
+        for student in students:
+            student_order = Order.objects.filter(student=student)
+            if student_order.count() > 0:
+                total_customers += 1
+            if student_order.count() >= int(max_article_is()):
+                ordered_max += 1
+
+
+
         skripte = Skript.objects.filter(active=True)
 
         data = []
@@ -186,11 +200,12 @@ class StatisticView(UserPassesTestMixin, TemplateView):
             if orders.count() > 0:
                 data.append([skript, orders.count()])
 
-        total = Order.objects.filter(status=Order.DELIVERD_STATUS).count()
+        total_deliverd= Order.objects.filter(status=Order.DELIVERD_STATUS).count()
         total_students = BezahltStatus.objects.filter(semester=current_semester_is()).count()
 
         context = {"data": data,
-                   "total": total,
-                   "total_students": total_students,}
+                   "total_deliverd": total_deliverd,
+                   "total_customers": total_customers,
+                   "ordered_max": ordered_max,}
 
         return context

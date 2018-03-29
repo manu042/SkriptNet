@@ -51,3 +51,11 @@ def current_semester():
     except:
         current_semester = False
     return current_semester
+
+@register.simple_tag
+def max_article():
+    try:
+        max_article = ShopSettings.objects.get(pk=1).max_article
+    except:
+        max_article = 9999
+    return max_article
