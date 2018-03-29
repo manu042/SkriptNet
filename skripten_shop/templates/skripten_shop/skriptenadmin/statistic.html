@@ -7,8 +7,9 @@
         <h3>Statistik fürs {% current_semester %}</h3>
         <br>
 
-        <p>Aktive Studenten: {{ total_students }}</p>
-        <p>Gesamt ausgegeben: {{ total }}</p>
+        <h5>Insgesamt wurden {{ total_deliverd }} Skripte ausgegeben.</h5>
+        <h5>Min. ein Skript abgeholt haben {{ total_customers }} Studenten, davon haben {{ ordered_max }} die max. Menge
+            von {% max_article %} Skripten erhalten.</h5>
 
         <table class="table table-striped add-to-cart">
             <thead>
