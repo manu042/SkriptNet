@@ -43,3 +43,11 @@ def has_group(user, group_name):
         return True if group in user.groups.all() else False
     except:
         return False
+
+@register.simple_tag
+def current_semester():
+    try:
+        current_semester = ShopSettings.objects.get(pk=1).current_semester
+    except:
+        current_semester = False
+    return current_semester

@@ -2,14 +2,18 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
+from django.views.generic import TemplateView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # My packages
-from skripten_shop.models import ShopSettings, Article, Order, Skript, SkriptInStock
+from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
 from skripten_shop.utilities import get_current_semester, SendStatusMailThread
+from skripten_shop.utilities import current_semester_is
 
 
 @login_required
@@ -156,3 +160,37 @@ def enter_reorder_view(request):
         'total': Order.objects.filter(status=Order.PRINT_STATUS).count()
     }
     return render(request, 'skripten_shop/skriptenadmin/enter_reorder.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class StatisticView(UserPassesTestMixin, TemplateView):
+    """
+    Startseite des Skripten-Shops (Nach dem Login)
+    """
+    template_name = 'skripten_shop/skriptenadmin/statistic.html'
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super(StatisticView, self).get_context_data(**kwargs)
+
+        skripte = Skript.objects.filter(active=True)
+
+        data = []
+        for skript in skripte:
+            orders = Order.objects.filter(article=skript).filter(status=Order.DELIVERD_STATUS)
+            if orders.count() > 0:
+                data.append([skript, orders.count()])
+
+        total = Order.objects.filter(status=Order.DELIVERD_STATUS).count()
+        total_students = BezahltStatus.objects.filter(semester=current_semester_is()).count()
+
+        context = {"data": data,
+                   "total": total,
+                   "total_students": total_students,}
+
+        return context
