@@ -95,7 +95,7 @@
                     </tbody>
                 </table>
                 {% csrf_token %}
-                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgeben" onclick="led_wall_off()">
+                <input class="btn btn-success" type="submit" name="ausgeben" value="Ausgabe abschließen" onclick="led_wall_off()">
                 <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}" onclick="led_wall_off()">Abbrechen</a>
             </form>
         </div>
