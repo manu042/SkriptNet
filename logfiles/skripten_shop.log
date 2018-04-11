@@ -1,3 +1,12 @@
 INFO|26/Mar/2018 17:48:31|admin_views|get|Logfile wird aufgerufen
 INFO|26/Mar/2018 17:48:35|admin_views|get|Logfile wird aufgerufen
 INFO|26/Mar/2018 17:48:36|admin_views|get|Logfile wird aufgerufen
+INFO|08/Apr/2018 18:35:02|utilities|send_mail|Bestaetigungsmails werden versendet!
+INFO|08/Apr/2018 18:35:03|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
+INFO|08/Apr/2018 18:35:04|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
+INFO|08/Apr/2018 18:35:04|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
+INFO|08/Apr/2018 18:35:04|utilities|send_mail|Bestaetigungsmails wurden versendet!
+INFO|08/Apr/2018 18:37:10|utilities|send_mail|Bestaetigungsmails werden versendet!
+INFO|08/Apr/2018 18:37:11|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
+INFO|08/Apr/2018 18:37:12|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
+INFO|08/Apr/2018 18:37:12|utilities|send_mail|Bestaetigungsmails wurden versendet!

@@ -10,7 +10,7 @@ from .home_views import HomeView, LoginView, LogoutView, RegistrationView, Confi
 
 
 
-from .skriptenadmin_views import shop_settings_view, edit_info_text_view, enter_reorder_view, show_reorder_view
+from .skriptenadmin_views import shop_settings_view, edit_info_text_view, enter_reorder_view, show_reorder_view, generate_cover_view
 
 from .ausgabe_views import AusgabeView
 

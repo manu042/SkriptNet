@@ -3,6 +3,23 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.core.files.storage import FileSystemStorage
+
+from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfFileMerger
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import mm
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+import subprocess
+import os.path
+from pathlib import Path
 
 
 # My packages
@@ -153,3 +170,153 @@ def enter_reorder_view(request):
         'total': Order.objects.filter(status=Order.PRINT_STATUS).count()
     }
     return render(request, 'skripten_shop/skriptenadmin/enter_reorder.html', context)
+
+@login_required
+@user_passes_test(has_permisson_skriptenadmin)
+def generate_cover_view(request):
+    if request.method == 'POST':
+
+        if "myfile" in request.FILES:
+            print("upload")
+            myfile = request.FILES['myfile']
+            fs = FileSystemStorage()
+            fs.save("static/cover2/"+"VorlageDeckblatt_leer.pdf", myfile)
+
+        submit_type = request.POST.get('generate_cover')
+
+        if submit_type == "Generiere Deckblatt":
+
+            selected_skript = request.POST.get('dropdown')
+            skript= Skript.objects.filter(article_number=selected_skript)[0]
+
+            pdf_filename = generate_add_text("./static/cover2/VorlageDeckblatt_leer.pdf", skript)
+
+            pdf = open("./static/cover2/generated/"+pdf_filename, 'rb')
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename='+pdf_filename;
+            return response
+
+        if submit_type == "Generiere alle Deckblätter":
+
+            skript_list = Skript.objects.all()
+            for skript in skript_list:
+                pdf_filename = generate_add_text("./static/cover2/VorlageDeckblatt_leer.pdf", skript)
+
+            #pack covers to zip file
+            p = subprocess.Popen("zip -r ./static/cover2/generated/covers ./static/cover2/generated/Deckblatt*.pdf", stdout=subprocess.PIPE, shell=True)
+            (output, err) = p.communicate()
+
+            zip = open("./static/cover2/generated/covers.zip", 'rb')
+            response = HttpResponse(zip.read(), content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename=covers.zip';
+            return response
+
+    #if no response returned in POST return GET
+    skript_list = Skript.objects.all()
+
+    context = {
+        'skript_list': skript_list,
+        'exists': Path("./static/cover2/VorlageDeckblatt_leer.pdf").is_file(),
+    }
+    return render(request, "skripten_shop/skriptenadmin/skript_cover_view.html", context)
+
+def generate_add_text(pdf_template_name, skript):
+
+    cover_dir = "./static/cover2/generated/"
+    static_dir = "./static/cover2/"
+
+    #http://allfont.de/download/comic-sans-ms-bold/
+    pdfmetrics.registerFont(TTFont('Comic', static_dir+'comic-sans-ms.ttf'))
+    pdfmetrics.registerFont(TTFont('Comic bold', static_dir+'comic-sans-ms-bold.ttf'))
+
+    packet = io.BytesIO()
+
+    text1 = skript.name
+    text2 = ""
+    pos = text1.find(':')
+
+    if (pos >= 20): #split line after :
+        text1 = skript.name[0:pos+1]
+        text2 = skript.name[pos+1:].strip()
+    elif (len(text1) > 40): #split line longer than 40 chars
+        tokens = text1.split()
+        text1 = ""
+        text2 = ""
+        for token in tokens:
+            if (len(text1) > 30):
+                text2 = text2 +" "+token
+            else:
+                text1 = text1 + " " + token
+
+    default_font = "Comic bold"
+
+    id1 = {
+        "text": skript.article_number,
+        "font": default_font,
+        "size": 28,
+        "x-pos": 147 * mm,
+        "y-pos": 262 * mm,
+    }
+    id2 = {
+        "text": id1["text"],
+        "font": default_font,
+        "size": 28,
+        "x-pos": 147 * mm,
+        "y-pos": 34 * mm,
+    }
+    title = {
+        "text": text1,
+        "font": default_font,
+        "size": 18,
+        "x-pos": 34 * mm,
+        "y-pos": 209 * mm,
+    }
+    title2 = {
+        "text": text2,
+        "font": title["font"],
+        "size": title["size"],
+        "x-pos": title["x-pos"],
+        "y-pos": 201 * mm,
+    }
+    arrow = {
+        "text": ">>",
+        "font": title["font"],
+        "size": title["size"],
+        "x-pos": 23 * mm,
+        "y-pos": title["y-pos"],
+    }
+
+    author = {
+        "text": skript.author.last_name+", "+skript.author.title+", "+skript.author.first_name,
+        "font": "Comic",
+        "size": 16,
+        "x-pos": 34 * mm,
+        "y-pos": 166 * mm,
+    }
+
+    insertions = [id1, id2, arrow, title, title2, author]
+
+    can = canvas.Canvas(packet, pagesize=letter)
+
+    for insert in insertions:
+        #print(insert)
+        can.setFont(insert["font"], insert["size"])
+        can.drawString(insert["x-pos"], insert["y-pos"], insert["text"])
+    can.save()
+
+    # move to the beginning of the StringIO buffer
+    packet.seek(0)
+    new_pdf = PdfFileReader(packet)
+    # read your existing PDF
+    existing_pdf = PdfFileReader(open(pdf_template_name, "rb"))
+    output = PdfFileWriter()
+    # add the "watermark" (which is the new pdf) on the existing page
+    page = existing_pdf.getPage(0)
+    page.mergePage(new_pdf.getPage(0))
+    output.addPage(page)
+    # finally, write "output" to a real file
+    outputStream = open(cover_dir+"Deckblatt_"+skript.article_number+".pdf", "wb")
+    output.write(outputStream)
+    outputStream.close()
+
+    return "Deckblatt_"+skript.article_number+".pdf"
