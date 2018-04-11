@@ -103,15 +103,20 @@ def individual_assistance_view(request):
                 shelf_numbers += (x.strip()) + ","
 
     if request.method == 'POST':
-        # Rückgabe starten
-        if "return" in request.POST:
+        # Rückgabe oder Stornierung starten
+        if "return" in request.POST or "delete" in request:
             order_id = request.POST["return"]
             order_return = Order.objects.get(pk=order_id)
 
             context = {
                 'student': student,
-                "return": order_return
             }
+
+            if order_return.status == Order.DELIVERD_STATUS:
+                context["return"] = order_return
+            elif order_return.status == Order.REQUEST_STATUS:
+                context["delete"] = order_return
+
             return render(request, 'skripten_shop/ausgabe_templates/individual_assistance.html', context)
         # Rückgabe durchführen
         elif "execute_return" in request.POST:
@@ -125,6 +130,22 @@ def individual_assistance_view(request):
                 messages.success(request, "Das Skript wurde erfolgreich zurückgegeben")
             except Exception as e:
                 messages.error(request, "Bei der Rückgabe ist ein Fehler aufgetreten")
+                logger.error(e)
+            finally:
+                return redirect(reverse("skripten_shop:individualbetreuung"))
+        #Bestellung stornieren
+        elif "execute_delete_order" in request.POST:
+            try:
+                order_id = request.POST["execute_delete_order"]
+                order_delete = Order.objects.get(pk=order_id)
+                print(order_delete)
+                if order_delete.status == Order.REQUEST_STATUS:
+                    order_delete.delete()
+                    messages.success(request, "Die Bestellung wurde erfolgreich zurückgenommen")
+                else:
+                    raise ValueError("Status nicht auf in Bearbeitung")
+            except Exception as e:
+                messages.error(request, "Bei der Rücknahme der Bestellung ist ein Fehler aufgetreten")
                 logger.error(e)
             finally:
                 return redirect(reverse("skripten_shop:individualbetreuung"))

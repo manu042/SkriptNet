@@ -50,6 +50,23 @@
             <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Abbrechen</a>
         </form>
 
+    {% elif delete %}
+        <h2>Bestellung stornieren</h2>
+        <h5>Folgende Bestellung wird storniert</h5>
+        <ul>
+            <li>Student: {{ student }}</li>
+            <li>Skriptnummer: {{ delete.article.article_number }}</li>
+            <li>Skriptname: {{ delete.article.name }}</li>
+            <li>Fach-Nr.: {{ delete.article.shelf_number }}</li>
+        </ul>
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" name="execute_delete_order"
+                    value="{{ delete.id }}" title="Stornierung durchführen">
+                Stornierung durchführen
+            </button>
+            <a class="btn btn-danger" href="{% url "skripten_shop:scan-legic" %}">Abbrechen</a>
+        </form>
 
     {% elif student_order %}
         <div class="panel panel-default">
@@ -80,11 +97,11 @@
                                         <input type="checkbox" name="selected_reserved[]"
                                                value="{{ order.id }}">
                                     </label>
-                                {% elif order.status == order.DELIVERD_STATUS %}
+                                {% elif order.status == order.DELIVERD_STATUS or order.status == order.REQUEST_STATUS %}
                                     <form action="" method="post">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger" name="return"
-                                                value="{{ order.id }}" title="Skript zurückgeben">
+                                                value="{{ order.id }}" title="Skript zurückgeben/Bestellung stornieren">
                                             <span class="glyphicon glyphicon-exclamation-sign"></span>
                                         </button>
                                     </form>
