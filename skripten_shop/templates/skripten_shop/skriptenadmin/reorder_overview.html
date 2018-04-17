@@ -42,6 +42,7 @@
                     <tr>
                         <th>Skript-Nr.</th>
                         <th>Skriptname</th>
+                        <th>Deckblatt-Farbe</th>
                         <th>Menge</th>
                     </tr>
                     </thead>
@@ -50,6 +51,7 @@
                         <tr>
                             <td>{{ order.skript.article_number }}</td>
                             <td>{{ order.skript.name }}</td>
+                            <td>{{ order.skript.cover_sheet_color }}</td>
                             <td>{{ order.order_amount }}</td>
                         </tr>
                     {% endfor %}
