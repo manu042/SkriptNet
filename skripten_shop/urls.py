@@ -36,6 +36,7 @@ urlpatterns = [
     path('lager/enter_reorder/', views.enter_reorder_view, name='enter_reorder'),
     path('settings/', views.shop_settings_view, name='shop-settings'),
     path('settings/info_text/', views.edit_info_text_view, name='info-text'),
+    path('skriptenadmin/statistics', views.StatisticView.as_view(), name='statistic'),
     path('generate_cover/', views.generate_cover_view, name='generate-cover'),
 
     # Association URLs

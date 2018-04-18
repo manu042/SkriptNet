@@ -2,6 +2,9 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
+from django.views.generic import TemplateView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -23,10 +26,11 @@ from pathlib import Path
 
 
 # My packages
-from skripten_shop.models import ShopSettings, Article, Order, Skript, SkriptInStock
+from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus, Student
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin, current_semester_is
 from skripten_shop.utilities import get_current_semester, SendStatusMailThread
+from skripten_shop.utilities import current_semester_is, max_article_is
 
 
 @login_required
@@ -104,17 +108,20 @@ def show_reorder_view(request):
     if request.method == 'POST':
         if 'print_order' in request.POST:
             orders = Order.objects.filter(status=Order.REQUEST_STATUS)
-            # Dictonary mit allen Skripten erstellen. Die Zahl steht für die Menge, die zu bestellen ist
-            skripte_dict = {x.article_number: [x.name, 0] for x in Skript.objects.filter(active=True)}
 
+            # Bestellung speichern, um sie erneut anzuzeigen
+            skripte_dict = {}
+            for skript in skripte:
+                amount = orders.filter(article=skript).count()
+                skripte_dict[skript.article_number] = [skript.name, amount]
+
+            # Status auf "im Druck ändern"
             for order in orders:
-                # Status auf "im Druck ändern"
                 order.status = Order.PRINT_STATUS
                 order.last_modified_date = timezone.now()
                 order.save()
-                skripte_dict[order.article.article_number][1] += 1
 
-            # Zu bestellene Skripten nochmal anzeigen
+            # Zu bestellende Skripten nochmal anzeigen
             return render(request, 'skripten_shop/skriptenadmin/reorder_overview.html', {'skripte_dict': skripte_dict})
 
     orders = []
@@ -137,7 +144,7 @@ def show_reorder_view(request):
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def enter_reorder_view(request):
-    articles = Article.objects.filter(active=True).order_by("article_number")
+    skripte = Skript.objects.filter(active=True)
 
     if request.method == 'POST':
         selected_articels_id = request.POST.getlist('selected_articel[]')
@@ -156,12 +163,12 @@ def enter_reorder_view(request):
         SendStatusMailThread()
 
     orders_in_print = []
-    for article in articles:
-        order = Order.objects.filter(article=article).filter(status=Order.PRINT_STATUS)
+    for skript in skripte:
+        order = Order.objects.filter(article=skript).filter(status=Order.PRINT_STATUS)
 
         if order.count() > 0:
             orders_in_print.append({
-                'article': article,
+                'skript': skript,
                 'order_amount': order.count()
             })
 
@@ -170,6 +177,55 @@ def enter_reorder_view(request):
         'total': Order.objects.filter(status=Order.PRINT_STATUS).count()
     }
     return render(request, 'skripten_shop/skriptenadmin/enter_reorder.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class StatisticView(UserPassesTestMixin, TemplateView):
+    """
+    Startseite des Skripten-Shops (Nach dem Login)
+    """
+    template_name = 'skripten_shop/skriptenadmin/statistic.html'
+
+    def test_func(self):
+        """
+        Prüfen, ob der User die Berechtigung für diese Seite hat
+        """
+        return self.request.user.groups.filter(name='Skriptenadmin').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super(StatisticView, self).get_context_data(**kwargs)
+
+        students = Student.objects.all()
+        total_customers = 0
+        ordered_max = 0
+        # Ermittle wie viel Studenten min. 1 Skript abgeholt haben
+        # und wie viele die Gesamtmenge abgeholt haben
+        for student in students:
+            student_order = Order.objects.filter(student=student)
+            if student_order.count() > 0:
+                total_customers += 1
+            if student_order.count() >= int(max_article_is()):
+                ordered_max += 1
+
+
+
+        skripte = Skript.objects.filter(active=True)
+
+        data = []
+        for skript in skripte:
+            orders = Order.objects.filter(article=skript).filter(status=Order.DELIVERD_STATUS)
+            if orders.count() > 0:
+                data.append([skript, orders.count()])
+
+        total_deliverd= Order.objects.filter(status=Order.DELIVERD_STATUS).count()
+        total_students = BezahltStatus.objects.filter(semester=current_semester_is()).count()
+
+        context = {"data": data,
+                   "total_deliverd": total_deliverd,
+                   "total_customers": total_customers,
+                   "ordered_max": ordered_max,}
+
+        return context
 
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)

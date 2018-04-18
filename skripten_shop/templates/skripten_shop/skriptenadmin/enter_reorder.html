@@ -25,11 +25,11 @@
                     <tbody>
                     {% for order_in_print in orders_in_print %}
                         <tr>
-                            <td>{{ order_in_print.article.article_number }}</td>
-                            <td>{{ order_in_print.article.name }}</td>
+                            <td>{{ order_in_print.skript.article_number }}</td>
+                            <td>{{ order_in_print.skript.name }}</td>
                             <td>{{ order_in_print.order_amount }}</td>
                             <td>
-                                <label><input name="selected_articel[]" value="{{ order_in_print.article.id }}"
+                                <label><input name="selected_articel[]" value="{{ order_in_print.skript.id }}"
                                               hidden></label>
                                 <label><input type="number" min="0" max="{{ order_in_print.order_amount }}"
                                               name="selected_articel[]" value="0"></label>

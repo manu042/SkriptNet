@@ -95,7 +95,7 @@
                                 {% if order.status == order.RESERVED_STATUS %}
                                     <label>
                                         <input type="checkbox" name="selected_reserved[]"
-                                               value="{{ order.id }}">
+                                               value="{{ order.id }}" checked>
                                     </label>
                                 {% elif order.status == order.DELIVERD_STATUS or order.status == order.REQUEST_STATUS %}
                                     <form action="" method="post">

@@ -1,23 +1,9 @@
 INFO|26/Mar/2018 17:48:31|admin_views|get|Logfile wird aufgerufen
 INFO|26/Mar/2018 17:48:35|admin_views|get|Logfile wird aufgerufen
 INFO|26/Mar/2018 17:48:36|admin_views|get|Logfile wird aufgerufen
-INFO|08/Apr/2018 18:35:02|utilities|send_mail|Bestaetigungsmails werden versendet!
-INFO|08/Apr/2018 18:35:03|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|08/Apr/2018 18:35:04|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|08/Apr/2018 18:35:04|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|08/Apr/2018 18:35:04|utilities|send_mail|Bestaetigungsmails wurden versendet!
-INFO|08/Apr/2018 18:37:10|utilities|send_mail|Bestaetigungsmails werden versendet!
-INFO|08/Apr/2018 18:37:11|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|08/Apr/2018 18:37:12|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|08/Apr/2018 18:37:12|utilities|send_mail|Bestaetigungsmails wurden versendet!
-ERROR|11/Apr/2018 11:25:26|ausgabe_views|individual_assistance_view|Legic-ID konnte nich aus dem Session Cookie ausgelesen werden.
-ERROR|11/Apr/2018 11:55:02|ausgabe_views|individual_assistance_view|'execute_return'
-ERROR|11/Apr/2018 11:59:09|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
-ERROR|11/Apr/2018 11:59:46|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
-ERROR|11/Apr/2018 12:01:31|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
-ERROR|11/Apr/2018 12:02:10|ausgabe_views|individual_assistance_view|invalid literal for int() with base 10: ''
-INFO|11/Apr/2018 12:18:07|utilities|send_mail|Bestaetigungsmails werden versendet!
-INFO|11/Apr/2018 12:18:08|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|11/Apr/2018 12:18:08|utilities|send_mail|Es wurden 1 Bestaetigungsmails versendet
-INFO|11/Apr/2018 12:18:08|utilities|send_mail|Bestaetigungsmails wurden versendet!
-ERROR|11/Apr/2018 12:18:42|ausgabe_views|individual_assistance_view|AritcleInStock matching query does not exist.
+INFO|27/Mar/2018 16:47:20|utilities|send_mail|Bestaetigungsmails werden versendet!
+INFO|27/Mar/2018 16:47:20|utilities|send_mail|Es wurden 0 Bestaetigungsmails versendet
+INFO|27/Mar/2018 16:47:20|utilities|send_mail|Bestaetigungsmails wurden versendet!
+INFO|27/Mar/2018 16:47:26|utilities|send_mail|Bestaetigungsmails werden versendet!
+INFO|27/Mar/2018 16:47:26|utilities|send_mail|Es wurden 0 Bestaetigungsmails versendet
+INFO|27/Mar/2018 16:47:26|utilities|send_mail|Bestaetigungsmails wurden versendet!

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load tp_tags %}
+
+
+{% block content %}
+    <div class="container">
+        <h3>Statistik fürs {% current_semester %}</h3>
+        <br>
+
+        <h5>Insgesamt wurden {{ total_deliverd }} Skripte ausgegeben.</h5>
+        <h5>Min. ein Skript abgeholt haben {{ total_customers }} Studenten, davon haben {{ ordered_max }} die max. Menge
+            von {% max_article %} Skripten erhalten.</h5>
+
+        <table class="table table-striped add-to-cart">
+            <thead>
+            <tr>
+                <th>Skript-Nr.</th>
+                <th>Skriptname</th>
+                <th>Total ausgegeben</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for x in data %}
+                <tr>
+                    <td>{{ x.0 }}</td>
+                    <td>{{ x.0.name }}</td>
+                    <td>{{ x.1 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

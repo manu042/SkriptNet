@@ -156,7 +156,7 @@ class SendStatusMailThread:
             sendFlag = True
             while sendFlag:
                 emails = []
-                orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)[:1]
+                orders = Order.objects.filter(status=Order.RESERVED_STATUS).filter(mail_flag=False)[:100]
                 for order in orders:
                     subject = "Dein Skript %s wurde geliefert" % order.article.article_number
                     send_to = order.student.user.email
