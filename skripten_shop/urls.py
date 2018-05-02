@@ -47,4 +47,8 @@ urlpatterns = [
 
     # Admin URLs
     path('admin/logfile/', views.LogfileView.as_view(), name='admin-logfiles'),
+
+    # Prof URLs
+    path('prof/login/<slug:key>/', views.prof_login_view, name='prof-login'),
+    path('prof/overview/', views.prof_overview, name='prof-overview'),
 ]

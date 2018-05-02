@@ -42,6 +42,7 @@ class Professor(models.Model):
     first_name = models.CharField(verbose_name="Vorname", max_length=20)
     last_name = models.CharField(verbose_name="Nachname", max_length=20)
     mail_address = models.EmailField()
+    authentication_key = models.CharField(verbose_name="Authentifizierungsschlüssel", max_length=30, default="not_set")
 
     class Meta:
         verbose_name = 'Professor'

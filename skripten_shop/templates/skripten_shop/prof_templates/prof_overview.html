@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Übersicht über meine Skripte</h3>
+        <h5>Angemeldet als {{prof.title}} {{ prof.last_name }}</h5>
+
+        <form action="" method="post">
+            {% if editable %}
+                <button class="btn btn-success" type="submit" name="add_skript">Neues Skript anlegen</button>
+            {% else %}
+                Die Skripte können nicht mehr bearbeitet werden. Für Änderungen wenden Sie sich bitte an skripten@fs04.ee.hm.edu
+            {% endif %}
+            <br><br>
+            {% csrf_token %}
+            {% for entry in view_skript %}
+                {% if entry.active %}
+                  <div class="panel panel-info">
+                {% else %}
+                  <div class="panel panel-default">
+                {% endif %}
+                    <div class="panel-heading">
+                        <h4>{{entry.name}}{% if not entry.active %} (inaktiv){%endif%}</h4>
+                    </div>
+                    <div class="panel-body">
+                        Test
+                        <div class="form-inline">
+                            {% if editable %}
+                            <button class="btn btn-success" type="submit" name="edit_skript" value="{{entry.article_number}}">Bearbeiten</button>
+                            <button class="btn btn-danger" type="submit" name="delete_skript" value="{{entry.article_number}}">Löschen</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </form>
+    </div>
+{% endblock %}
