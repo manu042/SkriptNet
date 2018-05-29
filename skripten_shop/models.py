@@ -229,6 +229,7 @@ class ShopSettings(models.Model):
                                      help_text='Anzahl Tage, die ein Skript reserviert ist')
     membership_fee = models.PositiveIntegerField(verbose_name='Mitgliedsbeitrag')
     info_text = models.TextField(verbose_name='Info Text', blank=True)
+    privacy_policy = models.TextField(verbose_name='Datenschutzerklärung', blank=True)
 
     def __str__(self):
         return 'Shop Einstellungen'

@@ -193,3 +193,11 @@ class ConfirmationView(View):
             student.birth_date = new_student.birth_date
             student.save()
             return render(request, 'skripten_shop/home_templates/registration_confirm.html')
+
+
+def policy_view(request):
+    context = {
+        'policy': ShopSettings.objects.get(pk=1).privacy_policy
+    }
+
+    return render(request, 'skripten_shop/home_templates/policy.html', context)

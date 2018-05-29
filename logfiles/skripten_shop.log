@@ -7,3 +7,4 @@ INFO|27/Mar/2018 16:47:20|utilities|send_mail|Bestaetigungsmails wurden versende
 INFO|27/Mar/2018 16:47:26|utilities|send_mail|Bestaetigungsmails werden versendet!
 INFO|27/Mar/2018 16:47:26|utilities|send_mail|Es wurden 0 Bestaetigungsmails versendet
 INFO|27/Mar/2018 16:47:26|utilities|send_mail|Bestaetigungsmails wurden versendet!
+ERROR|29/May/2018 21:25:49|home_views|get_context_data|no such column: skripten_shop_shopsettings.privacy_policy
