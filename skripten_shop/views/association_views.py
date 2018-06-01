@@ -5,6 +5,7 @@ In diesem Modul befinden sich alle Views, die für den Verein relevant sind.
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 
 from datetime import datetime
 
@@ -106,9 +107,9 @@ def edit_policy_text_view(request):
 
         if form.is_valid():
             shop_settings.privacy_policy = form.cleaned_data.get(('privacy_policy'))
-            #TODO logge alle User aus / Problem: ausgabe clients werden ausgeloggt
             shop_settings.privacy_policy_revision_date = datetime.now()
             shop_settings.save()
+            Session.objects.all().delete()
             return redirect(reverse('skripten_shop:association-settings'))
     else:
         form = PolicyTextForm(instance=shop_settings)
