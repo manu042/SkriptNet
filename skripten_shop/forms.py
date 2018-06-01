@@ -163,7 +163,7 @@ class UserRegisterForm(forms.Form):
 
 
 
-    terms = forms.BooleanField(label="Allgemeines & Datenschutz gelesen", widget=forms.CheckboxInput())
+    terms = forms.BooleanField(label="<a href=\"\\policy\">Datenschutzhinweis und Nutzungsbedingungen gelesen</a>", widget=forms.CheckboxInput())
 
     captcha = ReCaptchaField()
 
