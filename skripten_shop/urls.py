@@ -16,6 +16,7 @@ urlpatterns = [
     # activation_key wird der View als Parameter übergeben
     re_path('signup/confirm/(?P<activation_key>\w+)/$', views.ConfirmationView.as_view(), name="confirm_signup"),
     path('policy/', views.policy_view, name="policy"),
+    path('confirm_policy/', views.confirm_policy_view, name="confirm-policy"),
 
     # Shop Urls
     path('lager/', views.stock_overview, name='lager'),

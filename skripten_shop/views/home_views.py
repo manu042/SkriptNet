@@ -17,6 +17,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
+from datetime import datetime
 
 # Third Party packages
 import re
@@ -76,6 +77,11 @@ class LoginView(View):
         """
         # Falls der User bereits angemeldet ist, wird er zur Startseite weitergeleitet
         if request.user.is_authenticated:
+            students = Student.objects.filter(user=request.user)
+            if len(students) == 1:
+                if students[0].new_policy_available():
+                    return redirect("skripten_shop:confirm-policy")
+
             return redirect("skripten_shop:home")
 
         form = self.form_class(initial=self.initial)
@@ -92,7 +98,7 @@ class LoginView(View):
             # authenticate prüft nur, ob der User existiert
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('skripten_shop:home')
+            return redirect('skripten_shop:login')
         return render(request, self.template_name, {'form': form})
 
 
@@ -201,3 +207,17 @@ def policy_view(request):
     }
 
     return render(request, 'skripten_shop/home_templates/policy.html', context)
+
+# TODO Problem can access other sites, by going to other site when policy confirm site shows
+def confirm_policy_view(request):
+    if request.POST:
+        if 'confirm' in request.POST:
+        #Bestätigung in Datenbank eintragen
+            students = Student.objects.filter(user=request.user)
+            if len(students) == 1:
+                student = students[0]
+                student.confirmed_policy_date = datetime.now()
+                student.save()
+                return redirect("skripten_shop:home") #to  Home site
+
+    return render(request, 'skripten_shop/home_templates/confirm_policy.html', {})

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="panel-body">
+        <h1>Änderung der Datenschutzerkärung und Nutzungsbedingungen</h1>
+          Die Datenschutzerklärung und/oder Nutzungsbedingungen haben sich geändert. Die neue Datenschutzerklärung und Nutzungsbedingungen finden Sie <a target="_blank" href="\policy\">hier</a><br><br>
+        <form action="" method="post">
+                {% csrf_token %}
+            <input type="submit" name="confirm" class="btn btn-primary" value="Datenschutzhinweis und Nutzungsbedingungen gelesen">
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

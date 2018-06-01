@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 
+from datetime import datetime
+
 # My Packages
 from skripten_shop.models import Student, BezahltStatus, ShopSettings
 from skripten_shop.utilities import has_permisson_vorstand_verein
@@ -32,6 +34,7 @@ def association_settings_view(request):
 
     context = {
         'form': form,
+        'revision_date': str(shop_settings.privacy_policy_revision_date)
     }
     return render(request, 'skripten_shop/association_templates/association_settings.html', context)
 
@@ -103,6 +106,8 @@ def edit_policy_text_view(request):
 
         if form.is_valid():
             shop_settings.privacy_policy = form.cleaned_data.get(('privacy_policy'))
+            #TODO logge alle User aus / Problem: ausgabe clients werden ausgeloggt
+            shop_settings.privacy_policy_revision_date = datetime.now()
             shop_settings.save()
             return redirect(reverse('skripten_shop:association-settings'))
     else:
