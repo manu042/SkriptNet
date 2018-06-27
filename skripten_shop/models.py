@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+from datetime import datetime
+
 # Third party packages
 import hashlib
 
@@ -11,6 +13,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     legic_id = models.CharField(max_length=64, blank=True)
     birth_date = models.DateField(verbose_name='Geburtsdatum')
+    confirmed_policy_date = models.DateTimeField(verbose_name="Bestätigungsdatum der Datenschutzhinweise", default=datetime.now)
 
     class Meta:
         verbose_name = 'Student'
@@ -21,6 +24,8 @@ class Student(models.Model):
         name = self.user.first_name + ' ' + self.user.last_name
         return name
 
+    def new_policy_available(self):
+        return self.confirmed_policy_date < ShopSettings.objects.get(pk=1).privacy_policy_revision_date
 
 class BezahltStatus(models.Model):
     semester = models.CharField(max_length=30)
@@ -229,6 +234,8 @@ class ShopSettings(models.Model):
                                      help_text='Anzahl Tage, die ein Skript reserviert ist')
     membership_fee = models.PositiveIntegerField(verbose_name='Mitgliedsbeitrag')
     info_text = models.TextField(verbose_name='Info Text', blank=True)
+    privacy_policy = models.TextField(verbose_name='Datenschutzerklärung', blank=True)
+    privacy_policy_revision_date = models.DateTimeField(verbose_name='letze Änderung der Datenschutzerklärung', blank=True, default=datetime.now)
 
     def __str__(self):
         return 'Shop Einstellungen'

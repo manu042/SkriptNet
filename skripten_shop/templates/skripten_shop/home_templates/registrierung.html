@@ -48,7 +48,7 @@
 
     <div class="col-md-6 col-md-offset-3" style="padding-top: 5%">
         <div class="panel panel-default">
-            <div class="panel-heading">Login</div>
+            <div class="panel-heading">Registrierung</div>
             <div class="panel-body">
                 <form action="" method="post">
                     {% csrf_token %}
@@ -59,31 +59,7 @@
         </div>
     </div>
 
-    {# TODO: Höhe des Mitgliedsbeitrags aus der Datenbank laden #}
-    <div class="col-md-6 col-md-offset-3">
-        <h4>Allgemeines:</h4>
-        <ul style="margin-left: -20px">
-            <li>Mit der Anmeldung akzeptiere ich den Mitgliedsbeitrag in Höhe von 3 Euro pro Semester</li>
-            <li>Der Mitgliedsbeitrag ist bar in der Fachschaft zu zahlen</li>
-            <li>Die Mitgliedschaft im Verein wird durch erstmaliges Zahlen des Mitgliedsbeitrages erreicht</li>
-            <li>Es besteht keine Verpflichtung zur Zahlung! Nichtzahlen führt jedoch, nach einer gewissen Zeit,
-                zum automatischen Verlust der Mitgliedschaft
-            </li>
-            <li>Die <a target="_blank" class="privacylink"
-                       href="https://fs04.de/verein-fs04/vereinssatzung/">»Satzung«</a>
-                wird als
-                bekannt und akzeptiert angesehen
-            </li>
-        </ul>
-        <h4>Datenschutz:</h4>
-        <ul style="margin-left: -20px">
-            <li>Die Daten werden von uns nicht an Dritte weitergegeben</li>
-            <li>Die Daten werden auf unseren Servern gespeichert und von uns ausschließlich zur
-                Mitgliederverwaltung verwendet
-            </li>
-            <li>Dies umfasst auch das Versenden von wichtigen Informationen an die Vereinsmitglieder</li>
-        </ul>
-    </div>
+    {# TODO: Höhe des Mitgliedsbeitrags aus der Datenbank laden / reicht Hinweis auf Betrag in Datenschutzerklärung? #}
 {% endif %}
 
 

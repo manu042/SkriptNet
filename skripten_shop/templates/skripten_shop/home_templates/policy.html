@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+            <div class="panel-body">
+              {% if policy %}
+                {{ policy|safe  }}
+              {% else %}
+                <h1>Datenschutzerklärung</h1>
+              {% endif %}
+
+            </div>
+    </div>
+
+
+{% endblock %}

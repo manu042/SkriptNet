@@ -69,12 +69,24 @@ class SettingsForm(forms.ModelForm):
 
 
 class InfoTextForm(forms.ModelForm):
+
     class Meta:
         info_text = forms.TextInput(attrs={'required': False})
 
         model = ShopSettings
         fields = [
             'info_text',
+        ]
+
+
+class PolicyTextForm(forms.ModelForm):
+
+    class Meta:
+        info_text = forms.TextInput(attrs={'required': False})
+
+        model = ShopSettings
+        fields = [
+            'privacy_policy',
         ]
 
 
@@ -151,7 +163,7 @@ class UserRegisterForm(forms.Form):
 
 
 
-    terms = forms.BooleanField(label="Allgemeines & Datenschutz gelesen", widget=forms.CheckboxInput())
+    terms = forms.BooleanField(label="<a href=\"\\policy\">Datenschutzhinweis und Nutzungsbedingungen gelesen</a>", widget=forms.CheckboxInput())
 
     captcha = ReCaptchaField()
 

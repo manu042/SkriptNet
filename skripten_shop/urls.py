@@ -15,6 +15,8 @@ urlpatterns = [
     path('signup/', views.RegistrationView.as_view(), name="signup"),
     # activation_key wird der View als Parameter übergeben
     re_path('signup/confirm/(?P<activation_key>\w+)/$', views.ConfirmationView.as_view(), name="confirm_signup"),
+    path('policy/', views.policy_view, name="policy"),
+    path('confirm_policy/', views.confirm_policy_view, name="confirm-policy"),
 
     # Shop Urls
     path('lager/', views.stock_overview, name='lager'),
@@ -43,6 +45,7 @@ urlpatterns = [
     path('verein/mitglieder/', views.association_members_view, name='association-members'),
     path('verein/mitglieder_aktiv/', views.active_association_members_view, name='association-members-active'),
     path('verein/sendmail/', views.mail_association_members_view, name='association-mail'),
+    path('verein/policy/', views.edit_policy_text_view, name='policy-text'),
 
     # Admin URLs
     path('admin/logfile/', views.LogfileView.as_view(), name='admin-logfiles'),
