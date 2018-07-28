@@ -93,7 +93,12 @@ zu aktualisieren müssen folgende Schritte durchgeführt werden.
    ```
    $ sudo chown -R www-data:www-data ./SomeFolderOrFile
    ```
-5. Services neu starten:
+5. Bei Änderungen von Feldern in der Datenbank:
+   ``` 
+   $ python3 manage.py makemigrations
+   $ python3 manage.py migrate
+   ```
+6. Services neu starten:
    ```
    $ sudo systemctl restart gunicorn 
    $ sudo systemctl restart nginx
