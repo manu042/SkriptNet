@@ -39,6 +39,7 @@ urlpatterns = [
     path('settings/', views.shop_settings_view, name='shop-settings'),
     path('settings/info_text/', views.edit_info_text_view, name='info-text'),
     path('skriptenadmin/statistics', views.StatisticView.as_view(), name='statistic'),
+    path('generate_cover/', views.generate_cover_view, name='generate-cover'),
 
     # Association URLs
     path('verein/einstellungen/', views.association_settings_view, name='association-settings'),

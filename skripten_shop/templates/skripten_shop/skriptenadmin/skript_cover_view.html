@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3>Skripte Deckblatt Generator</h3>
+    <h5>Hier können für die jeweiligen Skripte die Deckblätter automatisiert als PDF-Dokument generiert werden</h5>
+    <br>
+    {% if exists %}
+    <div class="panel panel-default">
+        <div class="panel-heading">Erzeugen einzelner oder aller Deckblätter</div>
+        <div class="panel-body">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sel1">Skript auswählen</label>
+                    <select name="dropdown" class="form-control" id="sel1">
+                    {% for skript in skript_list %}
+                        <option>{{ skript.article_number }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <input class="btn btn-success" type="submit" name="generate_cover" value="Generiere Deckblatt"><br><br>
+                <input class="btn btn-success" type="submit" name="generate_cover" value="Generiere alle Deckblätter">
+            </form>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-danger">
+            Keine Vorlage hochgeladen
+        </div>
+    {% endif %}
+    <div class="panel panel-default">
+    <div class="panel-heading">Deckblatt Vorlage hochladen</div>
+    <div class="panel-body">
+        <p>Der Text (Titel, Autor und Nummer) wird an festen Positionen in der PDF-Datei eingefügt, sodass das Layout der Vorlage nicht verändert werden sollte</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="myfile"><br>
+            <button class="btn btn-success" type="submit">Hochladen</button>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}
