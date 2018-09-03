@@ -16,7 +16,7 @@ from skripten_shop.utilities import has_permisson_skriptenadmin
 from skripten_shop.utilities import get_current_semester, SendStatusMailThread
 from skripten_shop.utilities import current_semester_is, max_article_is
 
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 import io
 import os
 from reportlab.pdfgen import canvas
@@ -226,130 +226,182 @@ class StatisticView(UserPassesTestMixin, TemplateView):
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def generate_cover_view(request):
-    static_dir = "./static/cover/"
-    cover_dir = static_dir + "generated/"
 
     if request.method == 'POST':
         if "myfile" in request.FILES: #uploding new template
-            os.remove(static_dir+"VorlageDeckblatt_leer.pdf")
+            if Path(SkriptGenerator.template_path).is_file():
+                os.remove(SkriptGenerator.template_path)
             myfile = request.FILES['myfile']
             fs = FileSystemStorage()
-            fs.save(static_dir+"VorlageDeckblatt_leer.pdf", myfile)
+            fs.save(SkriptGenerator.template_path, myfile)
         submit_type = request.POST.get('generate_cover')
         if submit_type == "Generiere Deckblatt":
             selected_skript = request.POST.get('dropdown')
             skript= Skript.objects.filter(article_number=selected_skript)[0]
-            pdf_filename = generate_add_text(static_dir+"VorlageDeckblatt_leer.pdf", skript)
-            pdf = open(cover_dir+pdf_filename, 'rb')
+            pdf_filename = SkriptGenerator.generate_cover(skript)
+            pdf = open(SkriptGenerator.cover_dir+pdf_filename, 'rb')
             response = HttpResponse(pdf.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename='+pdf_filename;
             return response
         if submit_type == "Generiere alle Deckblätter":
             skript_list = Skript.objects.all()
             for skript in skript_list:
-                pdf_filename = generate_add_text(static_dir+"VorlageDeckblatt_leer.pdf", skript)
+                pdf_filename = SkriptGenerator.generate_cover(skript)
             # pack covers to zip file
-            p = subprocess.Popen("zip -r "+cover_dir+"covers "+cover_dir+"Deckblatt*.pdf", stdout=subprocess.PIPE, shell=True)
+            p = subprocess.Popen("zip -r "+SkriptGenerator.cover_dir+"covers "+SkriptGenerator.cover_dir+"Deckblatt*.pdf", stdout=subprocess.PIPE, shell=True)
             (output, err) = p.communicate()
-            zipfile = open(cover_dir+"covers.zip", 'rb')
+            zipfile = open(SkriptGenerator.cover_dir+"covers.zip", 'rb')
             response = HttpResponse(zipfile.read(), content_type='application/zip')
             response['Content-Disposition'] = 'attachment; filename=covers.zip';
             return response
+        if submit_type == "Generiere Skripte":
+            selected_skript = request.POST.get('dropdown')
+            skript = Skript.objects.filter(article_number=selected_skript)[0]
+            pdf_filename = SkriptGenerator.generate_skript(skript)
+            pdf = open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
+            SkriptGenerator.generate_all_skripts()
+            zipfile = open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
+            response = HttpResponse(zipfile.read(), content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename=skripte.zip';
+            return response
+
     # if no response returned in POST return GET
     skript_list = Skript.objects.all()
     context = {
         'skript_list': skript_list,
-        'exists': Path(static_dir+"VorlageDeckblatt_leer.pdf").is_file(),
+        'exists': Path(SkriptGenerator.template_path).is_file(),
     }
     return render(request, "skripten_shop/skriptenadmin/skript_cover_view.html", context)
 
-def generate_add_text(pdf_template_name, skript):
-    static_dir = "./static/cover/"
-    cover_dir = static_dir+"generated/"
-    # from http://allfont.de/download/comic-sans-ms-bold/ (not for commercial use)
-    pdfmetrics.registerFont(TTFont('Comic', static_dir+'comic-sans-ms.ttf'))
-    pdfmetrics.registerFont(TTFont('Comic bold', static_dir+'comic-sans-ms-bold.ttf'))
-    packet = io.BytesIO()
-    text1 = skript.name
-    text2 = ""
-    pos = text1.find(':')
-    if pos >= 20: # split line after :
-        text1 = skript.name[0:pos+1]
-        text2 = skript.name[pos+1:].strip()
-    elif len(text1) > 40: # split line longer than 40 chars
-        tokens = text1.split()
-        text1 = ""
+
+class SkriptGenerator:
+    static_dir = "./static/skripte/"
+    cover_dir = static_dir+"cover/"
+    skript_dir = static_dir+"skript/"
+    finish_dir = static_dir+"finish/"
+
+    template_path = static_dir + "VorlageDeckblatt_leer.pdf"
+
+    @staticmethod
+    def generate_cover(skript):
+        # from http://allfont.de/download/comic-sans-ms-bold/ (not for commercial use)
+        pdfmetrics.registerFont(TTFont('Comic', SkriptGenerator.static_dir + 'comic-sans-ms.ttf'))
+        pdfmetrics.registerFont(TTFont('Comic bold', SkriptGenerator.static_dir + 'comic-sans-ms-bold.ttf'))
+        packet = io.BytesIO()
+        text1 = skript.name
         text2 = ""
-        for token in tokens:
-            if len(text1) > 30:
-                text2 = text2 + " " + token
-            else:
-                text1 = text1 + " " + token
-    default_font = "Comic bold"
-    id1 = {
-        "text": skript.article_number,
-        "font": default_font,
-        "size": 28,
-        "x-pos": 147 * mm,
-        "y-pos": 262 * mm,
-    }
-    id2 = {
-        "text": id1["text"],
-        "font": default_font,
-        "size": 28,
-        "x-pos": 147 * mm,
-        "y-pos": 34 * mm,
-    }
-    title = {
-        "text": text1,
-        "font": default_font,
-        "size": 18,
-        "x-pos": 34 * mm,
-        "y-pos": 209 * mm,
-    }
-    title2 = {
-        "text": text2,
-        "font": title["font"],
-        "size": title["size"],
-        "x-pos": title["x-pos"],
-        "y-pos": 201 * mm,
-    }
-    arrow = {
-        "text": ">>",
-        "font": title["font"],
-        "size": title["size"],
-        "x-pos": 23 * mm,
-        "y-pos": title["y-pos"],
-    }
-    author = {
-        "text": skript.author.last_name+", "+skript.author.title+", "+skript.author.first_name,
-        "font": "Comic",
-        "size": 16,
-        "x-pos": 34 * mm,
-        "y-pos": 166 * mm,
-    }
-    insertions = [id1, id2, arrow, title, title2, author]
-    can = canvas.Canvas(packet, pagesize=letter)
-    for insert in insertions:
-        # print(insert)
-        can.setFont(insert["font"], insert["size"])
-        can.drawString(insert["x-pos"], insert["y-pos"], insert["text"])
-    can.save()
-    # move to the beginning of the StringIO buffer
-    packet.seek(0)
-    new_pdf = PdfFileReader(packet)
-    # read PDF template
-    existing_pdf = PdfFileReader(open(pdf_template_name, "rb"))
-    output = PdfFileWriter()
-    # add the "watermark" (which is the new pdf) on the existing page
-    page = new_pdf.getPage(0)
-    page.mergePage(existing_pdf.getPage(0))
-    output.addPage(page)
-    # appending the following pages of cover template
-    for i in range(1, existing_pdf.getNumPages()-1):
-        output.addPage(existing_pdf.getPage(i))
-    # finally, write "output" to a real file
-    outputStream = open(cover_dir+"Deckblatt_"+skript.article_number+".pdf", "wb")
-    output.write(outputStream)
-    outputStream.close()
-    return "Deckblatt_"+skript.article_number+".pdf"
+        # splitting title appropriately
+        pos = text1.find(':')
+        if pos >= 20:  # split line after :
+            text1 = skript.name[0:pos + 1]
+            text2 = skript.name[pos + 1:].strip()
+        elif len(text1) > 40:  # split line longer than 40 chars
+            tokens = text1.split()
+            text1 = ""
+            text2 = ""
+            for token in tokens:
+                if len(text1) > 30:
+                    text2 = text2 + " " + token
+                else:
+                    text1 = text1 + " " + token
+        default_font = "Comic bold"
+        id1 = {
+            "text": skript.article_number,
+            "font": default_font,
+            "size": 28,
+            "x-pos": 147 * mm,
+            "y-pos": 262 * mm,
+        }
+        id2 = {
+            "text": id1["text"],
+            "font": default_font,
+            "size": 28,
+            "x-pos": 147 * mm,
+            "y-pos": 34 * mm,
+        }
+        title = {
+            "text": text1,
+            "font": default_font,
+            "size": 18,
+            "x-pos": 34 * mm,
+            "y-pos": 209 * mm,
+        }
+        title2 = {
+            "text": text2,
+            "font": title["font"],
+            "size": title["size"],
+            "x-pos": title["x-pos"],
+            "y-pos": 201 * mm,
+        }
+        arrow = {
+            "text": ">>",
+            "font": title["font"],
+            "size": title["size"],
+            "x-pos": 23 * mm,
+            "y-pos": title["y-pos"],
+        }
+        author = {
+            "text": skript.author.last_name + ", " + skript.author.title + ", " + skript.author.first_name,
+            "font": "Comic",
+            "size": 16,
+            "x-pos": 34 * mm,
+            "y-pos": 166 * mm,
+        }
+        insertions = [id1, id2, arrow, title, title2, author]
+        can = canvas.Canvas(packet, pagesize=letter)
+        for insert in insertions:
+            can.setFont(insert["font"], insert["size"])
+            can.drawString(insert["x-pos"], insert["y-pos"], insert["text"])
+        can.save()
+        # move to the beginning of the StringIO buffer
+        packet.seek(0)
+        new_pdf = PdfFileReader(packet)
+        # read PDF template
+        existing_pdf = PdfFileReader(open(SkriptGenerator.template_path, "rb"))
+        output = PdfFileWriter()
+        # add the "watermark" (which is the new pdf) on the existing page
+        page = new_pdf.getPage(0)
+        page.mergePage(existing_pdf.getPage(0))
+        output.addPage(page)
+        # appending the following pages of cover template
+        for i in range(1, existing_pdf.getNumPages() - 1):
+            output.addPage(existing_pdf.getPage(i))
+        # finally, write "output" to a real file
+        outputStream = open(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf", "wb")
+        output.write(outputStream)
+        outputStream.close()
+        return "Deckblatt_" + skript.article_number + ".pdf"
+
+    @staticmethod
+    def generate_skript(skript): # appending skript file to cover
+        # (re-)generate cover
+        SkriptGenerator.generate_cover(skript)
+
+        cover_path = SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf"
+        skript_path = SkriptGenerator.skript_dir + "SkriptFile_" + skript.article_number + ".pdf"
+        finish_path = SkriptGenerator.finish_dir + "Skript_" + skript.article_number + ".pdf"
+
+        if not Path(skript_path).is_file():  # no file available, abort
+            return
+
+        merger = PdfFileMerger()
+        merger.append(PdfFileReader(open(cover_path, 'rb')))
+        merger.append(PdfFileReader(open(skript_path, 'rb')))
+        output_stream = open(finish_path, 'wb')
+        merger.write(output_stream)
+        output_stream.close()
+        #merger.write(finish_path)
+
+        return "Skript_" + skript.article_number + ".pdf"
+
+    @staticmethod
+    def generate_all_skripts():
+        skripts = Skript.objects.all()
+
+        for skript in skripts:
+            SkriptGenerator.generate_skript(skript)
+
+        # pack skripts to zip file
+        p = subprocess.Popen("zip -r " + SkriptGenerator.finish_dir + "skripte " + SkriptGenerator.finish_dir + "Skript*.pdf",
+            stdout=subprocess.PIPE, shell=True)
+        (output, err) = p.communicate()
