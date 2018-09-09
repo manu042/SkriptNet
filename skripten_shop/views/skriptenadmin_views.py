@@ -247,14 +247,6 @@ def generate_cover_view(request):
                 fs = FileSystemStorage()
                 fs.save(skript_path, myfile)
         if request.POST.get('generate_cover') is not None:  # generating single cover
-        if "myfile" in request.FILES: #uploding new template
-            if Path(SkriptGenerator.template_path).is_file():
-                os.remove(SkriptGenerator.template_path)
-            myfile = request.FILES['myfile']
-            fs = FileSystemStorage()
-            fs.save(SkriptGenerator.template_path, myfile)
-        submit_type = request.POST.get('generate_cover')
-        if submit_type == "Generiere Deckblatt":
             selected_skript = request.POST.get('dropdown')
             skript= Skript.objects.get(article_number=selected_skript)
             skript= Skript.objects.filter(article_number=selected_skript)[0]
@@ -264,7 +256,6 @@ def generate_cover_view(request):
             response['Content-Disposition'] = 'attachment; filename='+pdf_filename;
             return response
         if request.POST.get('generate_covers') is not None:  # generating all covers
-        if submit_type == "Generiere alle Deckblätter":
             skript_list = Skript.objects.all()
             for skript in skript_list:
                 pdf_filename = SkriptGenerator.generate_cover(skript)
@@ -276,15 +267,6 @@ def generate_cover_view(request):
             response['Content-Disposition'] = 'attachment; filename=covers.zip';
             return response
         if request.POST.get('generate_skripts') is not None:  # generating all skripts
-            #selected_skript = request.POST.get('dropdown')
-            #skript = Skript.objects.filter(article_number=selected_skript)[0]
-            #pdf_filename = SkriptGenerator.generate_skript(skript)
-            #pdf = open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
-        if submit_type == "Generiere Skripte":
-            selected_skript = request.POST.get('dropdown')
-            skript = Skript.objects.filter(article_number=selected_skript)[0]
-            pdf_filename = SkriptGenerator.generate_skript(skript)
-            pdf = open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
             SkriptGenerator.generate_all_skripts()
             zipfile = open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
             response = HttpResponse(zipfile.read(), content_type='application/zip')
@@ -390,7 +372,7 @@ class SkriptGenerator:
         page.mergePage(existing_pdf.getPage(0))
         output.addPage(page)
         # appending the following pages of cover template
-        for i in range(1, existing_pdf.getNumPages() - 1):
+        for i in range(1, existing_pdf.getNumPages()):
             output.addPage(existing_pdf.getPage(i))
         # finally, write "output" to a real file
         outputStream = open(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf", "wb")
