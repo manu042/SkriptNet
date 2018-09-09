@@ -228,6 +228,25 @@ class StatisticView(UserPassesTestMixin, TemplateView):
 def generate_cover_view(request):
 
     if request.method == 'POST':
+        if request.POST.get('upload_cover') is not None:  # uploading new template
+            if "file_cover" in request.FILES:
+                if Path(SkriptGenerator.template_path).is_file():
+                    os.remove(SkriptGenerator.template_path)
+                myfile = request.FILES['file_cover']
+                fs = FileSystemStorage()
+                fs.save(SkriptGenerator.template_path, myfile)
+        if request.POST.get('upload_skript') is not None:  # uploading skript
+            if "file_skript" in request.FILES:
+                selected_skript = request.POST.get('dropdown')
+                skript = Skript.objects.get(article_number=selected_skript)
+                skript_path = SkriptGenerator.skript_dir+"SkriptFile_"+skript.article_number+".pdf"
+
+                if Path(skript_path).is_file():
+                    os.remove(skript_path)
+                myfile = request.FILES['file_skript']
+                fs = FileSystemStorage()
+                fs.save(skript_path, myfile)
+        if request.POST.get('generate_cover') is not None:  # generating single cover
         if "myfile" in request.FILES: #uploding new template
             if Path(SkriptGenerator.template_path).is_file():
                 os.remove(SkriptGenerator.template_path)
@@ -237,12 +256,14 @@ def generate_cover_view(request):
         submit_type = request.POST.get('generate_cover')
         if submit_type == "Generiere Deckblatt":
             selected_skript = request.POST.get('dropdown')
+            skript= Skript.objects.get(article_number=selected_skript)
             skript= Skript.objects.filter(article_number=selected_skript)[0]
             pdf_filename = SkriptGenerator.generate_cover(skript)
             pdf = open(SkriptGenerator.cover_dir+pdf_filename, 'rb')
             response = HttpResponse(pdf.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename='+pdf_filename;
             return response
+        if request.POST.get('generate_covers') is not None:  # generating all covers
         if submit_type == "Generiere alle Deckblätter":
             skript_list = Skript.objects.all()
             for skript in skript_list:
@@ -254,6 +275,11 @@ def generate_cover_view(request):
             response = HttpResponse(zipfile.read(), content_type='application/zip')
             response['Content-Disposition'] = 'attachment; filename=covers.zip';
             return response
+        if request.POST.get('generate_skripts') is not None:  # generating all skripts
+            #selected_skript = request.POST.get('dropdown')
+            #skript = Skript.objects.filter(article_number=selected_skript)[0]
+            #pdf_filename = SkriptGenerator.generate_skript(skript)
+            #pdf = open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
         if submit_type == "Generiere Skripte":
             selected_skript = request.POST.get('dropdown')
             skript = Skript.objects.filter(article_number=selected_skript)[0]
@@ -341,7 +367,7 @@ class SkriptGenerator:
             "y-pos": title["y-pos"],
         }
         author = {
-            "text": skript.author.last_name + ", " + skript.author.title + ", " + skript.author.first_name,
+            "text": skript.author.last_name + ", " + skript.author.title + " " + skript.author.first_name,
             "font": "Comic",
             "size": 16,
             "x-pos": 34 * mm,

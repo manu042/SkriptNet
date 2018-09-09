@@ -50,4 +50,5 @@ urlpatterns = [
 
     # Admin URLs
     path('admin/logfile/', views.LogfileView.as_view(), name='admin-logfiles'),
+
 ]
