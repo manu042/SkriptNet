@@ -63,6 +63,46 @@ weitere Infos dazu in der fixtures_help.md
     ```
     Die Webseite kann dann über die URL **http://127.0.0.1:8000/** aufgerufen werden
 
+# Neue Version auf Server starten 
+Um den Server auf den Stand des Git-Repos
+zu aktualisieren müssen folgende Schritte durchgeführt werden.
+1. Snapshot erstellen
+
+2. Aktuelle Version des SkriptNets ins Home Verzeichnis holen.\
+   Dazu, falls noch nicht geschehen, zuerst das Git-Repo hinzufügen:
+   ```
+   ~$ git clone https://github.com/manu042/SkriptNet.git
+   ```
+   Sonst nur die Dateien auf aktuelle Version aktualisieren:
+   ```
+   ~$ git fetch                         # Get latest version from Github
+   ~$ git clean -f                      # Clear working directory
+   ~$ git reset --hard origin/master    # Reset files to remote master
+   ```
+3. Neue und geänderte Dateien aus Home-Verzeichnis in Server-Verzeichnis kopieren:
+   ```
+   $ cd /var/www/html/SkriptNet/
+   $ sudo cp -r ~/SkriptNet/SomeFolder/SourceFile ./SomeFolder/
+   ```
+   Statische Dateien müssen in das Verzeichnis ```X``` kopiert werden:
+   ``` 
+   $ sudo cp -r todo wohin?             # Statische Dateien kopieren
+   $ python3 manage.py collectstatic    # Änderungen dem Server mitteilen
+   ```
+4. Für neue und geänderte Dateien den Benutzer und die Gruppe auf ```www-data``` ändern:
+   ```
+   $ sudo chown -R www-data:www-data ./SomeFolderOrFile
+   ```
+5. Bei Änderungen von Feldern in der Datenbank:
+   ``` 
+   $ python3 manage.py makemigrations
+   $ python3 manage.py migrate
+   ```
+6. Services neu starten:
+   ```
+   $ sudo systemctl restart gunicorn 
+   $ sudo systemctl restart nginx
+   ```
 
 
 # Projekt Struktur

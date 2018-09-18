@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3>Skripte Generator</h3>
+    <h5>Hier können fertige Skript-Dateien erzeugt werden. Dabei werden zu den hochgeladenen Skripten die Deckblätter
+        automatisiert erzeugt und und mit den Skripten zusammengeführt.</h5>
+    <br>
+    {% if exists %}
+    <div class="panel panel-default">
+        <div class="panel-heading">Erzeugen von Skripten und Deckblättern</div>
+        <div class="panel-body">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sel_cover">Skript auswählen</label>
+                    <select name="dropdown" class="form-control" id="sel_cover">
+                    {% for skript in skript_list %}
+                        <option>{{ skript.article_number }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <input class="btn btn-success" type="submit" name="generate_cover" value="Generiere Deckblatt"><br><br>
+                <input class="btn btn-success" type="submit" name="generate_skript" value="Generiere Skript"><br><br>
+                <input class="btn btn-success" type="submit" name="generate_skripts" value="Generiere alle Skripte">
+            </form>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-danger">
+            Keine Vorlage hochgeladen
+        </div>
+    {% endif %}
+    {% if error_text != None %}
+        <div class="alert alert-danger">
+            {{error_text}}.
+        </div>
+    {% endif %}
+    <div class="panel panel-default">
+    <div class="panel-heading">Deckblatt Vorlage hochladen</div>
+    <div class="panel-body">
+        <p>Der Text (Titel, Autor und Nummer) wird an festen Positionen in der PDF-Datei eingefügt, sodass das Layout der Vorlage nicht verändert werden sollte.</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file_cover"><br>
+            <input class="btn btn-success" type="submit" name="upload_cover" value="Hochladen">
+        </form>
+    </div>
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">Skript hochladen</div>
+    <div class="panel-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="sel_skript">Skript auswählen</label>
+                <select name="dropdown" class="form-control" id="sel_skript">
+                    {% for skript in skript_list %}
+                        <option>{{ skript.article_number }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="file" name="file_skript"><br>
+            <input class="btn btn-success" type="submit" name="upload_skript" value="Hochladen">
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}

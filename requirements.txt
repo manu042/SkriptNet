@@ -6,7 +6,12 @@ django-crispy-forms
 django-extensions
 
 
+
 pyaml
 
 # https://github.com/praekelt/django-recaptcha
 django-recaptcha
+
+# For Cover sheet generation
+PyPDF2
+reportlab
