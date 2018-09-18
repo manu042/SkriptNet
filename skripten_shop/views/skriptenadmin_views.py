@@ -31,7 +31,6 @@ from pathlib import Path
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
 def shop_settings_view(request):
-
     try:
         # Lade Shopsettings aus der Datenbank
         shop_settings = ShopSettings.objects.get(pk=1)
@@ -202,8 +201,6 @@ class StatisticView(UserPassesTestMixin, TemplateView):
             if student_order.count() >= int(max_article_is()):
                 ordered_max += 1
 
-
-
         skripte = Skript.objects.filter(active=True)
 
         data = []
@@ -212,21 +209,20 @@ class StatisticView(UserPassesTestMixin, TemplateView):
             if orders.count() > 0:
                 data.append([skript, orders.count()])
 
-        total_deliverd= Order.objects.filter(status=Order.DELIVERD_STATUS).count()
+        total_deliverd = Order.objects.filter(status=Order.DELIVERD_STATUS).count()
         total_students = BezahltStatus.objects.filter(semester=current_semester_is()).count()
 
         context = {"data": data,
                    "total_deliverd": total_deliverd,
                    "total_customers": total_customers,
-                   "ordered_max": ordered_max,}
+                   "ordered_max": ordered_max, }
 
         return context
 
 
 @login_required
 @user_passes_test(has_permisson_skriptenadmin)
-def generate_cover_view(request):
-
+def generate_skript_view(request):
     if request.method == 'POST':
         if request.POST.get('upload_cover') is not None:  # uploading new template
             if "file_cover" in request.FILES:
@@ -239,7 +235,7 @@ def generate_cover_view(request):
             if "file_skript" in request.FILES:
                 selected_skript = request.POST.get('dropdown')
                 skript = Skript.objects.get(article_number=selected_skript)
-                skript_path = SkriptGenerator.skript_dir+"SkriptFile_"+skript.article_number+".pdf"
+                skript_path = SkriptGenerator.skript_dir + "SkriptFile_" + skript.article_number + ".pdf"
 
                 if Path(skript_path).is_file():
                     os.remove(skript_path)
@@ -248,30 +244,56 @@ def generate_cover_view(request):
                 fs.save(skript_path, myfile)
         if request.POST.get('generate_cover') is not None:  # generating single cover
             selected_skript = request.POST.get('dropdown')
-            skript= Skript.objects.get(article_number=selected_skript)
-            skript= Skript.objects.filter(article_number=selected_skript)[0]
+            skript = Skript.objects.filter(article_number=selected_skript)[0]
             pdf_filename = SkriptGenerator.generate_cover(skript)
-            pdf = open(SkriptGenerator.cover_dir+pdf_filename, 'rb')
+            pdf = open(SkriptGenerator.cover_dir + pdf_filename, 'rb')
             response = HttpResponse(pdf.read(), content_type='application/pdf')
-            response['Content-Disposition'] = 'attachment; filename='+pdf_filename;
+            response['Content-Disposition'] = 'attachment; filename=' + pdf_filename;
             return response
-        if request.POST.get('generate_covers') is not None:  # generating all covers
-            skript_list = Skript.objects.all()
-            for skript in skript_list:
-                pdf_filename = SkriptGenerator.generate_cover(skript)
-            # pack covers to zip file
-            p = subprocess.Popen("zip -r "+SkriptGenerator.cover_dir+"covers "+SkriptGenerator.cover_dir+"Deckblatt*.pdf", stdout=subprocess.PIPE, shell=True)
-            (output, err) = p.communicate()
-            zipfile = open(SkriptGenerator.cover_dir+"covers.zip", 'rb')
-            response = HttpResponse(zipfile.read(), content_type='application/zip')
-            response['Content-Disposition'] = 'attachment; filename=covers.zip';
-            return response
+        if request.POST.get('generate_skript') is not None:  # generating single skript
+            selected_skript = request.POST.get('dropdown')
+            skript = Skript.objects.filter(article_number=selected_skript)[0]
+            pdf_filename = SkriptGenerator.generate_skript(skript)
+
+            if pdf_filename == -1:
+                skript_list = Skript.objects.all()
+                context = {
+                    'skript_list': skript_list,
+                    'exists': Path(SkriptGenerator.template_path).is_file(),
+                    'error_text': "Fehler beim Generieren von Skript " + skript.article_number
+                                  + ". Drucke Skript als PDF und lade die neu Datei hoch",
+                }
+                return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
+            elif pdf_filename == None:
+                skript_list = Skript.objects.all()
+                context = {
+                    'skript_list': skript_list,
+                    'exists': Path(SkriptGenerator.template_path).is_file(),
+                    'error_text': "Keine Skript-Datei zu " + skript.article_number
+                                  + ". Lade eine Skript-Datei hoch",
+                }
+                return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
+            else:
+                pdf = open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
+                response = HttpResponse(pdf.read(), content_type='application/pdf')
+                response['Content-Disposition'] = 'attachment; filename=' + pdf_filename;
+                return response
         if request.POST.get('generate_skripts') is not None:  # generating all skripts
-            SkriptGenerator.generate_all_skripts()
-            zipfile = open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
-            response = HttpResponse(zipfile.read(), content_type='application/zip')
-            response['Content-Disposition'] = 'attachment; filename=skripte.zip';
-            return response
+            skript = SkriptGenerator.generate_all_skripts()
+            if skript == None:
+                zipfile = open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
+                response = HttpResponse(zipfile.read(), content_type='application/zip')
+                response['Content-Disposition'] = 'attachment; filename=skripte.zip';
+                return response
+            else:
+                skript_list = Skript.objects.all()
+                context = {
+                    'skript_list': skript_list,
+                    'exists': Path(SkriptGenerator.template_path).is_file(),
+                    'error_text': "Fehler beim Generieren von Skript " + skript.article_number
+                                  + ". Drucke Skript als PDF und lade die neu Datei hoch",
+                }
+            return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
 
     # if no response returned in POST return GET
     skript_list = Skript.objects.all()
@@ -279,14 +301,14 @@ def generate_cover_view(request):
         'skript_list': skript_list,
         'exists': Path(SkriptGenerator.template_path).is_file(),
     }
-    return render(request, "skripten_shop/skriptenadmin/skript_cover_view.html", context)
+    return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
 
 
 class SkriptGenerator:
     static_dir = "./static/skripte/"
-    cover_dir = static_dir+"cover/"
-    skript_dir = static_dir+"skript/"
-    finish_dir = static_dir+"finish/"
+    cover_dir = static_dir + "cover/"
+    skript_dir = static_dir + "skript/"
+    finish_dir = static_dir + "finish/"
 
     template_path = static_dir + "VorlageDeckblatt_leer.pdf"
 
@@ -381,7 +403,7 @@ class SkriptGenerator:
         return "Deckblatt_" + skript.article_number + ".pdf"
 
     @staticmethod
-    def generate_skript(skript): # appending skript file to cover
+    def generate_skript(skript):  # appending skript file to cover
         # (re-)generate cover
         SkriptGenerator.generate_cover(skript)
 
@@ -389,16 +411,22 @@ class SkriptGenerator:
         skript_path = SkriptGenerator.skript_dir + "SkriptFile_" + skript.article_number + ".pdf"
         finish_path = SkriptGenerator.finish_dir + "Skript_" + skript.article_number + ".pdf"
 
+        # remove old skript file
+        if Path(finish_path).is_file():
+            os.remove(finish_path)
+
         if not Path(skript_path).is_file():  # no file available, abort
             return
 
-        merger = PdfFileMerger()
-        merger.append(PdfFileReader(open(cover_path, 'rb')))
-        merger.append(PdfFileReader(open(skript_path, 'rb')))
-        output_stream = open(finish_path, 'wb')
-        merger.write(output_stream)
-        output_stream.close()
-        #merger.write(finish_path)
+        try:
+            merger = PdfFileMerger()
+            merger.append(PdfFileReader(open(cover_path, 'rb')))
+            merger.append(PdfFileReader(open(skript_path, 'rb')))
+            output_stream = open(finish_path, 'wb')
+            merger.write(output_stream)
+            output_stream.close()
+        except:
+            return -1  # error creating the skript
 
         return "Skript_" + skript.article_number + ".pdf"
 
@@ -407,9 +435,11 @@ class SkriptGenerator:
         skripts = Skript.objects.all()
 
         for skript in skripts:
-            SkriptGenerator.generate_skript(skript)
+            if SkriptGenerator.generate_skript(skript) == -1:  # return skript whose generation failed
+                return skript
 
         # pack skripts to zip file
-        p = subprocess.Popen("zip -r " + SkriptGenerator.finish_dir + "skripte " + SkriptGenerator.finish_dir + "Skript*.pdf",
+        p = subprocess.Popen(
+            "zip -FS -r " + SkriptGenerator.finish_dir + "skripte " + SkriptGenerator.finish_dir + "Skript*.pdf",
             stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
