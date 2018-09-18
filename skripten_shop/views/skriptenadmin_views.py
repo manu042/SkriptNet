@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 # My packages
 from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus, Student
@@ -305,7 +306,7 @@ def generate_skript_view(request):
 
 
 class SkriptGenerator:
-    static_dir = "./static/skripte/"
+    static_dir = "."+settings.MEDIA_URL+"skripte/"
     cover_dir = static_dir + "cover/"
     skript_dir = static_dir + "skript/"
     finish_dir = static_dir + "finish/"
