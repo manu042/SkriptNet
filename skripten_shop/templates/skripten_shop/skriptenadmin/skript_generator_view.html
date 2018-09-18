@@ -36,17 +36,6 @@
         </div>
     {% endif %}
     <div class="panel panel-default">
-    <div class="panel-heading">Deckblatt Vorlage hochladen</div>
-    <div class="panel-body">
-        <p>Der Text (Titel, Autor und Nummer) wird an festen Positionen in der PDF-Datei eingefügt, sodass das Layout der Vorlage nicht verändert werden sollte.</p>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="file_cover"><br>
-            <input class="btn btn-success" type="submit" name="upload_cover" value="Hochladen">
-        </form>
-    </div>
-    </div>
-    <div class="panel panel-default">
     <div class="panel-heading">Skript hochladen</div>
     <div class="panel-body">
         <form method="post" enctype="multipart/form-data">
@@ -61,6 +50,17 @@
             </div>
             <input type="file" name="file_skript"><br>
             <input class="btn btn-success" type="submit" name="upload_skript" value="Hochladen">
+        </form>
+    </div>
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">Deckblatt Vorlage hochladen</div>
+    <div class="panel-body">
+        <p>Der Text (Titel, Autor und Nummer) wird an festen Positionen in der PDF-Datei eingefügt, sodass das Layout der Vorlage nicht verändert werden sollte.</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file_cover"><br>
+            <input class="btn btn-success" type="submit" name="upload_cover" value="Hochladen">
         </form>
     </div>
     </div>
