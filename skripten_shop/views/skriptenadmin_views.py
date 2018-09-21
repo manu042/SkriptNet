@@ -255,7 +255,7 @@ def generate_skript_view(request):
                 skript_list = Skript.objects.all()
                 context = {
                     'skript_list': skript_list,
-                    'exists': FileSystemStorage.exists(SkriptGenerator.template_path),
+                    'exists': FileSystemStorage().exists(SkriptGenerator.template_path),
                     'error_text': "Fehler beim Generieren von Skript " + skript.article_number
                                   + ". Drucke Skript als PDF und lade die neu Datei hoch",
                 }
