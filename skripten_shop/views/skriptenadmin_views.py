@@ -437,9 +437,8 @@ class SkriptGenerator:
             if SkriptGenerator.generate_skript(skript) == -1:  # return skript whose generation failed
                 return skript
 
-        print("generated")
         # pack skripts to zip file
         p = subprocess.Popen(
-            "zip -FS -r " + "media/" +SkriptGenerator.finish_dir + "skripte.zip " + "media/" + SkriptGenerator.finish_dir + "Skript*.pdf > media/zip_log.txt",
+            "zip -FS -r " + "media/" +SkriptGenerator.finish_dir + "skripte.zip " + "media/" + SkriptGenerator.finish_dir + "Skript*.pdf",
             stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
