@@ -301,7 +301,7 @@ def generate_skript_view(request):
 
 
 class SkriptGenerator:
-    static_dir = "./media/skripte/"
+    static_dir = "./skripte/"
     cover_dir = static_dir + "cover/"
     skript_dir = static_dir + "skript/"
     finish_dir = static_dir + "finish/"
