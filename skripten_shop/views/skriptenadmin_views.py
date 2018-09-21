@@ -418,8 +418,8 @@ class SkriptGenerator:
 
         try:
             merger = PdfFileMerger()
-            merger.append(PdfFileReader(open(cover_path, 'rb')))
-            merger.append(PdfFileReader(open(skript_path, 'rb')))
+            merger.append(PdfFileReader(FileSystemStorage().open(cover_path, 'rb')))
+            merger.append(PdfFileReader(FileSystemStorage().open(skript_path, 'rb')))
             output_stream = FileSystemStorage().open(finish_path, 'wb')
             merger.write(output_stream)
             output_stream.close()
