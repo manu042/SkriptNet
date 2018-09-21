@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from django.conf import settings
+from django.core.files.storage import File
 
 # My packages
 from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus, Student
@@ -301,7 +301,7 @@ def generate_skript_view(request):
 
 
 class SkriptGenerator:
-    static_dir = "."+settings.MEDIA_URL+"skripte/"
+    static_dir = "./media/skripte/"
     cover_dir = static_dir + "cover/"
     skript_dir = static_dir + "skript/"
     finish_dir = static_dir + "finish/"
@@ -383,7 +383,9 @@ class SkriptGenerator:
         packet.seek(0)
         new_pdf = PdfFileReader(packet)
         # read PDF template
-        existing_pdf = PdfFileReader(open(SkriptGenerator.template_path, "rb"))
+        fi = FileSystemStorage().open(SkriptGenerator.template_path, 'rb')
+        existing_pdf = PdfFileReader(fi)
+
         output = PdfFileWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = new_pdf.getPage(0)
@@ -393,7 +395,8 @@ class SkriptGenerator:
         for i in range(1, existing_pdf.getNumPages()):
             output.addPage(existing_pdf.getPage(i))
         # finally, write "output" to a real file
-        outputStream = open(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf", "wb")
+        #FileSystemStorage.generate_filename(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf")
+        outputStream = FileSystemStorage().open(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf", "wb")
         output.write(outputStream)
         outputStream.close()
         return "Deckblatt_" + skript.article_number + ".pdf"
