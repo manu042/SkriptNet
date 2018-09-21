@@ -19,14 +19,12 @@ from skripten_shop.utilities import current_semester_is, max_article_is
 
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 import io
-import os
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import subprocess
-from pathlib import Path
 
 
 @login_required
@@ -227,21 +225,18 @@ def generate_skript_view(request):
     if request.method == 'POST':
         if request.POST.get('upload_cover') is not None:  # uploading new template
             if "file_cover" in request.FILES:
-                if Path(SkriptGenerator.template_path).is_file():
-                    os.remove(SkriptGenerator.template_path)
-                myfile = request.FILES['file_cover']
                 fs = FileSystemStorage()
+                fs.delete(SkriptGenerator.template_path)
+                myfile = request.FILES['file_cover']
                 fs.save(SkriptGenerator.template_path, myfile)
         if request.POST.get('upload_skript') is not None:  # uploading skript
             if "file_skript" in request.FILES:
                 selected_skript = request.POST.get('dropdown')
                 skript = Skript.objects.get(article_number=selected_skript)
                 skript_path = SkriptGenerator.skript_dir + "SkriptFile_" + skript.article_number + ".pdf"
-
-                if Path(skript_path).is_file():
-                    os.remove(skript_path)
-                myfile = request.FILES['file_skript']
                 fs = FileSystemStorage()
+                fs.delete(skript_path)
+                myfile = request.FILES['file_skript']
                 fs.save(skript_path, myfile)
         if request.POST.get('generate_cover') is not None:  # generating single cover
             selected_skript = request.POST.get('dropdown')
@@ -260,7 +255,7 @@ def generate_skript_view(request):
                 skript_list = Skript.objects.all()
                 context = {
                     'skript_list': skript_list,
-                    'exists': Path(SkriptGenerator.template_path).is_file(),
+                    'exists': FileSystemStorage.exists(SkriptGenerator.template_path),
                     'error_text': "Fehler beim Generieren von Skript " + skript.article_number
                                   + ". Drucke Skript als PDF und lade die neu Datei hoch",
                 }
@@ -269,7 +264,7 @@ def generate_skript_view(request):
                 skript_list = Skript.objects.all()
                 context = {
                     'skript_list': skript_list,
-                    'exists': Path(SkriptGenerator.template_path).is_file(),
+                    'exists': FileSystemStorage().exists(SkriptGenerator.template_path),
                     'error_text': "Keine Skript-Datei zu " + skript.article_number
                                   + ". Lade eine Skript-Datei hoch",
                 }
@@ -290,7 +285,7 @@ def generate_skript_view(request):
                 skript_list = Skript.objects.all()
                 context = {
                     'skript_list': skript_list,
-                    'exists': Path(SkriptGenerator.template_path).is_file(),
+                    'exists': FileSystemStorage().exists(SkriptGenerator.template_path),
                     'error_text': "Fehler beim Generieren von Skript " + skript.article_number
                                   + ". Drucke Skript als PDF und lade die neu Datei hoch",
                 }
@@ -300,7 +295,7 @@ def generate_skript_view(request):
     skript_list = Skript.objects.all()
     context = {
         'skript_list': skript_list,
-        'exists': Path(SkriptGenerator.template_path).is_file(),
+        'exists': FileSystemStorage().exists(SkriptGenerator.template_path),
     }
     return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
 
@@ -413,10 +408,9 @@ class SkriptGenerator:
         finish_path = SkriptGenerator.finish_dir + "Skript_" + skript.article_number + ".pdf"
 
         # remove old skript file
-        if Path(finish_path).is_file():
-            os.remove(finish_path)
+        FileSystemStorage().delete(finish_path)
 
-        if not Path(skript_path).is_file():  # no file available, abort
+        if not FileSystemStorage().exists(skript_path):  # no file available, abort
             return
 
         try:

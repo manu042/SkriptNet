@@ -89,7 +89,12 @@ zu aktualisieren müssen folgende Schritte durchgeführt werden.
    $ sudo cp -r todo wohin?             # Statische Dateien kopieren
    $ python3 manage.py collectstatic    # Änderungen dem Server mitteilen
    ```
-4. Für neue und geänderte Dateien den Benutzer und die Gruppe auf ```www-data``` ändern:
+4. Benutzer der Gruppe ```www-data``` hinzufügen
+   ```
+   $ sudo usermod -a -G www-data myusername   # Neu einloggen um Änderung zu übernehmen 
+   ```
+
+   Für neue und geänderte Dateien den Benutzer und die Gruppe auf ```www-data``` ändern:
    ```
    $ sudo chown -R www-data:www-data ./SomeFolderOrFile
    ```
