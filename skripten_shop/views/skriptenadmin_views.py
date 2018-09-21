@@ -403,8 +403,6 @@ class SkriptGenerator:
 
     @staticmethod
     def generate_skript(skript):  # appending skript file to cover
-        # (re-)generate cover
-        SkriptGenerator.generate_cover(skript)
 
         cover_path = SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf"
         skript_path = SkriptGenerator.skript_dir + "SkriptFile_" + skript.article_number + ".pdf"
@@ -415,6 +413,9 @@ class SkriptGenerator:
 
         if not FileSystemStorage().exists(skript_path):  # no file available, abort
             return
+
+        # (re-)generate cover
+        SkriptGenerator.generate_cover(skript)
 
         try:
             merger = PdfFileMerger()
@@ -436,8 +437,9 @@ class SkriptGenerator:
             if SkriptGenerator.generate_skript(skript) == -1:  # return skript whose generation failed
                 return skript
 
+        print("generated")
         # pack skripts to zip file
         p = subprocess.Popen(
-            "zip -FS -r " + SkriptGenerator.finish_dir + "skripte " + SkriptGenerator.finish_dir + "Skript*.pdf",
+            "zip -FS -r " + "media/" +SkriptGenerator.finish_dir + "skripte.zip " + "media/" + SkriptGenerator.finish_dir + "Skript*.pdf > media/zip_log.txt",
             stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
