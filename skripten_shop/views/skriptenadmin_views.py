@@ -301,11 +301,11 @@ def generate_skript_view(request):
 
 
 class SkriptGenerator:
-    static_dir = "media/skripte/"
+    static_dir = "skripte/"
     cover_dir = static_dir + "cover/"
     skript_dir = static_dir + "skript/"
     finish_dir = static_dir + "finish/"
-    font_dir = static_dir
+    font_dir = "media/"+static_dir
 
     template_path = static_dir + "VorlageDeckblatt_leer.pdf"
 
