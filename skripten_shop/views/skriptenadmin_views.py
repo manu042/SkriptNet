@@ -312,8 +312,8 @@ class SkriptGenerator:
     @staticmethod
     def generate_cover(skript):
         # from http://allfont.de/download/comic-sans-ms-bold/ (not for commercial use)
-        pdfmetrics.registerFont(TTFont('Comic', SkriptGenerator.static_dir + 'comic-sans-ms.ttf'))
-        pdfmetrics.registerFont(TTFont('Comic bold', SkriptGenerator.static_dir + 'comic-sans-ms-bold.ttf'))
+        pdfmetrics.registerFont(TTFont('Comic', SkriptGenerator.font_dir + 'comic-sans-ms.ttf'))
+        pdfmetrics.registerFont(TTFont('Comic bold', SkriptGenerator.font_dir + 'comic-sans-ms-bold.ttf'))
         packet = io.BytesIO()
         text1 = skript.name
         text2 = ""
