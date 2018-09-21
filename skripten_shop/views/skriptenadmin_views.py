@@ -242,7 +242,7 @@ def generate_skript_view(request):
             selected_skript = request.POST.get('dropdown')
             skript = Skript.objects.filter(article_number=selected_skript)[0]
             pdf_filename = SkriptGenerator.generate_cover(skript)
-            pdf = open(SkriptGenerator.cover_dir + pdf_filename, 'rb')
+            pdf = FileSystemStorage().open(SkriptGenerator.cover_dir + pdf_filename, 'rb')
             response = HttpResponse(pdf.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename=' + pdf_filename;
             return response
@@ -270,14 +270,14 @@ def generate_skript_view(request):
                 }
                 return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
             else:
-                pdf = open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
+                pdf = FileSystemStorage.open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
                 response = HttpResponse(pdf.read(), content_type='application/pdf')
                 response['Content-Disposition'] = 'attachment; filename=' + pdf_filename;
                 return response
         if request.POST.get('generate_skripts') is not None:  # generating all skripts
             skript = SkriptGenerator.generate_all_skripts()
             if skript == None:
-                zipfile = open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
+                zipfile = FileSystemStorage.open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
                 response = HttpResponse(zipfile.read(), content_type='application/zip')
                 response['Content-Disposition'] = 'attachment; filename=skripte.zip';
                 return response
@@ -301,10 +301,11 @@ def generate_skript_view(request):
 
 
 class SkriptGenerator:
-    static_dir = "./skripte/"
+    static_dir = "media/skripte/"
     cover_dir = static_dir + "cover/"
     skript_dir = static_dir + "skript/"
     finish_dir = static_dir + "finish/"
+    font_dir = static_dir
 
     template_path = static_dir + "VorlageDeckblatt_leer.pdf"
 
@@ -383,8 +384,7 @@ class SkriptGenerator:
         packet.seek(0)
         new_pdf = PdfFileReader(packet)
         # read PDF template
-        fi = FileSystemStorage().open(SkriptGenerator.template_path, 'rb')
-        existing_pdf = PdfFileReader(fi)
+        existing_pdf = PdfFileReader(FileSystemStorage().open(SkriptGenerator.template_path, 'rb'))
 
         output = PdfFileWriter()
         # add the "watermark" (which is the new pdf) on the existing page
@@ -395,7 +395,7 @@ class SkriptGenerator:
         for i in range(1, existing_pdf.getNumPages()):
             output.addPage(existing_pdf.getPage(i))
         # finally, write "output" to a real file
-        #FileSystemStorage.generate_filename(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf")
+
         outputStream = FileSystemStorage().open(SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf", "wb")
         output.write(outputStream)
         outputStream.close()
@@ -420,7 +420,7 @@ class SkriptGenerator:
             merger = PdfFileMerger()
             merger.append(PdfFileReader(open(cover_path, 'rb')))
             merger.append(PdfFileReader(open(skript_path, 'rb')))
-            output_stream = open(finish_path, 'wb')
+            output_stream = FileSystemStorage().open(finish_path, 'wb')
             merger.write(output_stream)
             output_stream.close()
         except:
