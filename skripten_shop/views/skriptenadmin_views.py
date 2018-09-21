@@ -270,14 +270,14 @@ def generate_skript_view(request):
                 }
                 return render(request, "skripten_shop/skriptenadmin/skript_generator_view.html", context)
             else:
-                pdf = FileSystemStorage.open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
+                pdf = FileSystemStorage().open(SkriptGenerator.finish_dir + pdf_filename, 'rb')
                 response = HttpResponse(pdf.read(), content_type='application/pdf')
                 response['Content-Disposition'] = 'attachment; filename=' + pdf_filename;
                 return response
         if request.POST.get('generate_skripts') is not None:  # generating all skripts
             skript = SkriptGenerator.generate_all_skripts()
             if skript == None:
-                zipfile = FileSystemStorage.open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
+                zipfile = FileSystemStorage().open(SkriptGenerator.finish_dir + "skripte.zip", 'rb')
                 response = HttpResponse(zipfile.read(), content_type='application/zip')
                 response['Content-Disposition'] = 'attachment; filename=skripte.zip';
                 return response
