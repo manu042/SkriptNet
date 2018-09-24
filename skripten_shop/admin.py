@@ -41,7 +41,7 @@ class ArticleInStockAdmin(admin.ModelAdmin):
 
 
 class NewStudentRegistrationAdmin(admin.ModelAdmin):
-    search_fields = ["student__user__first_name", "student__user__last_name"]
+    search_fields = ["user__first_name", "user__last_name"]
 
 
 class OrderAdmin(admin.ModelAdmin):
