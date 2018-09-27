@@ -11,7 +11,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.files.storage import File
 
 # My packages
-from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus, Student
+from skripten_shop.models import ShopSettings, Order, Skript, BezahltStatus, Student, AritcleInStock, NewStudentRegistration
 from skripten_shop.forms import SettingsForm, InfoTextForm
 from skripten_shop.utilities import has_permisson_skriptenadmin
 from skripten_shop.utilities import get_current_semester, SendStatusMailThread
@@ -47,6 +47,31 @@ def shop_settings_view(request):
             # Todo: Funktion überarbeiten
             shop_settings.current_semester = get_current_semester()
             shop_settings.save()
+
+            # Setze alle Skripte inaktiv & Bestand auf null
+            skripte = Skript.objects.all()
+            for skript in skripte:
+                skript.active = False
+                skript.save()
+                try:
+                    stock = AritcleInStock.objects.get(article=skript)
+                    stock.amount = 0
+                    stock.save()
+                except:
+                    pass
+
+            # Setze Bezahltstatus zurück => Nicht nötig, wird bei neuem Semester automatisch neu kassiert
+
+            # Setze Bestellungen zurück (löschen) / Backup als fixture
+            semester_name = get_current_semester().replace(' ', '_').replace('/', '')
+            cmd = "python3 ./manage.py dumpdata skripten_shop.Order --format=yaml --indent=4 > ./fixtures/backup/backup_orders_"+semester_name+".yaml"
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+            (output, err) = p.communicate()
+            Order.objects.all().delete() #lösche Bestellungen
+            # Wiederherstellung mit: python3 manage.py loaddata ./fixtures/backup/backup_orders_XX.yaml
+
+            # lösche nicht aktivierte Registrierungen
+            NewStudentRegistration.objects.filter(activated=False).delete()
 
         if 'save_settings' in request.POST:
             form = SettingsForm(request.POST)
