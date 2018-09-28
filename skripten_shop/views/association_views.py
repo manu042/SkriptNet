@@ -35,7 +35,7 @@ def association_settings_view(request):
 
     context = {
         'form': form,
-        'revision_date': str(shop_settings.privacy_policy_revision_date)
+        'revision_date': shop_settings.privacy_policy_revision_date
     }
     return render(request, 'skripten_shop/association_templates/association_settings.html', context)
 

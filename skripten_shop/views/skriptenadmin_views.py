@@ -44,9 +44,6 @@ def shop_settings_view(request):
 
     if request.method == 'POST':
         if 'start_new_semester' in request.POST:
-            # Todo: Funktion überarbeiten
-            shop_settings.current_semester = get_current_semester()
-            shop_settings.save()
 
             # Setze alle Skripte inaktiv & Bestand auf null
             skripte = Skript.objects.all()
@@ -63,7 +60,7 @@ def shop_settings_view(request):
             # Setze Bezahltstatus zurück => Nicht nötig, wird bei neuem Semester automatisch neu kassiert
 
             # Setze Bestellungen zurück (löschen) / Backup als fixture
-            semester_name = get_current_semester().replace(' ', '_').replace('/', '')
+            semester_name = shop_settings.current_semester.replace(' ', '_').replace('/', '')
             cmd = "python3 ./manage.py dumpdata skripten_shop.Order --format=yaml --indent=4 > ./fixtures/backup/backup_orders_"+semester_name+".yaml"
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
             (output, err) = p.communicate()
@@ -72,6 +69,9 @@ def shop_settings_view(request):
 
             # lösche nicht aktivierte Registrierungen
             NewStudentRegistration.objects.filter(activated=False).delete()
+
+            shop_settings.current_semester = get_current_semester()
+            shop_settings.save()
 
         if 'save_settings' in request.POST:
             form = SettingsForm(request.POST)
@@ -248,6 +248,13 @@ class StatisticView(UserPassesTestMixin, TemplateView):
 @user_passes_test(has_permisson_skriptenadmin)
 def generate_skript_view(request):
     if request.method == 'POST':
+        if request.POST.get('count_pages') is not None: # reading number of pages of skript files (Cover pages not included)
+            for skript in Skript.objects.all():
+                skript_path = SkriptGenerator.skript_dir + "SkriptFile_" + skript.article_number + ".pdf"
+                if FileSystemStorage().exists(skript_path):
+                    pdf = PdfFileReader(FileSystemStorage().open(skript_path, 'rb'))
+                    skript.page_numbers = pdf.getNumPages()
+                    skript.save()
         if request.POST.get('upload_cover') is not None:  # uploading new template
             if "file_cover" in request.FILES:
                 fs = FileSystemStorage()
