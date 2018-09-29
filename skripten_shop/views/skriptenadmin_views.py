@@ -21,6 +21,7 @@ from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -407,7 +408,7 @@ class SkriptGenerator:
             "y-pos": 166 * mm,
         }
         insertions = [id1, id2, arrow, title, title2, author]
-        can = canvas.Canvas(packet, pagesize=letter)
+        can = canvas.Canvas(packet, pagesize=A4)
         for insert in insertions:
             can.setFont(insert["font"], insert["size"])
             can.drawString(insert["x-pos"], insert["y-pos"], insert["text"])
