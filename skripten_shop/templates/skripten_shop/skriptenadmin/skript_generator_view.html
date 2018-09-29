@@ -64,5 +64,15 @@
         </form>
     </div>
     </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">Skript Seitenzahl aktualisieren</div>
+    <div class="panel-body">
+        <p>Aktualisiert die Seitenzahl der Skript-Datensätze anhand der Skriptdateien.</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input class="btn btn-success" type="submit" name="count_pages" value="Seitenzahl aktualisieren">
+        </form>
+    </div>
+    </div>
 </div>
 {% endblock %}
