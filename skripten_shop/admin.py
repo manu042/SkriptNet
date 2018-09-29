@@ -5,6 +5,13 @@ from django.contrib import admin
 from .models import Student, NewStudentRegistration, Professor, BezahltStatus, Skript
 from .models import AritcleInStock, StudyGroup, Order
 
+def make_active(modeladmin, request, queryset):
+    queryset.update(active=True)
+make_active.short_description = "Set selected skripts active"
+
+def make_inactive(modeladmin, request, queryset):
+    queryset.update(active=False)
+make_inactive.short_description = "Set selected skripts inactive"
 
 class StudentSemesterInline(admin.TabularInline):
     # Objekt Bezahltsatus für das Objekt Student editierbar machen
@@ -33,6 +40,7 @@ class SkriptAdmin(admin.ModelAdmin):
     list_display = ["__str__", "name", "active", ]
     filter_horizontal = ('studygroup',)
     ordering = ["article_number", "name",]
+    actions = [make_active, make_inactive]
 
 
 class ArticleInStockAdmin(admin.ModelAdmin):
