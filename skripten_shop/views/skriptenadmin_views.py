@@ -339,11 +339,11 @@ class SkriptGenerator:
     skript_dir = static_dir + "skript/"
     finish_dir = static_dir + "finish/"
     font_dir = "media/"+static_dir
-
+    tex_dir = static_dir + "tex/"
     template_path = static_dir + "VorlageDeckblatt_leer.pdf"
 
     @staticmethod
-    def generate_cover(skript):
+    def generate_cover_old(skript):
         # from http://allfont.de/download/comic-sans-ms-bold/ (not for commercial use)
         pdfmetrics.registerFont(TTFont('Comic', SkriptGenerator.font_dir + 'comic-sans-ms.ttf'))
         pdfmetrics.registerFont(TTFont('Comic bold', SkriptGenerator.font_dir + 'comic-sans-ms-bold.ttf'))
@@ -433,6 +433,29 @@ class SkriptGenerator:
         output.write(outputStream)
         outputStream.close()
         return "Deckblatt_" + skript.article_number + ".pdf"
+    
+    def generate_cover(skript):
+        with File.open(SkriptGenerator.tex_dir + "text.tex", 'r') as f:
+            filedata = f.read()
+        filedata = filedata.replace('NUMMER', skript.article_number)
+        filedata = filedata.replace('FACH', skript.name)
+        filedata = filedata.replace('AUTHOR', skript.author.title + skript.author.first_name + skript.author.last_name)
+        with File.open(SkriptGenerator.tex_dir + "text_out.tex", 'w') as out:
+            out.write(filedata)
+        p = subprocess.Popen(['pdflatex', SkriptGenerator.tex_dir + 'text_out.tex'])
+        try:
+            p.wait(6)
+        except subprocess.TimeoutExpired:
+            p.kill()
+        p = subprocess.Popen(
+            ['pdftk', SkriptGenerator.template_path, 'background', SkriptGenerator.tex_dir + "text_out.pdf", 'output', SkriptGenerator.cover_dir + "Deckblatt_" + skript.article_number + ".pdf"])
+        try:
+            p.wait(6)
+        except subprocess.TimeoutExpired:
+            p.kill()
+        return "Deckblatt_" + skript.article_number + ".pdf"
+
+
 
     @staticmethod
     def generate_skript(skript):  # appending skript file to cover
